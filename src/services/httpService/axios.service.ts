@@ -30,6 +30,7 @@ class AxiosService {
       headers: {
         Authorization: `Bearer ${this.authService.getToken()}`,
         ["Content-Type"]: "application/json",
+        ["Access-Control-Allow-Origin"]: "*"
       },
     };
   };
