@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import FooterAdmin from "../../src/Script/FooterAdmin";
 import LeftMenu from "../../src/MenuAdmin/LeftMenu";
 import TopMenu from "../../src/MenuAdmin/TopMenu";
-import userRequestService from "../../src/services/userService/user.service";
 import HeaderAdmin from "../../src/Script/HeaderAdmin";
 import utils from "../../src/utils/constant";
 import { toast, ToastContainer } from "react-nextjs-toast";
@@ -11,9 +10,9 @@ export default function Index({ props }) {
     const [seo, setSeo] = useState<any>(null)
 
     useEffect(() => {
-        userRequestService.getKeywordSEO().then(res => {
-            setSeo(res.data)
-        })
+        fetch("/api/post/getKeywordSEO").then(response => response.json()).then(result => {
+            setSeo(result)
+        }).catch(error => console.log('error', error));
     }, [])
     const postForm = (event) => {
         event.preventDefault();
@@ -39,12 +38,13 @@ export default function Index({ props }) {
             copyright: event.target.copyright.value,
         });
         console.log(data);
-        userRequestService
-            .updateKeywordSEO(data)
-            .then((res) => {
-                userRequestService.getKeywordSEO().then(res => {
-                    setSeo(res.data)
-                })
+        fetch("/api/post/updateKeywordSEO", {
+            method: "POST",
+            body: data
+        }).then((res) => {
+                fetch("/api/post/getKeywordSEO").then(response => response.json()).then(result => {
+                    setSeo(result)
+                }).catch(error => console.log('error', error));
                 toast.notify(`Chỉnh sửa thành công`, {
                     title: "Thành công",
                     duration: 3,

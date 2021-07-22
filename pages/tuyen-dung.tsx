@@ -4,7 +4,6 @@ import Script from 'next/script'
 import prisma from "../lib/prisma";
 import HeaderClient from "../src/Script/HeaderClient";
 import SEOTag from "../src/Script/seoTag";
-import userRequestService from "../src/services/userService/user.service";
 import utils from "../src/utils/constant";
 
 Index.getInitialProps = async (ctx) => {
@@ -63,7 +62,10 @@ export default function Index({ props }) {
                 "amount": event.target.amount.value,
                 "type_amount": event.target.type_amount.value
             });
-            await userRequestService.postContact(data).then(res => {
+            await fetch("/api/post", {
+                method: "POST",
+                body: data
+            }).then(res => {
                 console.log("dong ne", res.status)
                 if (res.status == 200) {
                     alert("Đăng ký thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất");

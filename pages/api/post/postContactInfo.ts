@@ -6,7 +6,8 @@ import prisma from '../../../lib/prisma';
 // Required fields in body: title
 // Optional fields in body: content
 export default async function handle(req, res) {
-    const { phone, address, email } = req.body;
+    const body = JSON.parse(req.body)
+    const { phone, address, email } = body;
     console.log("handle", phone, address, email)
     const result = await prisma.contact.upsert({
         where: {

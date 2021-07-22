@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import prisma from '../lib/prisma';
-import userRequestService from '../src/services/userService/user.service';
 import utils from '../src/utils/constant';
 import ReactHtmlParser from "react-html-parser";
 import HeaderClient from '../src/Script/HeaderClient';
@@ -66,7 +65,10 @@ export default function Home({ props }) {
         "amount": event.target.amount.value,
         "type_amount": event.target.type_amount.value
       });
-      await userRequestService.postContact(data).then(res => {
+      await fetch("/api/post", {
+        method: "POST",
+        body: data
+      }).then(res => {
         console.log("dong ne", res.status)
         if (res.status == 200) {
           alert("Đăng ký thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất");

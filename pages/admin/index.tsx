@@ -4,8 +4,9 @@ import prisma from "../../lib/prisma";
 import FooterAdmin from "../../src/Script/FooterAdmin";
 import LeftMenu from "../../src/MenuAdmin/LeftMenu";
 import TopMenu from "../../src/MenuAdmin/TopMenu";
-import userRequestService from "../../src/services/userService/user.service";
 import HeaderAdmin from "../../src/Script/HeaderAdmin";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 export default function Index({ props }) {
 
@@ -13,20 +14,46 @@ export default function Index({ props }) {
 
     useEffect(() => {
         async function fetchMyAPI() {
-            userRequestService.getContact().then(res => {
-                setUsers(res.data)
-            })
+            fetch("/api/post/listUser").then(response => response.json()).then(result => {
+                setUsers(result)
+            }).catch(error => console.log('error', error));
         }
 
         fetchMyAPI()
     }, [])
 
+    const onclickContact = (id) => {
+        confirmAlert({
+            title: "Xác nhận đã liên lạc",
+            message: `Bạn có chắc muốn xác nhận user có ID: ${id}`,
+            buttons: [
+                {
+                    label: "Đồng ý",
+                    onClick: () => {
+                        var body = { id }
+                        fetch("/api/post/confirmUser", {
+                            method: "POST",
+                            body: JSON.stringify(body)
+                        }).then( () => {
+                            fetch("/api/post/listUser").then(response => response.json()).then(result => {
+                                setUsers(result)
+                            }).catch(error => console.log('error', error));
+                        })
+                    },
+                },
+                {
+                    label: "Không",
+                    onClick: () => { },
+                },
+            ],
+        });
+    }
     const renderRowUser = (users) => {
         if (users == null) {
             console.log("user null roi dmm")
             return
         }
-        console.log("user dang co du lieu roi dmm")
+        console.log("user dang co du lieu roi dmm", users)
         return users?.map((item, index) => {
             return (
                 <tr key={index}>
@@ -39,7 +66,7 @@ export default function Index({ props }) {
                     {item.isActive ?
                         <td><button type="button" className="btn btn-outline-success square mr-1 mb-1 waves-effect waves-light">Đã liên lạc</button></td>
                         :
-                        <button type="button" className="btn btn-outline-danger square mr-1 mb-1 waves-effect waves-light">Chưa liên lạc</button>
+                        <button type="button" className="btn btn-outline-danger square mr-1 mb-1 waves-effect waves-light" onClick={() => onclickContact(item.id)}>Chưa liên lạc</button>
                     }
                 </tr>
             )
@@ -73,7 +100,6 @@ export default function Index({ props }) {
                                 <th>Khoản Vay</th>
                                 <th>Nhận Lương</th>
                                 <th>Trạng thái</th>
-
                             </tr>
                         </tfoot>
                     </table> : <></>}

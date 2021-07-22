@@ -7,7 +7,7 @@ import prisma from '../../../lib/prisma';
 // Optional fields in body: content
 export default async function handle(req, res) {
 
-
+    const body = JSON.parse(req.body)
     const {
         description,
         keywords,
@@ -28,7 +28,7 @@ export default async function handle(req, res) {
         author,
         generator,
         copyright
-    } = req.body;
+    } = body;
     const result = await prisma.seoWeb.upsert({
         where: {
             id: 1

@@ -4,8 +4,9 @@ import prisma from "../../lib/prisma";
 import FooterAdmin from "../../src/Script/FooterAdmin";
 import LeftMenu from "../../src/MenuAdmin/LeftMenu";
 import TopMenu from "../../src/MenuAdmin/TopMenu";
-import userRequestService from "../../src/services/userService/user.service";
 import HeaderAdmin from "../../src/Script/HeaderAdmin";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 export default function Index({ props }) {
 
@@ -13,14 +14,40 @@ export default function Index({ props }) {
 
     useEffect(() => {
         async function fetchMyAPI() {
-            userRequestService.getCareer().then(res => {
-                setCareer(res.data)
-            })
+             fetch("/api/tuyendung/getCareer").then(response => response.json()).then(result => {
+                setCareer(result)
+            }).catch(error => console.log('error', error));
         }
 
         fetchMyAPI()
     }, [])
 
+    const onclickUv = (id) => {
+        confirmAlert({
+            title: "Xác nhận đã liên lạc",
+            message: `Bạn có chắc muốn xác nhận user có ID: ${id}`,
+            buttons: [
+                {
+                    label: "Đồng ý",
+                    onClick: () => {
+                        var body = { id }
+                        fetch("/api/tuyendung/confirmUv", {
+                            method: "POST",
+                            body: JSON.stringify(body)
+                        }).then( () => {
+                            fetch("/api/tuyendung/getCareer").then(response => response.json()).then(result => {
+                                setCareer(result)
+                            }).catch(error => console.log('error', error));
+                        })
+                    },
+                },
+                {
+                    label: "Không",
+                    onClick: () => { },
+                },
+            ],
+        });
+    }
     const renderRowCareer = (career) => {
         if (career == null) {
             console.log("user null roi dmm")
@@ -38,7 +65,7 @@ export default function Index({ props }) {
                     {item.isActive ?
                         <td><button type="button" className="btn btn-outline-success square mr-1 mb-1 waves-effect waves-light">Đã liên lạc</button></td>
                         :
-                        <button type="button" className="btn btn-outline-danger square mr-1 mb-1 waves-effect waves-light">Chưa liên lạc</button>
+                        <button type="button" className="btn btn-outline-danger square mr-1 mb-1 waves-effect waves-light" onClick={() => onclickUv(item.id)}>Chưa liên lạc</button>
                     }
                 </tr>
             )

@@ -3,11 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import FooterAdmin from "../../src/Script/FooterAdmin";
 import LeftMenu from "../../src/MenuAdmin/LeftMenu";
 import TopMenu from "../../src/MenuAdmin/TopMenu";
-import userRequestService from "../../src/services/userService/user.service";
 import HeaderAdmin from "../../src/Script/HeaderAdmin";
 import dynamic from "next/dynamic";
 import utils from "../../src/utils/constant";
 import ReactHtmlParser from "react-html-parser";
+import prisma from "../../lib/prisma";
 
 // Common editors usually work on client-side, so we use Next.js's dynamic import with mode ssr=false to load them on client-side
 const Editor = dynamic(() => import("../../src/ckeditor"), {
@@ -66,12 +66,17 @@ export default function Index({ props }) {
                 "phone": event.target.phone.value
             })
 
-            console.log(data)
-            userRequestService.postContactInfo(data).then(res => {
+            console.log("data setcont",data)
+            //post/postContactInfo
+            fetch("/api/post/postContactInfo", {
+                method: 'POST',
+                body: data,
+            }).then(res => {
                 alert("Đăng ký thông tin thành công");
-                userRequestService.getContactInfo().then(res => {
-                    setContact(res.data)
-                })
+                fetch("/api/post/getContactInfo").then(response => response.json()).then(result => {
+                    setContact(result)
+                    console.log("setContact",result)
+                }).catch(error => console.log('error', error));
             })
         } catch (error) {
             setError(error)
@@ -91,9 +96,9 @@ export default function Index({ props }) {
                 body: data
             }).then(res => {
                 alert("Đăng ký thông tin thành công");
-                userRequestService.getQues().then(res => {
-                    setQues(res.data)
-                })
+                fetch("/api/post/getQues").then(response => response.json()).then(result => {
+                    setQues(result)
+                }).catch(error => console.log('error', error));
             })
 
         } catch (error) {
@@ -106,15 +111,15 @@ export default function Index({ props }) {
             var err = []
             setError(err)
             var data = new FormData();
-
+            data.append("content", dataCkeditorFaq)
             fetch("/api/post/updateFaq", {
                 method: "POST",
                 body: data
             }).then(res => {
                 alert("Đăng ký thông tin thành công");
-                userRequestService.getFaq().then(res => {
-                    setFaq(res.data)
-                })
+                fetch("/api/post/getFaq").then(response => response.json()).then(result => {
+                    setFaq(result)
+                }).catch(error => console.log('error', error));
             })
 
         } catch (error) {
@@ -127,14 +132,16 @@ export default function Index({ props }) {
             var err = []
             setError(err)
             var data = new FormData();
+            data.append("content", dataCkeditorBenefit)
             fetch("/api/post/updateBenefit", {
                 method: "POST",
                 body: data
             }).then(res => {
                 alert("Đăng ký thông tin thành công");
-                userRequestService.getBenefit().then(res => {
-                    setBenefit(res.data)
-                })
+                fetch("/api/post/getBenefit").then(response => response.json()).then(result => {
+                    setBenefit(result)
+                    console.log("setBenefit", result)
+                }).catch(error => console.log('error', error));
             })
 
         } catch (error) {
@@ -174,9 +181,9 @@ export default function Index({ props }) {
                 body: data
             }).then(res => {
                 alert("Đăng ký thông tin thành công");
-                userRequestService.getRequire().then(res => {
-                    setRequire(res.data)
-                })
+                fetch("/api/post/getRequire").then(response => response.json()).then(result => {
+                    setRequire(result)
+                }).catch(error => console.log('error', error));
             })
 
         } catch (error) {
@@ -185,23 +192,26 @@ export default function Index({ props }) {
     };
     useEffect(() => {
         async function fetchMyAPI() {
-            userRequestService.getContact().then(res => {
-                setUsers(res.data)
-            })
 
-            userRequestService.getRequire().then(res => {
-                setRequire(res.data)
-            })
-            userRequestService.getBenefit().then(res => {
-                setBenefit(res.data)
-            })
-            userRequestService.getFaq().then(res => {
-                setFaq(res.data)
-            })
+            fetch("/api/post/listUser").then(response => response.json()).then(result => {
+                setUsers(result)
+            }).catch(error => console.log('error', error));
 
-            userRequestService.getContactInfo().then(res => {
-                setContact(res.data)
-            })
+            fetch("/api/post/getRequire").then(response => response.json()).then(result => {
+                setRequire(result)
+            }).catch(error => console.log('error', error));
+
+            fetch("/api/post/getBenefit").then(response => response.json()).then(result => {
+                setBenefit(result)
+            }).catch(error => console.log('error', error));
+
+            fetch("/api/post/getFaq").then(response => response.json()).then(result => {
+                setFaq(result)
+            }).catch(error => console.log('error', error));
+            
+            fetch("/api/post/getContactInfo").then(response => response.json()).then(result => {
+                setContact(result)
+            }).catch(error => console.log('error', error));
         }
 
         fetchMyAPI()
@@ -436,7 +446,6 @@ export default function Index({ props }) {
     }
 
     const renderCardInfoContact = (contact) => {
-        console.log("contact ne", contact)
         return (
             <div className="card">
                 <div className="card-header">
