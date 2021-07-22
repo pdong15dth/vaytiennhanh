@@ -1,0 +1,46 @@
+.single-services-box .icon {
+    margin-bottom: 18px;
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    background-color: #d0dcff;
+    border-radius: 50%;
+    color: #074ece;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.single-services-box .icon.bg-cefffe {
+    background-color: #cefffe;
+    color: #09c4c1;
+}
+.single-services-box .icon.bg-cefffe img {
+    width: 100%;
+}
+.single-services-box {
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #f6fdfd;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    border-radius: 5px;
+    padding: 25px;
+}
+
+.single-services-box p {
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    margin-top: 13px;
+    margin-bottom: 0;
+}
+.text-float-left {
+    text-align: left;
+}
+.single-services-box h3 {
+    margin-bottom: 0;
+    font-size: 23px;
+    font-weight: 700;
+}
