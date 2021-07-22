@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
+import Script from 'next/script'
 import prisma from "../lib/prisma";
 import HeaderClient from "../src/Script/HeaderClient";
 import SEOTag from "../src/Script/seoTag";
@@ -159,7 +160,7 @@ export default function Index({ props }) {
                                     id="navbarSupportedContent">
                                     <div className="row">
                                         <div className="others-options">
-                                            <a href="/" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
+                                            <a href="" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
                                         </div>
                                         <div className="others-options">
                                             <a href="#" className="btn btn-primary btn-header">ĐĂNG KÝ VAY</a>
@@ -306,19 +307,19 @@ export default function Index({ props }) {
 
             <div className="go-top"><i className="fas fa-arrow-up"></i><i className="fas fa-arrow-up"></i></div>
             {/* <!-- footer  --> */}
-            <script src="/js/jquery.min.js"></script>
-            <script src="/js/popper.min.js"></script>
-            <script src="/js/bootstrap.min.js"></script>
-            <script src="/js/owl.carousel.min.js"></script>
-            <script src="/js/parallax.min.js"></script>
-            <script src="/js/jquery.magnific-popup.min.js"></script>
-            <script src="/js/jquery.nice-select.min.js"></script>
-            <script src="/js/jquery.meanmenu.js"></script>
-            <script src="/js/progresscircle.min.js"></script>
-            <script src="/js/wow.min.js"></script>
-            <script src="/js/form-validator.min.js"></script>
-            <script src="/js/contact-form-script.js"></script>
-            <script src="/js/main.js"></script>
+            <Script src="/js/jquery.min.js"></Script>
+            <Script src="/js/popper.min.js"></Script>
+            <Script src="/js/bootstrap.min.js"></Script>
+            <Script src="/js/owl.carousel.min.js"></Script>
+            <Script src="/js/parallax.min.js"></Script>
+            <Script src="/js/jquery.magnific-popup.min.js"></Script>
+            <Script src="/js/jquery.nice-select.min.js"></Script>
+            <Script src="/js/jquery.meanmenu.js"></Script>
+            <Script src="/js/progresscircle.min.js"></Script>
+            <Script src="/js/wow.min.js"></Script>
+            <Script src="/js/form-validator.min.js"></Script>
+            <Script src="/js/contact-form-script.js"></Script>
+            <Script src="/js/main.js"></Script>
 
         </>
     )

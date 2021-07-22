@@ -8,6 +8,8 @@ import utils from '../src/utils/constant';
 import ReactHtmlParser from "react-html-parser";
 import HeaderClient from '../src/Script/HeaderClient';
 import SEOTag from '../src/Script/seoTag';
+import Image from 'next/image'
+import Script from 'next/script';
 
 Home.getInitialProps = async (ctx) => {
   const require = await prisma.require.findMany({
@@ -97,7 +99,7 @@ export default function Home({ props }) {
         <div className="col-lg-4 col-md-12" key={index}>
           <div className="single-services-box">
             <div className="icon bg-cefffe">
-              <img src={`/${item.image}`} alt="" />
+              <img src={`/${item.image}`} alt={`img`} />
             </div>
             <h3> <a href="#">{item.name}</a> </h3>
             <p className="text-float-left">
@@ -179,7 +181,7 @@ export default function Home({ props }) {
                 <div className="row text-center">
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
 
-                    <a href="/" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
+                    <a href="" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
@@ -365,19 +367,19 @@ export default function Home({ props }) {
 
       <div className="go-top"><i className="fas fa-arrow-up"></i><i className="fas fa-arrow-up"></i></div>
       {/* <!-- footer  --> */}
-      <script src="/js/jquery.min.js"></script>
-      <script src="/js/popper.min.js"></script>
-      <script src="/js/bootstrap.min.js"></script>
-      <script src="/js/owl.carousel.min.js"></script>
-      <script src="/js/parallax.min.js"></script>
-      <script src="/js/jquery.magnific-popup.min.js"></script>
-      <script src="/js/jquery.nice-select.min.js"></script>
-      <script src="/js/jquery.meanmenu.js"></script>
-      <script src="/js/progresscircle.min.js"></script>
-      <script src="/js/wow.min.js"></script>
-      <script src="/js/form-validator.min.js"></script>
-      <script src="/js/contact-form-script.js"></script>
-      <script src="/js/main.js"></script>
+      <Script src="/js/jquery.min.js"></Script>
+      <Script src="/js/popper.min.js"></Script>
+      <Script src="/js/bootstrap.min.js"></Script>
+      <Script src="/js/owl.carousel.min.js"></Script>
+      <Script src="/js/parallax.min.js"></Script>
+      <Script src="/js/jquery.magnific-popup.min.js"></Script>
+      <Script src="/js/jquery.nice-select.min.js"></Script>
+      <Script src="/js/jquery.meanmenu.js"></Script>
+      <Script src="/js/progresscircle.min.js"></Script>
+      <Script src="/js/wow.min.js"></Script>
+      <Script src="/js/form-validator.min.js"></Script>
+      <Script src="/js/contact-form-script.js"></Script>
+      <Script src="/js/main.js"></Script>
 
     </>
   )

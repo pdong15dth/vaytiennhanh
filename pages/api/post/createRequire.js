@@ -8,38 +8,37 @@ var os = require("os");
 
 // first we need to disable the default body parser
 export const config = {
-  api: {
-    bodyParser: false,
-  }
+    api: {
+        bodyParser: false,
+    }
 };
 
 export default async (req, res) => {
-  // parse form with a Promise wrapper
-  const data = await new Promise((resolve, reject) => {
-    const form = new IncomingForm()
+    // parse form with a Promise wrapper
+    const data = await new Promise((resolve, reject) => {
+        const form = new IncomingForm()
 
-    form.parse(req, (err, fields, files) => {
-      if (err) return reject(err)
-      resolve({ fields, files })
+        form.parse(req, (err, fields, files) => {
+            if (err) return reject(err)
+            resolve({ fields, files })
+        })
     })
-  })
 
-  // read file from the temporary path
-  const contents = await fs.readFile(data?.files?.img.path)
-  var name = `${Date.now()}.png`
-  var filename = `./public/${name}`
-  fs.writeFile(`${filename}`, contents, function (err) {
-    console.log("loi", err)
-    if (err) throw err;
-  });
+    // read file from the temporary path
+    const contents = await fs.readFile(data?.files?.img.path)
+    var name = `${Date.now()}.png`
+    var filename = `./public/${name}`
+    fs.writeFile(`${filename}`, contents, function (err) {
+        console.log("loi", err)
+        if (err) throw err;
+    });
 
-  const result = await prisma.require.create({
-    data: {
-      name: data.fields.name,
-      image: name,
-      content: data.fields.content
-    },
-  })
-  res.json(result);
+    const result = await prisma.require.create({
+        data: {
+            name: data.fields.name,
+            image: name,
+            content: data.fields.content
+        },
+    })
+    res.json(result);
 }
-
