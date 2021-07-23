@@ -51,6 +51,27 @@ class Utils {
     return result ? "" : "Vui lòng nhập tiền với định dạng là số";
   }
 
+  checkAmountInput(value) {
+    if (value == "") {
+      return "Vui lòng nhập khoản vay mong muốn"
+    }
+    const result = /^-?\d+$/.test(value)
+    
+    if (result) {
+      if(parseInt(value) < 1000000) {
+        return "Vui lòng nhập số tiền tối thiểu là 1,000,000đ"
+      } else if (parseInt(value) > 1000000) {
+        if ((parseInt(value) % 500000) != 0) {
+          return "Vui lòng nhập khoản vay mong muốn là số chia hết cho 500,000"
+        } else {
+          return ""
+        }
+      }
+    } else {
+      return "Vui lòng nhập tiền với định dạng là số"
+    }
+  }
+
   checkPhoneNumber(phone) {
     var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
     if (phone !== "") {

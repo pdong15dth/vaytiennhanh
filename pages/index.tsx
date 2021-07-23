@@ -48,12 +48,13 @@ export default function Home({ props }) {
       err.push(utils.checkEmptyString(event.target.name.value))
       err.push(utils.checkPhoneNumber(event.target.phone.value))
       err.push(utils.checkEmptyString(event.target.address.value))
-      err.push(utils.checkStringIsNumber(event.target.amount.value))
+      err.push(utils.checkAmountInput(event.target.amount.value))
       err.push(utils.checkEmptyString(event.target.type_amount.value))
 
+      console.log(error)
       for (let index = 0; index < err.length; index++) {
         const element = err[index];
-        if (element != "") {
+        if (element != "" || element == undefined) {
           setError(err.filter(checkAdult))
           return
         }
@@ -87,7 +88,7 @@ export default function Home({ props }) {
     }
     console.log("showErrorForm", error)
     return error?.map((item, key) => {
-      if (item != "") {
+      if (item != "" || item == undefined) {
         return (
           <li key={key} style={{ color: "red" }}>{item}</li>
         )
@@ -129,8 +130,8 @@ export default function Home({ props }) {
             placeholder="Địa chỉ" required />
         </div>
         <div className="form-group">
-          <input type="number" name="amount" id="amount" className="form-control"
-            placeholder="Khoản vay mong muốn" required />
+          <input type="number" name="amount" id="amount" data-error="Nhập Họ và Tên" className="form-control"
+            placeholder="Khoản vay mong muốn" />
         </div>
         <div className="payment-box padding-bottom-20">
           <div className="payment-method text-float-left background-white padding-select-register">

@@ -7,26 +7,10 @@ import SEOTag from "../src/Script/seoTag";
 import utils from "../src/utils/constant";
 
 Index.getInitialProps = async (ctx) => {
-    const require = await prisma.require.findMany({
-        orderBy: { createdAt: 'desc' }
-    });
-    const faq = await prisma.faq.findFirst({
-        orderBy: { id: 'asc' }
-    })
-    const benefit = await prisma.benefit.findFirst({
-        orderBy: { id: 'asc' }
-    })
-    const ques = await prisma.question.findFirst({
-        orderBy: { id: 'asc' }
-    })
-    const contact = await prisma.contact.findFirst({
-        orderBy: { id: 'asc' }
-    })
-    const metaSEO = await prisma.seoWeb.findFirst({
-        orderBy: { id: 'asc' }
-    })
+    const contact = await prisma.contact.findFirst()
+    const metaSEO = await prisma.seoWeb.findFirst()
     const mess = prisma.$transaction
-    return { props: { require, faq, benefit, ques, contact, metaSEO, mess } };
+    return { props: { contact, metaSEO, mess } };
 }
 
 export default function Index({ props }) {
@@ -231,7 +215,7 @@ export default function Index({ props }) {
                     </div>
                     <div className="contact-info">
                         <div className="contact-info-content">
-                            <h3>Liên hệ với chúng tôi qua Số Điện Thoại hoặt Email</h3>
+                            <h3>Liên hệ với chúng tôi qua Số Điện Thoại hoặc Email</h3>
                             <h2>
                                 <a href={`tel:${props?.contact?.phone}`}>{props?.contact?.phone}</a>
                                 <span>OR</span>
