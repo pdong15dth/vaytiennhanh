@@ -8,6 +8,8 @@ import dynamic from "next/dynamic";
 import utils from "../../src/utils/constant";
 import ReactHtmlParser from "react-html-parser";
 import prisma from "../../lib/prisma";
+import authService from "../../src/services/authService/auth.service";
+import { useRouter } from "next/router";
 
 // Common editors usually work on client-side, so we use Next.js's dynamic import with mode ssr=false to load them on client-side
 const Editor = dynamic(() => import("../../src/ckeditor"), {
@@ -15,7 +17,7 @@ const Editor = dynamic(() => import("../../src/ckeditor"), {
 });
 
 export default function Index({ props }) {
-
+    const router = useRouter();
     const [users, setUsers] = useState<any>(null)
     const [require, setRequire] = useState<any>(null)
     const [benefit, setBenefit] = useState<any>(null)
@@ -191,6 +193,10 @@ export default function Index({ props }) {
         }
     };
     useEffect(() => {
+        const isAdmin = authService.checkAuthAdmin();
+        if (!isAdmin) {
+            router.push("/admin/login");
+        }
         async function fetchMyAPI() {
 
             fetch("/api/post/listUser").then(response => response.json()).then(result => {

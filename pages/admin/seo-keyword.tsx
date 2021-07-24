@@ -5,11 +5,19 @@ import TopMenu from "../../src/MenuAdmin/TopMenu";
 import HeaderAdmin from "../../src/Script/HeaderAdmin";
 import utils from "../../src/utils/constant";
 import { toast, ToastContainer } from "react-nextjs-toast";
+import authService from "../../src/services/authService/auth.service";
+import { useRouter } from "next/router";
 
 export default function Index({ props }) {
     const [seo, setSeo] = useState<any>(null)
+    const router = useRouter();
 
     useEffect(() => {
+        const isAdmin = authService.checkAuthAdmin();
+        if (!isAdmin) {
+            router.push("/admin/login");
+        }
+
         fetch("/api/post/getKeywordSEO").then(response => response.json()).then(result => {
             setSeo(result)
         }).catch(error => console.log('error', error));
@@ -42,15 +50,15 @@ export default function Index({ props }) {
             method: "POST",
             body: data
         }).then((res) => {
-                fetch("/api/post/getKeywordSEO").then(response => response.json()).then(result => {
-                    setSeo(result)
-                }).catch(error => console.log('error', error));
-                toast.notify(`Chỉnh sửa thành công`, {
-                    title: "Thành công",
-                    duration: 3,
-                    type: "success",
-                });
-            })
+            fetch("/api/post/getKeywordSEO").then(response => response.json()).then(result => {
+                setSeo(result)
+            }).catch(error => console.log('error', error));
+            toast.notify(`Chỉnh sửa thành công`, {
+                title: "Thành công",
+                duration: 3,
+                type: "success",
+            });
+        })
             .catch((error) => {
                 console.log(error);
                 toast.notify(`${error.message}`, {

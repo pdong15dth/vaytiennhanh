@@ -14,7 +14,7 @@ export default async function handle(req, res) {
     const result = await prisma.userAdmin.create({
         data: {
             username: username,
-            password: sha256Hash
+            password: sha256Hash.toString()
         }
     })
     res.json(result);

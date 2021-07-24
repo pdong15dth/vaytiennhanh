@@ -5,7 +5,8 @@ class AuthService {
   private token: string = "";
   constructor() {}
   checkAuthAdmin(): boolean {
-    const token = this.localStorageServ.accessToken.get();
+    console.log("checking")
+    const token = this.localStorageServ.userInfor.get();
     return !!token ? true : false;
   }
 

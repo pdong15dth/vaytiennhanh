@@ -7,12 +7,20 @@ import TopMenu from "../../src/MenuAdmin/TopMenu";
 import HeaderAdmin from "../../src/Script/HeaderAdmin";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { useRouter } from "next/router";
+import authService from "../../src/services/authService/auth.service";
 
 export default function Index({ props }) {
 
     const [career, setCareer] = useState<any>(null)
+    const router = useRouter();
 
     useEffect(() => {
+        const isAdmin = authService.checkAuthAdmin();
+        if (!isAdmin) {
+            router.push("/admin/login");
+        }
+
         async function fetchMyAPI() {
              fetch("/api/tuyendung/getCareer").then(response => response.json()).then(result => {
                 setCareer(result)

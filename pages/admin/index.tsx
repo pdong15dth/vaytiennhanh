@@ -1,18 +1,23 @@
 import Head from "next/head";
-import { useCallback, useEffect, useState } from "react";
-import prisma from "../../lib/prisma";
+import { useEffect, useState } from "react";
 import FooterAdmin from "../../src/Script/FooterAdmin";
 import LeftMenu from "../../src/MenuAdmin/LeftMenu";
 import TopMenu from "../../src/MenuAdmin/TopMenu";
 import HeaderAdmin from "../../src/Script/HeaderAdmin";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import authService from "../../src/services/authService/auth.service";
+import { useRouter } from "next/router";
 
 export default function Index({ props }) {
 
     const [users, setUsers] = useState<any>(null)
-
+    const router = useRouter();
     useEffect(() => {
+        const isAdmin = authService.checkAuthAdmin();
+        if (!isAdmin) {
+            router.push("/admin/login");
+        }
         async function fetchMyAPI() {
             fetch("/api/post/listUser").then(response => response.json()).then(result => {
                 setUsers(result)
@@ -34,7 +39,7 @@ export default function Index({ props }) {
                         fetch("/api/post/confirmUser", {
                             method: "POST",
                             body: JSON.stringify(body)
-                        }).then( () => {
+                        }).then(() => {
                             fetch("/api/post/listUser").then(response => response.json()).then(result => {
                                 setUsers(result)
                             }).catch(error => console.log('error', error));
