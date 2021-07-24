@@ -46,7 +46,7 @@ export default function Index() {
                         localStorageService.userInfor.set(new LoginDataModel(userInfor));
                     })
             }).catch(error => console.log('error', error));
-            // window.location.href = "/admin"
+            window.location.href = "/admin"
         }
 
     }
