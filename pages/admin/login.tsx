@@ -30,8 +30,8 @@ export default function Index() {
         } else {
 
             var data = JSON.stringify({
-                "username": "dong123",
-                "password": "dong123"
+                "username": event.target.username.value,
+                "password": event.target.password.value
             });
             console.log(data)
             await fetch("/api/user/login", {
