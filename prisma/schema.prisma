@@ -121,3 +121,13 @@ model UserAdmin {
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "userAdmins")
 }
+
+model TestTable {
+  id            Int       @default(autoincrement()) @id
+  username      String?
+  password      String?
+  isActive      Boolean   @default(false) 
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  @@map(name: "userAdmins")
+}
