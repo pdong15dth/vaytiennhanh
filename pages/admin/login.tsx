@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { Fragment, useState, useEffect } from "react";
+import Script from 'next/script';
 import { LoginDataModel } from "../../src/models/AdminDataResult";
 import authService from "../../src/services/authService/auth.service";
 import localStorageService from "../../src/services/localStorage.service/localStorage.service";
@@ -57,8 +58,8 @@ export default function Index() {
     }
     return (
         <Fragment>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
             <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities." />
             <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app" />
@@ -144,11 +145,11 @@ export default function Index() {
                 </div>
 
 
-                <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
+                <Script src="../../../app-assets/vendors/js/vendors.min.js"></Script>
 
-                <script src="../../../app-assets/js/core/app-menu.js"></script>
-                <script src="../../../app-assets/js/core/app.js"></script>
-                <script src="../../../app-assets/js/scripts/components.js"></script>
+                <Script src="../../../app-assets/js/core/app-menu.js"></Script>
+                <Script src="../../../app-assets/js/core/app.js"></Script>
+                <Script src="../../../app-assets/js/Script/components.js"></Script>
             </body>
         </Fragment>
     )
