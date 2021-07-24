@@ -114,7 +114,7 @@ model SeoWeb {
 
 model UserAdmin {
   id            Int       @default(autoincrement()) @id
-  username      String?
+  username      String?   @unique
   password      String?
   isActive      Boolean   @default(false) 
   createdAt     DateTime  @default(now()) @map(name: "created_at")
