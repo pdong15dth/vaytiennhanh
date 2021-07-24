@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import Head from 'next/head'
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import prisma from '../lib/prisma';
 import utils from '../src/utils/constant';
 import ReactHtmlParser from "react-html-parser";
@@ -9,75 +9,80 @@ import HeaderClient from '../src/Script/HeaderClient';
 import SEOTag from '../src/Script/seoTag';
 import Image from 'next/image'
 import Script from 'next/script';
+import Loading from '../src/Loading'
 
 Home.getInitialProps = async (ctx) => {
-  const require = await prisma.require.findMany({
-    orderBy: { createdAt: 'desc' }
-  });
-  const faq = await prisma.faq.findFirst({
-    orderBy: { id: 'asc' }
-  })
-  const benefit = await prisma.benefit.findFirst({
-    orderBy: { id: 'asc' }
-  })
-  const ques = await prisma.question.findFirst({
-    orderBy: { id: 'asc' }
-  })
-  const contact = await prisma.contact.findFirst({
-    orderBy: { id: 'asc' }
-  })
-  const metaSEO = await prisma.seoWeb.findFirst({
-    orderBy: { id: 'asc' }
-  })
+  const require = await prisma.require.findMany();
+  const faq = await prisma.faq.findFirst()
+  const benefit = await prisma.benefit.findFirst()
+  const ques = await prisma.question.findFirst()
+  const contact = await prisma.contact.findFirst()
+  const metaSEO = await prisma.seoWeb.findFirst()
   return { props: { require, faq, benefit, ques, contact, metaSEO } };
 }
 
 export default function Home({ props }) {
   const router = useRouter()
   const [error, setError] = useState([])
-
-  function checkAdult(string) {
-    return string != "";
-  }
-
+  const [isLoading, setIsLoading] = useState(false)
+  const [amount, setAmount] = useState(0)
   const submitData = async (event) => {
     event.preventDefault();
     try {
       var err = []
       setError(err)
-      err.push(utils.checkEmptyString(event.target.name.value))
-      err.push(utils.checkPhoneNumber(event.target.phone.value))
-      err.push(utils.checkEmptyString(event.target.address.value))
-      err.push(utils.checkAmountInput(event.target.amount.value))
-      err.push(utils.checkEmptyString(event.target.type_amount.value))
+      if (utils.checkEmptyString(event.target.name.value) != "") {
+        err.push(utils.checkEmptyString(event.target.name.value))
+      }
+      if (utils.checkPhoneNumber(event.target.phone.value) != "") {
+        err.push(utils.checkPhoneNumber(event.target.phone.value))
+      }
+      if (utils.checkEmptyString(event.target.address.value) != "") {
+        err.push(utils.checkEmptyString(event.target.address.value))
+      }
 
-      console.log(error)
+      if (utils.checkAmountInput(event.target.amount.value) != "") {
+        err.push(utils.checkAmountInput(event.target.amount.value))
+      }
+      if (utils.checkEmptyString(event.target.type_amount.value) != "") {
+        err.push(utils.checkEmptyString(event.target.type_amount.value))
+      }
+
+
+      const newErr = []
       for (let index = 0; index < err.length; index++) {
-        const element = err[index];
-        if (element != "" || element == undefined) {
-          setError(err.filter(checkAdult))
-          return
+        if (err[index]) {
+          newErr.push(err[index])
         }
       }
-      var data = JSON.stringify({
-        "name": event.target.name.value,
-        "phone": event.target.phone.value,
-        "address": event.target.address.value,
-        "amount": event.target.amount.value,
-        "type_amount": event.target.type_amount.value
-      });
-      await fetch("/api/post", {
-        method: "POST",
-        body: data
-      }).then(res => {
-        console.log("dong ne", res.status)
-        if (res.status == 200) {
-          alert("Đăng ký thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất");
-        }
-      })
+      if (newErr.length > 0) {
+        setError(newErr)
+        return
+      } else {
+        setIsLoading(true)
+        console.log(newErr)
+        var data = JSON.stringify({
+          "name": event.target.name.value,
+          "phone": event.target.phone.value,
+          "address": event.target.address.value,
+          "amount": event.target.amount.value,
+          "type_amount": event.target.type_amount.value
+        });
+        await fetch("/api/post", {
+          method: "POST",
+          body: data
+        }).then(res => {
+          console.log("res", res.status)
+          if (res.status == 200) {
+            alert("Đăng ký thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất");
+          }
+          setIsLoading(false)
 
+        })
+      }
       // await router.push('/');
     } catch (error) {
+      console.log("dong error")
       setError(error)
     }
   };
@@ -88,13 +93,19 @@ export default function Home({ props }) {
     }
     console.log("showErrorForm", error)
     return error?.map((item, key) => {
-      if (item != "" || item == undefined) {
+      if (item != "" && item != undefined) {
         return (
           <li key={key} style={{ color: "red" }}>{item}</li>
         )
       }
     })
   }
+
+  const onChangeAmout = (event) => {
+    console.log(Math.abs(parseInt(event.target.value)))
+    setAmount(Math.abs(parseInt(event.target.value)))
+  }
+
 
   const renderCardRequire = (require) => {
     return require?.map((item, index) => {
@@ -130,7 +141,7 @@ export default function Home({ props }) {
             placeholder="Địa chỉ" required />
         </div>
         <div className="form-group">
-          <input type="number" name="amount" id="amount" data-error="Nhập Họ và Tên" className="form-control"
+          <input type="number" name="amount" id="amount" value={amount} onChange={(event) => onChangeAmout(event)} className="form-control"
             placeholder="Khoản vay mong muốn" />
         </div>
         <div className="payment-box padding-bottom-20">
@@ -153,6 +164,7 @@ export default function Home({ props }) {
             </p>
           </div>
         </div>
+        {isLoading ? Loading() : <Fragment></Fragment>}
         <button type="submit"
           className="btn btn-light text-black col-lg-6 btn-register-center">Đăng ký
           ngay</button>
@@ -167,6 +179,7 @@ export default function Home({ props }) {
       <Head>
         {SEOTag(props?.metaSEO)}
       </Head>
+
       <div className="preloader">
         <div className="sk-folding-cube">
           <div className="sk-cube1 sk-cube"></div>
@@ -184,7 +197,7 @@ export default function Home({ props }) {
                 <div className="row text-center">
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
 
-                    <a href="" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
+                    <a href="/" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
@@ -383,7 +396,6 @@ export default function Home({ props }) {
       <Script src="/js/form-validator.min.js"></Script>
       <Script src="/js/contact-form-script.js"></Script>
       <Script src="/js/main.js"></Script>
-
     </>
   )
 }

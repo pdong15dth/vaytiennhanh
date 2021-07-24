@@ -1,10 +1,11 @@
 import Head from "next/head";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Script from 'next/script'
 import prisma from "../lib/prisma";
 import HeaderClient from "../src/Script/HeaderClient";
 import SEOTag from "../src/Script/seoTag";
 import utils from "../src/utils/constant";
+import Loading from "../src/Loading";
 
 Index.getInitialProps = async (ctx) => {
     const contact = await prisma.contact.findFirst()
@@ -15,6 +16,7 @@ Index.getInitialProps = async (ctx) => {
 
 export default function Index({ props }) {
     const [error, setError] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     console.log("have connected", props.mess)
     function checkAdult(string) {
@@ -26,38 +28,58 @@ export default function Index({ props }) {
         try {
             var err = []
             setError(err)
-            err.push(utils.checkEmptyString(event.target.name.value))
-            err.push(utils.checkPhoneNumber(event.target.phone.value))
-            err.push(utils.checkEmptyString(event.target.address.value))
-            err.push(utils.checkStringIsNumber(event.target.amount.value))
-            err.push(utils.checkEmptyString(event.target.type_amount.value))
+            if (utils.checkEmptyString(event.target.name.value) != "") {
+                err.push(utils.checkEmptyString(event.target.name.value))
+            }
+            if (utils.checkPhoneNumber(event.target.phone.value) != "") {
+                err.push(utils.checkPhoneNumber(event.target.phone.value))
+            }
+            if (utils.checkEmptyString(event.target.address.value) != "") {
+                err.push(utils.checkEmptyString(event.target.address.value))
+            }
 
+            if (utils.checkAmountInput(event.target.amount.value) != "") {
+                err.push(utils.checkAmountInput(event.target.amount.value))
+            }
+            if (utils.checkEmptyString(event.target.type_amount.value) != "") {
+                err.push(utils.checkEmptyString(event.target.type_amount.value))
+            }
+
+
+            const newErr = []
             for (let index = 0; index < err.length; index++) {
-                const element = err[index];
-                if (element != "") {
-                    setError(err.filter(checkAdult))
-                    return
+                if (err[index]) {
+                    newErr.push(err[index])
                 }
             }
-            var data = JSON.stringify({
-                "name": event.target.name.value,
-                "phone": event.target.phone.value,
-                "address": event.target.address.value,
-                "amount": event.target.amount.value,
-                "type_amount": event.target.type_amount.value
-            });
-            await fetch("/api/post", {
-                method: "POST",
-                body: data
-            }).then(res => {
-                console.log("dong ne", res.status)
-                if (res.status == 200) {
-                    alert("Đăng ký thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất");
-                }
-            })
+            if (newErr.length > 0) {
+                setError(newErr)
+                return
+            } else {
+                setIsLoading(true)
+                console.log(newErr)
+                var data = JSON.stringify({
+                    "name": event.target.name.value,
+                    "phone": event.target.phone.value,
+                    "address": event.target.address.value,
+                    "amount": event.target.amount.value,
+                    "type_amount": event.target.type_amount.value
+                });
+                await fetch("/api/post", {
+                    method: "POST",
+                    body: data
+                }).then(res => {
+                    console.log("res", res.status)
+                    if (res.status == 200) {
+                        alert("Đăng ký thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất");
+                    }
+                    setIsLoading(false)
 
+                })
+            }
             // await router.push('/');
         } catch (error) {
+            console.log("dong error")
             setError(error)
         }
     };
@@ -68,12 +90,16 @@ export default function Index({ props }) {
         }
         console.log("showErrorForm", error)
         return error?.map((item, key) => {
-            if (item != "") {
+            if (item != "" && item != undefined) {
                 return (
                     <li key={key} style={{ color: "red" }}>{item}</li>
                 )
             }
         })
+    }
+
+    const onChangeAmout = (event) => {
+        console.log(event)
     }
 
     const renderFormThongTin = () => {
@@ -92,8 +118,8 @@ export default function Index({ props }) {
                         placeholder="Địa chỉ" required />
                 </div>
                 <div className="form-group">
-                    <input type="number" name="amount" id="amount" className="form-control"
-                        placeholder="Khoản vay mong muốn" required />
+                    <input type="number" name="amount" id="amount" onChange={(event) => onChangeAmout(event)} className="form-control"
+                        placeholder="Khoản vay mong muốn" />
                 </div>
                 <div className="payment-box padding-bottom-20">
                     <div className="payment-method text-float-left background-white padding-select-register">
@@ -115,6 +141,7 @@ export default function Index({ props }) {
                         </p>
                     </div>
                 </div>
+                {isLoading ? Loading() : <Fragment></Fragment>}
                 <button type="submit"
                     className="btn btn-light text-black col-lg-6 btn-register-center">Đăng ký
                     ngay</button>
@@ -146,10 +173,10 @@ export default function Index({ props }) {
                                     id="navbarSupportedContent">
                                     <div className="row">
                                         <div className="others-options">
-                                            <a href="" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
+                                            <a href="/" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
                                         </div>
                                         <div className="others-options">
-                                            <a href="#" className="btn btn-primary btn-header">ĐĂNG KÝ VAY</a>
+                                            <a href="/" className="btn btn-primary btn-header">ĐĂNG KÝ VAY</a>
                                         </div>
                                         <div className="others-options">
                                             <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.contact?.phone}</a>
@@ -218,7 +245,7 @@ export default function Index({ props }) {
                             <h3>Liên hệ với chúng tôi qua Số Điện Thoại hoặc Email</h3>
                             <h2>
                                 <a href={`tel:${props?.contact?.phone}`}>{props?.contact?.phone}</a>
-                                <span>OR</span>
+                                <span>HOẶC</span>
                                 <a
                                     href={`mailto:${props?.contact?.email}`}><span
                                         className="__cf_email__"
