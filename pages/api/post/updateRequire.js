@@ -25,30 +25,36 @@ export default async (req, res) => {
     })
 
     // read file from the temporary path
-    const contents = await fs.readFile(data?.files?.img.path)
-    var name = `${Date.now()}.png`
-    var filename = `./public/${name}`
-    fs.writeFile(`${filename}`, contents, function (err) {
-        console.log("loi", err)
-        if (err) throw err;
-    });
+    // const contents = await fs.readFile(data?.files?.img.path)
+    // var name = `${Date.now()}.png`
+    // var filename = `./public/${name}`
+    // fs.writeFile(`${filename}`, contents, function (err) {
+    //     console.log("loi", err)
+    //     if (err) throw err;
+    // });
+
+    const item = await prisma.require.findFirst({
+        where: {
+            name: data.fields.name
+        }
+    })
+
+    console.log("item", item)
 
     const result = await prisma.require.upsert({
+        where: {
+            id: item ? item.id : 0
+        },
         update: {
             name: data.fields.name,
-            image: name,
+            image: data.fields.image,
             content: data.fields.content
         },
         create: {
             name: data.fields.name,
-            image: name,
+            image: data.fields.image,
             content: data.fields.content
-
         },
-        where: {
-            id: 3
-        },
-
     }).catch(error => {
     });
     res.json(result);

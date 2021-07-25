@@ -10,6 +10,7 @@ import ReactHtmlParser from "react-html-parser";
 import prisma from "../../lib/prisma";
 import authService from "../../src/services/authService/auth.service";
 import { useRouter } from "next/router";
+import Loading from "../../src/Loading";
 
 // Common editors usually work on client-side, so we use Next.js's dynamic import with mode ssr=false to load them on client-side
 const Editor = dynamic(() => import("../../src/ckeditor"), {
@@ -25,7 +26,11 @@ export default function Index({ props }) {
     const [ques, setQues] = useState<any>(null)
     const [contact, setContact] = useState<any>(null)
     const [error, setError] = useState([])
-
+    const [isLoadingRequire, setIsLoadingRequire] = useState(false)
+    const [isLoadingbenefit, setIsLoadingbenefit] = useState(false)
+    const [isLoadingfaq, setIsLoadingfaq] = useState(false)
+    const [isLoadingques, setIsLoadingques] = useState(false)
+    const [isLoadingcontact, setIsLoadingcontact] = useState(false)
     let dataCkeditor = "";
     const handleData = (dataTemplate) => {
         dataCkeditor = dataTemplate;
@@ -70,6 +75,7 @@ export default function Index({ props }) {
 
             console.log("data setcont", data)
             //post/postContactInfo
+            setIsLoadingcontact(true)
             fetch("/api/post/postContactInfo", {
                 method: 'POST',
                 body: data,
@@ -78,7 +84,11 @@ export default function Index({ props }) {
                 fetch("/api/post/getContactInfo").then(response => response.json()).then(result => {
                     setContact(result)
                     console.log("setContact", result)
-                }).catch(error => console.log('error', error));
+                    setIsLoadingcontact(false)
+
+                }).catch(error => {
+                    setIsLoadingcontact(false)
+                });
             })
         } catch (error) {
             setError(error)
@@ -93,6 +103,7 @@ export default function Index({ props }) {
             var data = new FormData();
             data.append("content", dataCkeditorQues)
 
+            setIsLoadingques(true)
             fetch("/api/post/updateQues", {
                 method: "POST",
                 body: data
@@ -100,7 +111,10 @@ export default function Index({ props }) {
                 alert("Đăng ký thông tin thành công");
                 fetch("/api/post/getQues").then(response => response.json()).then(result => {
                     setQues(result)
-                }).catch(error => console.log('error', error));
+                    setIsLoadingques(true)
+                }).catch(error => {
+                    setIsLoadingques(false)
+                });
             })
 
         } catch (error) {
@@ -114,6 +128,7 @@ export default function Index({ props }) {
             setError(err)
             var data = new FormData();
             data.append("content", dataCkeditorFaq)
+            setIsLoadingfaq(true)
             fetch("/api/post/updateFaq", {
                 method: "POST",
                 body: data
@@ -121,7 +136,10 @@ export default function Index({ props }) {
                 alert("Đăng ký thông tin thành công");
                 fetch("/api/post/getFaq").then(response => response.json()).then(result => {
                     setFaq(result)
-                }).catch(error => console.log('error', error));
+                    setIsLoadingfaq(false)
+                }).catch(error => {
+                    setIsLoadingfaq(false)
+                });
             })
 
         } catch (error) {
@@ -135,6 +153,7 @@ export default function Index({ props }) {
             setError(err)
             var data = new FormData();
             data.append("content", dataCkeditorBenefit)
+            setIsLoadingbenefit(true)
             fetch("/api/post/updateBenefit", {
                 method: "POST",
                 body: data
@@ -143,7 +162,11 @@ export default function Index({ props }) {
                 fetch("/api/post/getBenefit").then(response => response.json()).then(result => {
                     setBenefit(result)
                     console.log("setBenefit", result)
-                }).catch(error => console.log('error', error));
+                    setIsLoadingbenefit(false)
+
+                }).catch(error => {
+                    setIsLoadingbenefit(false)
+                });
             })
 
         } catch (error) {
@@ -168,8 +191,6 @@ export default function Index({ props }) {
                 }
             }
 
-
-
             var formdata = new FormData();
             formdata.append(
                 "image",
@@ -179,45 +200,42 @@ export default function Index({ props }) {
             formdata.append("name", event.target.name.value);
             formdata.append("title", event.target.name.value);
 
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", "Client-ID cb0adfde641e643");
-
-            //JSON.stringify(response.data)
-            fetch("https://api.imgur.com/3/upload", {
-                method: 'POST',
-                body: formdata,
-                redirect: 'follow',
-                mode: 'no-cors',
-                headers: myHeaders
+            var linkImage = ""
+            setIsLoadingRequire(true)
+            await fetch("https://api.imgur.com/3/image", {
+                method: "post",
+                headers: {
+                    Authorization: "Client-ID cb0adfde641e643"
+                },
+                body: formdata
+            }).then(data => data.json()).then(data => {
+                console.log(data.data.link)
+                linkImage = data.data.link
             })
-                .then(response => JSON.stringify(response))
-                .then(result => console.log(result))
-                .catch(error => console.log('error', error));            // .then(result => {
-            //     console.log(result)
-            // })
-            // .catch(error => console.log('error', error));
 
-            // var data = new FormData();
-            // data.append("name", event.target.name.value);
-            // data.append("content", dataCkeditor);
+            var dataForm = new FormData();
+            dataForm.append("name", event.target.name.value);
+            dataForm.append("content", dataCkeditor);
 
-            // data.append(
-            //     "img",
-            //     event.target.img.files[0],
-            //     event.target.img.files[0]?.name
-            // );
+            dataForm.append(
+                "image", linkImage);
 
-            // fetch("/api/post/updateRequire", {
-            //     method: "POST",
-            //     body: data
-            // }).then(res => {
-            //     alert("Đăng ký thông tin thành công");
-            //     fetch("/api/post/getRequire").then(response => response.json()).then(result => {
-            //         setRequire(result)
-            //     }).catch(error => console.log('error', error));
-            // })
+            fetch("/api/post/updateRequire", {
+                method: "POST",
+                body: dataForm
+            }).then(res => {
+                alert("Đăng ký thông tin thành công");
+                fetch("/api/post/getRequire").then(response => response.json()).then(result => {
+                    setRequire(result)
+                    setIsLoadingRequire(false)
+
+                }).catch(error => {
+                    setIsLoadingRequire(false)
+                });
+            })
 
         } catch (error) {
+            setIsLoadingRequire(false)
             setError(error)
         }
     };
@@ -259,7 +277,7 @@ export default function Index({ props }) {
                 <div className="col-lg-4 col-md-12" key={index}>
                     <div className="single-services-box">
                         <div className="icon bg-cefffe">
-                            <img src={`/${item.image}`} alt="" />
+                            <img src={`${item.image}`} alt="" />
                         </div>
                         <h3> <a href="#">{item.name}</a> </h3>
                         <p className="text-float-left">
@@ -310,6 +328,7 @@ export default function Index({ props }) {
                                                             <label htmlFor="city-column">Nội Dung</label>
                                                         </div>
                                                     </div>
+                                                    {isLoadingRequire ? Loading() : <></>}
                                                     <div className="col-12">
                                                         <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
                                                         <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
@@ -354,6 +373,8 @@ export default function Index({ props }) {
                                                             <label htmlFor="city-column">Nội Dung</label>
                                                         </div>
                                                     </div>
+                                                    {isLoadingbenefit ? Loading() : <></>}
+
                                                     <div className="col-12">
                                                         <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
                                                         <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
@@ -403,6 +424,8 @@ export default function Index({ props }) {
                                                             <label htmlFor="city-column">Nội Dung</label>
                                                         </div>
                                                     </div>
+                                                    {isLoadingfaq ? Loading() : <></>}
+
                                                     <div className="col-12">
                                                         <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
                                                         <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
@@ -452,6 +475,7 @@ export default function Index({ props }) {
                                                             <label htmlFor="city-column">Nội Dung</label>
                                                         </div>
                                                     </div>
+                                                    {isLoadingques ? Loading() : <></>}
                                                     <div className="col-12">
                                                         <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
                                                         <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
@@ -556,6 +580,9 @@ export default function Index({ props }) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            {isLoadingcontact ? Loading() : <></>}
                                                         </div>
                                                         <div className="col-12">
                                                             <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
