@@ -604,7 +604,7 @@ export default function Index({ props }) {
                                                             <div className="form-group">
                                                                 <label htmlFor="address">Địa chỉ</label>
                                                                 <div className="position-relative has-icon-left">
-                                                                    <input type="text" id="address" className="form-control" name="address" placeholder="Địa chỉ" required />
+                                                                    <input type="text" id="address" className="form-control" defaultValue={contact?.address} name="address" placeholder="Địa chỉ" required />
                                                                     <div className="form-control-position">
                                                                         <i className="feather icon-user"></i>
                                                                     </div>
@@ -615,7 +615,7 @@ export default function Index({ props }) {
                                                             <div className="form-group">
                                                                 <label htmlFor="email">Email</label>
                                                                 <div className="position-relative has-icon-left">
-                                                                    <input type="email" id="email" className="form-control" name="email" placeholder="Email" required />
+                                                                    <input type="email" id="email" className="form-control" defaultValue={contact?.email} name="email" placeholder="Email" required />
                                                                     <div className="form-control-position">
                                                                         <i className="feather icon-mail"></i>
                                                                     </div>
@@ -626,7 +626,7 @@ export default function Index({ props }) {
                                                             <div className="form-group">
                                                                 <label htmlFor="phone">Mobile</label>
                                                                 <div className="position-relative has-icon-left">
-                                                                    <input type="number" id="phone" className="form-control" name="phone" placeholder="Số điện thoại" required />
+                                                                    <input type="number" id="phone" className="form-control" defaultValue={contact?.phone} name="phone" placeholder="Số điện thoại" required />
                                                                     <div className="form-control-position">
                                                                         <i className="feather icon-smartphone"></i>
                                                                     </div>
