@@ -113,7 +113,7 @@ export default function Home({ props }) {
         <div className="col-lg-4 col-md-12" key={index}>
           <div className="single-services-box">
             <div className="icon bg-cefffe">
-              <img src={`/${item.image}`} alt={`img`} />
+              <img src={`${item.image}`} alt={`img`} />
             </div>
             <h3> <a href="#">{item.name}</a> </h3>
             <p className="text-float-left">
