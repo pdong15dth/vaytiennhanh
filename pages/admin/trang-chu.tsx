@@ -68,7 +68,7 @@ export default function Index({ props }) {
                 "phone": event.target.phone.value
             })
 
-            console.log("data setcont",data)
+            console.log("data setcont", data)
             //post/postContactInfo
             fetch("/api/post/postContactInfo", {
                 method: 'POST',
@@ -77,7 +77,7 @@ export default function Index({ props }) {
                 alert("Đăng ký thông tin thành công");
                 fetch("/api/post/getContactInfo").then(response => response.json()).then(result => {
                     setContact(result)
-                    console.log("setContact",result)
+                    console.log("setContact", result)
                 }).catch(error => console.log('error', error));
             })
         } catch (error) {
@@ -154,7 +154,7 @@ export default function Index({ props }) {
         return string != "";
     }
 
-    const postFormData = (event) => {
+    const postFormData = async (event) => {
         event.preventDefault();
         try {
             var err = []
@@ -168,25 +168,54 @@ export default function Index({ props }) {
                 }
             }
 
-            var data = new FormData();
-            data.append("name", event.target.name.value);
-            data.append("content", dataCkeditor);
 
-            data.append(
-                "img",
-                event.target.img.files[0],
-                event.target.img.files[0]?.name
+
+            var formdata = new FormData();
+            formdata.append(
+                "image",
+                event.target.img.files[0]
             );
 
-            fetch("/api/post/updateRequire", {
-                method: "POST",
-                body: data
-            }).then(res => {
-                alert("Đăng ký thông tin thành công");
-                fetch("/api/post/getRequire").then(response => response.json()).then(result => {
-                    setRequire(result)
-                }).catch(error => console.log('error', error));
+            formdata.append("name", event.target.name.value);
+            formdata.append("title", event.target.name.value);
+
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Client-ID cb0adfde641e643");
+
+            //JSON.stringify(response.data)
+            fetch("https://api.imgur.com/3/upload", {
+                method: 'POST',
+                body: formdata,
+                redirect: 'follow',
+                mode: 'no-cors',
+                headers: myHeaders
             })
+                .then(response => JSON.stringify(response))
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));            // .then(result => {
+            //     console.log(result)
+            // })
+            // .catch(error => console.log('error', error));
+
+            // var data = new FormData();
+            // data.append("name", event.target.name.value);
+            // data.append("content", dataCkeditor);
+
+            // data.append(
+            //     "img",
+            //     event.target.img.files[0],
+            //     event.target.img.files[0]?.name
+            // );
+
+            // fetch("/api/post/updateRequire", {
+            //     method: "POST",
+            //     body: data
+            // }).then(res => {
+            //     alert("Đăng ký thông tin thành công");
+            //     fetch("/api/post/getRequire").then(response => response.json()).then(result => {
+            //         setRequire(result)
+            //     }).catch(error => console.log('error', error));
+            // })
 
         } catch (error) {
             setError(error)
@@ -214,7 +243,7 @@ export default function Index({ props }) {
             fetch("/api/post/getFaq").then(response => response.json()).then(result => {
                 setFaq(result)
             }).catch(error => console.log('error', error));
-            
+
             fetch("/api/post/getContactInfo").then(response => response.json()).then(result => {
                 setContact(result)
             }).catch(error => console.log('error', error));
