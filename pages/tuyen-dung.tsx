@@ -10,8 +10,13 @@ import Loading from "../src/Loading";
 Index.getInitialProps = async (ctx) => {
     const contact = await prisma.contact.findFirst()
     const metaSEO = await prisma.seoWeb.findFirst()
+    const menu = await prisma.menuHeader.findFirst({
+        where: {
+            id: 1
+        }
+    })
     const mess = prisma.$transaction
-    return { props: { contact, metaSEO, mess } };
+    return { props: { contact, metaSEO, mess, menu } };
 }
 
 export default function Index({ props }) {
@@ -166,32 +171,29 @@ export default function Index({ props }) {
             </div>
             <header className="header-area">
                 <div className="navbar-area">
-                    <div className="evolta-nav">
-                        <div className="container-fluid">
-                            <nav className="navbar navbar-expand-md navbar-light">
-                                <div className="collapse navbar-collapse mean-menu d-flex justify-content-around"
-                                    id="navbarSupportedContent">
-                                    <div className="row">
-                                        <div className="others-options">
-                                            <a href="/" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
-                                        </div>
-                                        <div className="others-options">
-                                            <a href="/" className="btn btn-primary btn-header">ĐĂNG KÝ VAY</a>
-                                        </div>
-                                        <div className="others-options">
-                                            <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.contact?.phone}</a>
-                                        </div>
-                                        <div className="others-options">
-                                            <a href="tuyen-dung" className="btn btn-primary btn-header">TUYỂN DỤNG</a>
-                                        </div>
+                    <div className="container-fluid">
+                        <nav className="navbar navbar-expand navbar-light">
+                            <div className="collapse navbar-collapse mean-menu d-flex justify-content-around"
+                                id="navbarSupportedContent">
+                                <div className="row text-center">
+                                    <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
+                                        <a href="/" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
+                                    </div>
+                                    <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
+                                        <a href="#" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
+                                    </div>
+                                    <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
+                                        <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.contact?.phone}</a>
+                                    </div>
+                                    <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
+                                        <a href="tuyen-dung" className="btn btn-primary btn-header">{props.menu?.menu3}</a>
                                     </div>
                                 </div>
-                            </nav>
-                        </div>
+                            </div>
+                        </nav>
                     </div>
                 </div>
             </header>
-
             <section className="contact-area ptb-110" style={{ backgroundColor: "#fff" }}>
                 <div className="container">
                     <div className="section-title">

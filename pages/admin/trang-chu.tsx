@@ -25,12 +25,14 @@ export default function Index({ props }) {
     const [faq, setFaq] = useState<any>(null)
     const [ques, setQues] = useState<any>(null)
     const [contact, setContact] = useState<any>(null)
+    const [menu, setMenu] = useState<any>(null)
     const [error, setError] = useState([])
     const [isLoadingRequire, setIsLoadingRequire] = useState(false)
     const [isLoadingbenefit, setIsLoadingbenefit] = useState(false)
     const [isLoadingfaq, setIsLoadingfaq] = useState(false)
     const [isLoadingques, setIsLoadingques] = useState(false)
     const [isLoadingcontact, setIsLoadingcontact] = useState(false)
+    const [isLoadinMenu, setIsLoadingMenu] = useState(false)
     let dataCkeditor = "";
     const handleData = (dataTemplate) => {
         dataCkeditor = dataTemplate;
@@ -88,6 +90,47 @@ export default function Index({ props }) {
 
                 }).catch(error => {
                     setIsLoadingcontact(false)
+                });
+            })
+        } catch (error) {
+            setError(error)
+        }
+    }
+    const postFormDataMenu = (event) => {
+        event.preventDefault();
+        try {
+            var err = []
+            setError(err)
+            err.push(utils.checkEmptyString(event.target.menu1.value))
+            err.push(utils.checkEmptyString(event.target.menu2.value))
+            err.push(utils.checkEmptyString(event.target.menu3.value))
+            for (let index = 0; index < err.length; index++) {
+                const element = err[index];
+                if (element != "") {
+                    setError(err.filter(checkAdult))
+                    return
+                }
+            }
+
+            var data = JSON.stringify({
+                "menu1": event.target.menu1.value,
+                "menu2": event.target.menu2.value,
+                "menu3": event.target.menu3.value
+            })
+
+            setIsLoadingMenu(true)
+            fetch("/api/post/postMenu", {
+                method: 'POST',
+                body: data,
+            }).then(res => {
+                alert("Đăng ký thông tin thành công");
+                fetch("/api/post/getMenu").then(response => response.json()).then(result => {
+                    setMenu(result)
+                    console.log("setContact", result)
+                    setIsLoadingMenu(false)
+
+                }).catch(error => {
+                    setIsLoadingMenu(false)
                 });
             })
         } catch (error) {
@@ -265,6 +308,15 @@ export default function Index({ props }) {
             fetch("/api/post/getContactInfo").then(response => response.json()).then(result => {
                 setContact(result)
             }).catch(error => console.log('error', error));
+
+            fetch("/api/post/getMenu").then(response => response.json()).then(result => {
+                setMenu(result)
+                console.log("setContact", result)
+                setIsLoadingMenu(false)
+
+            }).catch(error => {
+                setIsLoadingMenu(false)
+            });
         }
 
         fetchMyAPI()
@@ -607,6 +659,111 @@ export default function Index({ props }) {
             </div>
         )
     }
+
+    const renderContentMenu = () => {
+        return (
+            <div className="content-body">
+                <section id="multiple-column-form">
+                    <div className="row match-height">
+                        <div className="col-md-6 col-12">
+                            <div className="card">
+                                <div className="card-content">
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <h4 className="card-title">Chỉnh sửa nội dung Menu</h4>
+                                        </div>
+                                        <div className="card-body">
+                                            <form className="form form-vertical" onSubmit={postFormDataMenu}>
+                                                <div className="form-body">
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="menu1">Menu 1</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="text" id="menu1" className="form-control" defaultValue={menu?.menu1} name="menu1" placeholder="Menu 1" required />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-user"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="menu2">Menu 2</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="text" id="menu2" className="form-control" defaultValue={menu?.menu2} name="menu2" placeholder="Menu 2" required />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-mail"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="menu3">Menu 3</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="text" id="menu3" className="form-control" defaultValue={menu?.menu3} name="menu3" placeholder="Menu 3" required />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-smartphone"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            {isLoadinMenu ? Loading() : <></>}
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
+                                                            <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <!-- information start --> */}
+                        <div className="col-md-6 col-12 ">
+                            {menu != null ? renderCardInfoMenu(menu) : <></>}
+                        </div>
+                        {/* <!-- information start --> */}
+
+                    </div>
+                </section>
+            </div>
+        )
+    }
+
+    const renderCardInfoMenu = (menu) => {
+        return (
+            <div className="card">
+                <div className="card-header">
+                    <h4 className="card-title">Chỉnh sửa nội dung Menu</h4>
+                </div>
+                <div className="card-body">
+                    <table>
+                        <tr>
+                            <td className="font-weight-bold">Menu 1</td>
+                            <td>{menu.menu1}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="font-weight-bold">Menu 2</td>
+                            <td>{menu.menu2}</td>
+                        </tr>
+                        <tr>
+                            <td className="font-weight-bold">Menu 3</td>
+                            <td>{menu.menu3}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        )
+    }
     return (
         <>
             {HeaderAdmin()}
@@ -625,7 +782,7 @@ export default function Index({ props }) {
                                         <h2 className="content-header-title float-left mb-0">Trang chủ</h2>
                                         <div className="breadcrumb-wrapper col-12">
                                             <ol className="breadcrumb">
-                                                <li className="breadcrumb-item"><a href="index.html">Trang chủ</a>
+                                                <li className="breadcrumb-item"><a href="">Trang chủ</a>
                                                 </li>
                                                 <li className="breadcrumb-item active">Chỉnh sửa thông tin trang chủ
                                                 </li>
@@ -649,6 +806,9 @@ export default function Index({ props }) {
                         {renderContentQues()}
                         <section className="page-users-view">
                             {renderContentContact()}
+                        </section>
+                        <section className="page-users-view">
+                            {renderContentMenu()}
                         </section>
                     </div>
                 </div>

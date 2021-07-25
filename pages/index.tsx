@@ -18,7 +18,12 @@ Home.getInitialProps = async (ctx) => {
   const ques = await prisma.question.findFirst()
   const contact = await prisma.contact.findFirst()
   const metaSEO = await prisma.seoWeb.findFirst()
-  return { props: { require, faq, benefit, ques, contact, metaSEO } };
+  const menu = await prisma.menuHeader.findFirst({
+    where: {
+      id: 1
+    }
+  })
+  return { props: { require, faq, benefit, ques, contact, metaSEO, menu } };
 }
 
 export default function Home({ props }) {
@@ -197,12 +202,12 @@ export default function Home({ props }) {
                 <div className="row text-center">
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
 
-                    <a href="/" className="btn btn-primary btn-header">VAY TÍNH CHẤP</a>
+                    <a href="/" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
 
-                    <a href="#" className="btn btn-primary btn-header">ĐĂNG KÝ VAY</a>
+                    <a href="#" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
@@ -212,7 +217,7 @@ export default function Home({ props }) {
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
 
-                    <a href="tuyen-dung" className="btn btn-primary btn-header">TUYỂN DỤNG</a>
+                    <a href="tuyen-dung" className="btn btn-primary btn-header">{props.menu?.menu3}</a>
 
                   </div>
 
