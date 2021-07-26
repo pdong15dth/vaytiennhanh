@@ -6,10 +6,16 @@ import HeaderClient from "../src/Script/HeaderClient";
 import SEOTag from "../src/Script/seoTag";
 import utils from "../src/utils/constant";
 import Loading from "../src/Loading";
+import ReactHtmlParser from "react-html-parser";
 
 Index.getInitialProps = async (ctx) => {
     const contact = await prisma.contact.findFirst()
     const metaSEO = await prisma.seoWeb.findFirst()
+    const gioithieu = await prisma.about.findFirst({
+        where: {
+            id: 1
+        }
+    })
     const menu = await prisma.menuHeader.findFirst({
         where: {
             id: 1
@@ -17,13 +23,13 @@ Index.getInitialProps = async (ctx) => {
     })
     const option = await prisma.option.findMany()
     const mess = prisma.$transaction
-    return { props: { contact, metaSEO, mess, menu, option } };
+    return { props: { contact, metaSEO, mess, menu, option, gioithieu } };
 }
 
 export default function Index({ props }) {
     const [error, setError] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-
+console.log(props?.gioithieu?.content)
     console.log("have connected", props.mess)
     function checkAdult(string) {
         return string != "";
@@ -172,7 +178,7 @@ export default function Index({ props }) {
                                 id="navbarSupportedContent">
                                 <div className="row text-center">
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
-                                        <a href="//gioi-thieu" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
+                                        <a href="/" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
                                     </div>
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
                                         <a href="#" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
@@ -189,72 +195,16 @@ export default function Index({ props }) {
                     </div>
                 </div>
             </header>
-            <section className="contact-area ptb-110" style={{ backgroundColor: "#fff" }}>
+            <section className="about-area ptb-110" style={{ backgroundColor: "#fff" }}>
                 <div className="container">
                     <div className="section-title">
-                        <span>Liên hệ với chúng tôi</span>
-                        <h2>Tuyển dụng nhân viên kinh doanh</h2>
+                        <h2>Giới Thiệu</h2>
                         {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                             et dolore magna aliqua.</p> */}
                     </div>
-                    <div className="contact-form">
-                        <form id="contactForm">
-                            <div className="row">
-                                <div className="col-lg-12 col-md-12">
-                                    <div className="form-group">
-                                        <input type="text" name="fullname" id="fullname" className="form-control" required
-                                            data-error="Nhập Họ và Tên" placeholder="Họ & Tên" />
-                                        <div className="help-block with-errors"></div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-12 col-md-12">
-                                    <div className="form-group">
-                                        <input type="text" name="cmnd" id="cmnd" className="form-control" required
-                                            data-error="Nhập CMND/CCCD" placeholder="CMND/CCCD" />
-                                        <div className="help-block with-errors"></div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-12 col-md-12">
-                                    <div className="form-group">
-                                        <input type="text" name="phone" id="phone" required
-                                            data-error="Nhập số điện thoại" className="form-control" placeholder="Số điện thoại" />
-                                        <div className="help-block with-errors"></div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-12 col-md-12">
-                                    <div className="form-group">
-                                        <input type="text" name="address" id="address" className="form-control" required
-                                            data-error="Nhập Địa chỉ" placeholder="Địa chỉ" />
-                                        <div className="help-block with-errors"></div>
-                                    </div>
-                                </div>
-
-                                <div className="col-lg-12 col-md-12">
-                                    <button type="submit" className="btn btn-primary">Ứng tuyển</button>
-                                    <div id="msgSubmit" className="h3 text-center hidden"></div>
-                                    <div className="clearfix"></div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div className="contact-info">
-                        <div className="contact-info-content">
-                            <h3>Liên hệ với chúng tôi qua Số Điện Thoại hoặc Email</h3>
-                            <h2>
-                                <a href={`tel:${props?.contact?.phone}`}>{props?.contact?.phone}</a>
-                                <span>HOẶC</span>
-                                <a
-                                    href={`mailto:${props?.contact?.email}`}><span
-                                        className="__cf_email__"
-                                        data-cfemail="fa9f8c95968e9bba9d979b9396d4999597">{props?.contact?.email}</span></a>
-                            </h2>
-                            <ul className="social">
-                                <li><a href="#" target="_blank"><i className="fab fa-twitter"></i></a></li>
-                                <li><a href="#" target="_blank"><i className="fab fa-youtube"></i></a></li>
-                                <li><a href="#" target="_blank"><i className="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#" target="_blank"><i className="fab fa-linkedin-in"></i></a></li>
-                                <li><a href="#" target="_blank"><i className="fab fa-instagram"></i></a></li>
-                            </ul>
+                    <div className="row align-items-center">
+                        <div className="col-md-12">
+                            {ReactHtmlParser(props?.gioithieu?.content)}
                         </div>
                     </div>
                 </div>

@@ -28,6 +28,12 @@ export default function LeftMenu() {
                         </a>
                     </li>
                     <li className="nav-item">
+                        <a href="/admin/gioi-thieu">
+                            <i className="feather icon-home"></i>
+                            <span className="menu-title" data-i18n="tt">Giới thiệu (Vay tín dụng)</span>
+                        </a>
+                    </li>
+                    <li className="nav-item">
                         <a href="/admin/seo-keyword">
                             <i className="feather icon-home"></i>
                             <span className="menu-title" data-i18n="tt">SEO Web Keyword</span>

@@ -132,3 +132,21 @@ model MenuHeader {
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "menuHeaders")
 }
+
+model Option {
+  id            Int       @default(autoincrement()) @id
+  title         String?   @unique
+  isActive      Boolean   @default(false) 
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  @@map(name: "options")
+}
+
+model About {
+  id            Int       @default(autoincrement()) @id
+  content         String?   @unique
+  isActive      Boolean   @default(false) 
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  @@map(name: "abouts")
+}

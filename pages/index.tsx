@@ -23,7 +23,8 @@ Home.getInitialProps = async (ctx) => {
       id: 1
     }
   })
-  return { props: { require, faq, benefit, ques, contact, metaSEO, menu } };
+  const option = await prisma.option.findMany()
+  return { props: { require, faq, benefit, ques, contact, metaSEO, menu, option } };
 }
 
 export default function Home({ props }) {
@@ -130,6 +131,16 @@ export default function Home({ props }) {
     })
   }
 
+  const renderOption = (options) => {
+    return options?.map((item, index) => {
+      return (
+        <p className="text-black" key={index}>
+          <input type="radio" id={item?.id} name="type_amount" value={item?.title} />{"     "}
+          <label htmlFor={item?.id}>{item?.title}</label>
+        </p>
+      )
+    })
+  }
   const renderFormThongTin = () => {
     return (
       <form onSubmit={submitData}>
@@ -151,22 +162,7 @@ export default function Home({ props }) {
         </div>
         <div className="payment-box padding-bottom-20">
           <div className="payment-method text-float-left background-white padding-select-register">
-            <p className="text-black">
-              <input type="radio" id="chuyenkhoan" name="type_amount" value="Đi làm hưởng lương chuyển khoản" />
-              <label htmlFor="chuyenkhoan"> Đi làm hưởng lương chuyển khoản</label>
-            </p>
-            <p className="text-black">
-              <input type="radio" id="tienmat" name="type_amount" value="Đi làm hưởng lương tiền mặt" />
-              <label htmlFor="tienmat"> Đi làm hưởng lương tiền mặt</label>
-            </p>
-            <p className="text-black">
-              <input type="radio" id="baobiem" name="type_amount" value="Tham gia bảo hiểm nhân thọ" />
-              <label htmlFor="baobiem"> Tham gia bảo hiểm nhân thọ</label>
-            </p>
-            <p className="text-black">
-              <input type="radio" id="cavet" name="type_amount" value="Có cavet xe máy, hóa đơn điện nước" />
-              <label htmlFor="cavet"> Có cavet xe máy, hóa đơn điện nước</label>
-            </p>
+            {renderOption(props?.option)}
           </div>
         </div>
         {isLoading ? Loading() : <Fragment></Fragment>}
@@ -202,7 +198,7 @@ export default function Home({ props }) {
                 <div className="row text-center">
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
 
-                    <a href="/" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
+                    <a href="/gioi-thieu" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">

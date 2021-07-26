@@ -31,7 +31,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size: cover;
+    background-size: contain;
 }
 
 a {
@@ -486,7 +486,7 @@ Header Area CSS
     z-index: 999;
     width: 100%;
     height: auto;
-    background-color: #81c784;
+    background-color: rgb(0 66 214) ;
 }
 
 .top-header {
@@ -964,7 +964,7 @@ Header Area CSS
     -webkit-box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
     box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
     background: -webkit-gradient(linear, left bottom, right top, from(#0030b8), color-stop(#003cc1), color-stop(#0047c9), color-stop(#0152d0), to(#0a5dd8)) !important;
-    background-color: #81c784 !important;
+    background-color: rgb(0 66 214) !important;
     -webkit-animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
     animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
     -webkit-transition: 0.5s;
@@ -5998,12 +5998,12 @@ a.btn-header {
 .title-vay-tinh-chap {
     font-size: 54px;
     font-weight: bold;
-    color: rgb(255, 216, 0);
+    color: rgb(0 66 214);
 }
 
 .p-vay-tinh-chap {
     font-family: "Roboto", sans-serif;
-    color: rgb(255, 255, 255);
+    color: rgb(0 66 214);
     font-size: 18px;
     text-align: center;
     letter-spacing: 0px;

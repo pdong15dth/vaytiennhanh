@@ -4,7 +4,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import UploadAdapter from "./UploadAdapter";
 
 // Server URL
-const URL = "https://api.hellobugs.dev/api/user/upload/ck";
+const URL = "https://api.imgur.com/3/image";
 
 function CustomUploadAdapterPlugin(editor) {
   editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
@@ -25,6 +25,10 @@ class App extends Component {
 
   render() {
     // CKEditor Config
+    var data2 = ""
+    var json: any = JSON.stringify(this.props)
+    var parse = JSON.parse(json)
+    data2 = parse.data
     const config = {
       language: "en", // fa - for persian language ( rtl )
       extraPlugins: [CustomUploadAdapterPlugin],
@@ -36,10 +40,11 @@ class App extends Component {
           // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/react.html#component-properties
           // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/configuration.html
           config={config}
-          data=""
+          data={data2}
           onInit={(editor) => {
             // You can store the "editor" and use when it is needed.
-            console.log("Editor is ready to use!", editor);
+            console.log("Editor is ready to use! ", editor);
+
             editor.plugins.get("TextTransformation").isEnabled = true;
           }}
           onChange={(event, editor) => {
