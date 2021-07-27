@@ -30,6 +30,7 @@ export default function Index({ props }) {
     const [menu, setMenu] = useState<any>(null)
     const [option, setOption] = useState<any>(null)
     const [currentOption, setCurrentOption] = useState<any>(null)
+    const [currentRequire, setCurrentRequire] = useState<any>(null)
     const [error, setError] = useState([])
     const [isLoadingRequire, setIsLoadingRequire] = useState(false)
     const [isLoadingbenefit, setIsLoadingbenefit] = useState(false)
@@ -38,22 +39,22 @@ export default function Index({ props }) {
     const [isLoadingcontact, setIsLoadingcontact] = useState(false)
     const [isLoadinMenu, setIsLoadingMenu] = useState(false)
     const [isLoadinOption, setIsLoadingOption] = useState(false)
-    let dataCkeditor = "";
+    let dataCkeditor = currentRequire?.content ?? "";
     const handleData = (dataTemplate) => {
         dataCkeditor = dataTemplate;
     };
 
-    let dataCkeditorBenefit = "";
+    let dataCkeditorBenefit = benefit?.content ?? "";
     const handleDataBenefit = (dataTemplate) => {
         dataCkeditorBenefit = dataTemplate;
     };
 
-    let dataCkeditorFaq = "";
+    let dataCkeditorFaq = faq?.content ?? "";
     const handleDataFaq = (dataTemplate) => {
         dataCkeditorFaq = dataTemplate;
     };
 
-    let dataCkeditorQues = "";
+    let dataCkeditorQues = ques?.content ?? "";
     const handleDataQues = (dataTemplate) => {
         dataCkeditorQues = dataTemplate;
     };
@@ -197,7 +198,7 @@ export default function Index({ props }) {
             console.log("Dongne:", dataCkeditorQues);
             var data = new FormData();
             data.append("content", dataCkeditorQues)
-
+            data.append("title", event.target.title.value)
             setIsLoadingques(true)
             fetch("/api/post/updateQues", {
                 method: "POST",
@@ -223,6 +224,7 @@ export default function Index({ props }) {
             setError(err)
             var data = new FormData();
             data.append("content", dataCkeditorFaq)
+            data.append("title", event.target.title.value)
             setIsLoadingfaq(true)
             fetch("/api/post/updateFaq", {
                 method: "POST",
@@ -249,6 +251,7 @@ export default function Index({ props }) {
             var data = new FormData();
             data.append("content", dataCkeditorBenefit)
             console.log(dataCkeditorBenefit)
+            data.append("title", event.target.title.value)
             setIsLoadingbenefit(true)
             fetch("/api/post/updateBenefit", {
                 method: "POST",
@@ -286,7 +289,6 @@ export default function Index({ props }) {
                     return
                 }
             }
-
             var formdata = new FormData();
             formdata.append(
                 "image",
@@ -296,20 +298,24 @@ export default function Index({ props }) {
             formdata.append("name", event.target.name.value);
             formdata.append("title", event.target.name.value);
 
-            var linkImage = ""
+            var linkImage = currentRequire?.image ?? ""
             setIsLoadingRequire(true)
-            await fetch("https://api.imgur.com/3/image", {
-                method: "post",
-                headers: {
-                    Authorization: "Client-ID cb0adfde641e643"
-                },
-                body: formdata
-            }).then(data => data.json()).then(data => {
-                console.log(data.data.link)
-                linkImage = data.data.link
-            })
+            console.log("file name: ",event.target.img.files[0].name )
+            if (event.target.img.files[0].name) {
+                await fetch("https://api.imgur.com/3/image", {
+                    method: "post",
+                    headers: {
+                        Authorization: "Client-ID cb0adfde641e643"
+                    },
+                    body: formdata
+                }).then(data => data.json()).then(data => {
+                    console.log(data.data.link)
+                    linkImage = data.data.link
+                })
+            }
 
             var dataForm = new FormData();
+            dataForm.append("id", currentRequire?.id ?? 0);
             dataForm.append("name", event.target.name.value);
             dataForm.append("content", dataCkeditor);
 
@@ -358,6 +364,10 @@ export default function Index({ props }) {
                 setFaq(result)
             }).catch(error => console.log('error', error));
 
+            fetch("/api/post/getQues").then(response => response.json()).then(result => {
+                setQues(result)
+            }).catch(error => console.log('error', error));
+
             fetch("/api/post/getContactInfo").then(response => response.json()).then(result => {
                 setContact(result)
             }).catch(error => console.log('error', error));
@@ -380,7 +390,45 @@ export default function Index({ props }) {
     }, [])
 
 
+
     const renderCardRequire = (require) => {
+
+        const editRequire = (item) => {
+            console.log("edit", item)
+            setCurrentRequire(item)
+        }
+
+        const removeRequire = (item) => {
+            console.log("xoa", item)
+            confirmAlert({
+                title: "Xác nhận Xóa",
+                message: `Bạn có chắc muốn xóa: ${item?.name}`,
+                buttons: [
+                    {
+                        label: "Đồng ý",
+                        onClick: () => {
+                            var data = JSON.stringify({
+                                "id": item?.id,
+                                "name": item?.name,
+                                "content": item?.content,
+                            })
+                            fetch("/api/post/removeRequire", {
+                                method: "POST",
+                                body: data
+                            }).then(() => {
+                                fetch("/api/post/getRequire").then(response => response.json()).then(result => {
+                                    setRequire(result)
+                                }).catch(error => console.log('error', error));
+                            })
+                        },
+                    },
+                    {
+                        label: "Không",
+                        onClick: () => { },
+                    },
+                ],
+            });
+        }
         return require?.map((item, index) => {
             return (
                 <div className="col-lg-4 col-md-12" key={index}>
@@ -392,6 +440,20 @@ export default function Index({ props }) {
                         <p className="text-float-left">
                             {ReactHtmlParser(item.content)}
                         </p>
+                    </div>
+                    <div className="form-actions text-center">
+                        <button
+                            type="submit"
+                            className="btn btn-primary mr-1 waves-effect waves-light"
+                            onClick={() => editRequire(item)}>
+                            Chỉnh sửa
+                        </button>
+                        <button
+                            type="reset"
+                            className="btn btn-outline-danger waves-effect waves-light"
+                            onClick={() => removeRequire(item)}>
+                            Xóa
+                        </button>
                     </div>
                 </div>
             )
@@ -405,7 +467,7 @@ export default function Index({ props }) {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h4 className="card-title">Điều kiện / Yêu cầu</h4>
+                                    <h4 className="card-title">1. Điều kiện / Yêu cầu</h4>
                                 </div>
                                 <div className="card-content">
                                     <div className="card-body">
@@ -414,14 +476,17 @@ export default function Index({ props }) {
                                                 <div className="row">
                                                     <div className="col-md-6 col-12">
                                                         <div className="form-label-group">
-                                                            <input type="text" id="name" className="form-control" placeholder="Tiêu đề" name="name" />
+                                                            <input type="text" id="name" className="form-control" defaultValue={currentRequire?.name} placeholder="Tiêu đề" name="name" />
                                                             <label htmlFor="name">Tiêu đề</label>
                                                         </div>
                                                     </div>
-                                                    <div className="form-outline mb-4">
+                                                    <div className="form-label-group col-md-12 col-12">
                                                         <label className="form-label" htmlFor="img">
                                                             Chọn hình ảnh từ máy tính
                                                         </label>
+                                                        {currentRequire?.image ?
+                                                            <img src={`${currentRequire?.image}`} alt="users avatar" className="users-avatar-shadow rounded" height="90" width="90"></img>
+                                                            : <></>}
                                                         <div className="input-group">
                                                             <input
                                                                 type="file"
@@ -430,10 +495,11 @@ export default function Index({ props }) {
                                                                 accept="image/*"
                                                             />
                                                         </div>
+
                                                     </div>
                                                     <div className="col-md-12 col-12">
                                                         <div className="form-label-group">
-                                                            <Editor onchangeData={handleData} />
+                                                            <Editor data={currentRequire?.content} onchangeData={handleData} />
                                                             <label htmlFor="city-column">Nội Dung</label>
                                                         </div>
                                                     </div>
@@ -469,13 +535,19 @@ export default function Index({ props }) {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h4 className="card-title">LỢI ÍCH KHOẢN VAY</h4>
+                                    <h4 className="card-title">2. Chỉnh sửa - {benefit?.title}</h4>
                                 </div>
                                 <div className="card-content">
                                     <div className="card-body">
                                         <form className="form" onSubmit={postFormDataBenefit}>
                                             <div className="form-body">
                                                 <div className="row">
+                                                    <div className="col-md-6 col-12">
+                                                        <div className="form-label-group">
+                                                            <input type="text" id="title" defaultValue={benefit?.title} className="form-control" placeholder="Tiêu đề" name="title" />
+                                                            <label htmlFor="title">Tiêu đề</label>
+                                                        </div>
+                                                    </div>
                                                     <div className="col-md-12 col-12">
                                                         <div className="form-label-group">
                                                             <Editor data={benefit?.content} onchangeData={handleDataBenefit} />
@@ -493,7 +565,7 @@ export default function Index({ props }) {
                                         </form>
                                     </div>
                                     <div className="card-body">
-                                        <h1 >LỢI ÍCH KHOẢN VAY</h1>
+                                        <h1>{benefit?.title}</h1>
                                         <div className="row">
                                             <div className="col-lg-8 col-md-12">
                                                 <div className="blog-details">
@@ -520,13 +592,19 @@ export default function Index({ props }) {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h4 className="card-title">NHỮNG LƯU Ý CẦN PHẢI BIẾT</h4>
+                                    <h4 className="card-title">3. Chỉnh sửa: {faq?.title}</h4>
                                 </div>
                                 <div className="card-content">
                                     <div className="card-body">
                                         <form className="form" onSubmit={postFormDataFaq}>
                                             <div className="form-body">
                                                 <div className="row">
+                                                    <div className="col-md-6 col-12">
+                                                        <div className="form-label-group">
+                                                            <input type="text" id="title" defaultValue={faq?.title} className="form-control" placeholder="Tiêu đề" name="title" />
+                                                            <label htmlFor="title">Tiêu đề</label>
+                                                        </div>
+                                                    </div>
                                                     <div className="col-md-12 col-12">
                                                         <div className="form-label-group">
                                                             <Editor data={faq?.content} onchangeData={handleDataFaq} />
@@ -544,7 +622,7 @@ export default function Index({ props }) {
                                         </form>
                                     </div>
                                     <div className="card-body">
-                                        <h1 >NHỮNG LƯU Ý CẦN PHẢI BIẾT</h1>
+                                        <h1>{faq?.title}</h1>
                                         <div className="row">
                                             <div className="col-lg-8 col-md-12">
                                                 <div className="blog-details">
@@ -571,13 +649,19 @@ export default function Index({ props }) {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h4 className="card-title">GIẢI ĐÁP THẮC MẮC CỦA KHÁCH HÀNG</h4>
+                                    <h4 className="card-title">4. Chỉnh sửa: {ques?.title}</h4>
                                 </div>
                                 <div className="card-content">
                                     <div className="card-body">
                                         <form className="form" onSubmit={postFormDataQues}>
                                             <div className="form-body">
                                                 <div className="row">
+                                                    <div className="col-md-6 col-12">
+                                                        <div className="form-label-group">
+                                                            <input type="text" id="title" defaultValue={ques?.title} className="form-control" placeholder="Tiêu đề" name="title" />
+                                                            <label htmlFor="title">Tiêu đề</label>
+                                                        </div>
+                                                    </div>
                                                     <div className="col-md-12 col-12">
                                                         <div className="form-label-group">
                                                             <Editor data={ques?.content} onchangeData={handleDataQues} />
@@ -594,7 +678,7 @@ export default function Index({ props }) {
                                         </form>
                                     </div>
                                     <div className="card-body">
-                                        <h1 >GIẢI ĐÁP THẮC MẮC CỦA KHÁCH HÀNG</h1>
+                                        <h1>{ques?.title}</h1>
                                         <div className="row">
                                             <div className="col-lg-8 col-md-12">
                                                 <div className="blog-details">
@@ -617,7 +701,7 @@ export default function Index({ props }) {
         return (
             <div className="card">
                 <div className="card-header">
-                    <h4 className="card-title">Thông tin liên hệ (Footer)</h4>
+                    <h4 className="card-title">6. Thông tin liên hệ (Footer)</h4>
                 </div>
                 <div className="card-body">
                     <table>
@@ -651,7 +735,7 @@ export default function Index({ props }) {
                                 <div className="card-content">
                                     <div className="card">
                                         <div className="card-header">
-                                            <h4 className="card-title">Thông tin liên hệ (Footer)</h4>
+                                            <h4 className="card-title">6. Thông tin liên hệ (Footer)</h4>
                                         </div>
                                         <div className="card-body">
                                             <form className="form form-vertical" onSubmit={postFormDataContact}>
@@ -727,7 +811,7 @@ export default function Index({ props }) {
                                 <div className="card-content">
                                     <div className="card">
                                         <div className="card-header">
-                                            <h4 className="card-title">Chỉnh sửa nội dung Menu</h4>
+                                            <h4 className="card-title">7. Chỉnh sửa nội dung Menu</h4>
                                         </div>
                                         <div className="card-body">
                                             <form className="form form-vertical" onSubmit={postFormDataMenu}>
@@ -797,7 +881,7 @@ export default function Index({ props }) {
         return (
             <div className="card">
                 <div className="card-header">
-                    <h4 className="card-title">Chỉnh sửa nội dung Menu</h4>
+                    <h4 className="card-title">7. Chỉnh sửa nội dung Menu</h4>
                 </div>
                 <div className="card-body">
                     <table>
@@ -832,7 +916,7 @@ export default function Index({ props }) {
                                 <div className="card-content">
                                     <div className="card">
                                         <div className="card-header">
-                                            <h4 className="card-title">Chỉnh sửa nội dung Option</h4>
+                                            <h4 className="card-title">5. Chỉnh sửa nội dung Option</h4>
                                         </div>
                                         <div className="card-body">
                                             <form className="form form-vertical" onSubmit={postFormDataOption}>

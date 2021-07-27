@@ -13,7 +13,7 @@ export const config = {
     }
 };
 
-export default async (req, res) => {
+export default async(req, res) => {
     // parse form with a Promise wrapper
     const data = await new Promise((resolve, reject) => {
         const form = new IncomingForm()
@@ -35,7 +35,7 @@ export default async (req, res) => {
 
     const item = await prisma.require.findFirst({
         where: {
-            name: data.fields.name
+            id: data.fields.id ? parseInt(data.fields.id) : 0
         }
     })
 
@@ -55,7 +55,6 @@ export default async (req, res) => {
             image: data.fields.image,
             content: data.fields.content
         },
-    }).catch(error => {
-    });
+    }).catch(error => {});
     res.json(result);
 }

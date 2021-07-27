@@ -12,141 +12,156 @@ generator client {
 }
 
 model User {
-  id            Int       @default(autoincrement()) @id
-  name          String?
-  phone         String?
-  address       String?   
-  amount        Int?
-  type_amount   String?   
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id          Int      @id @default(autoincrement())
+  name        String?
+  phone       String?
+  address     String?
+  amount      Int?
+  type_amount String?
+  isActive    Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "users")
 }
 
 model Require {
-  id            Int       @default(autoincrement()) @id
-  name          String?   
-  image         String?
-  content       String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  name      String?
+  image     String?
+  content   String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "requires")
 }
 
 model Benefit {
-  id            Int       @default(autoincrement()) @id
-  content       String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "benefits")
 }
 
 model Faq {
-  id            Int       @default(autoincrement()) @id
-  content       String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "faqs")
 }
 
 model Question {
-  id            Int       @default(autoincrement()) @id
-  content       String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "question")
 }
 
 model Contact {
-  id            Int       @default(autoincrement()) @id
-  address       String?
-  email        String?
-  phone        String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  address   String?
+  email     String?
+  phone     String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "contacts")
 }
 
 model Career {
-  id            Int       @default(autoincrement()) @id
-  fullname      String?
-  address       String?
-  cmnd          String?
-  phone         String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  fullname  String?
+  address   String?
+  cmnd      String?
+  phone     String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "careers")
 }
 
 model SeoWeb {
-  id            Int       @default(autoincrement()) @id
-  description   String?
-  keywords      String?
-  fb_app_id     String?
-  og_title      String?
-  og_url        String?
-  og_image      String?
-  og_description  String?
-  og_site_name  String?
-  og_see_also   String?
-  og_locale     String?
-  article_author  String?
-  twitter_card    String?
-  twitter_url   String?
-  twitter_title   String?
-  twitter_description   String?
-  twitter_image   String?
-  author        String?
-  generator     String?
-  copyright     String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id                  Int      @id @default(autoincrement())
+  description         String?
+  keywords            String?
+  fb_app_id           String?
+  og_title            String?
+  og_url              String?
+  og_image            String?
+  og_description      String?
+  og_site_name        String?
+  og_see_also         String?
+  og_locale           String?
+  article_author      String?
+  twitter_card        String?
+  twitter_url         String?
+  twitter_title       String?
+  twitter_description String?
+  twitter_image       String?
+  author              String?
+  generator           String?
+  copyright           String?
+  isActive            Boolean  @default(false)
+  createdAt           DateTime @default(now()) @map(name: "created_at")
+  updatedAt           DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "seowebs")
 }
 
 model UserAdmin {
-  id            Int       @default(autoincrement()) @id
-  username      String?   @unique
-  password      String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  username  String?  @unique
+  password  String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "userAdmins")
 }
 
 model MenuHeader {
-  id            Int       @default(autoincrement()) @id
-  menu1         String?   
-  menu2         String?
-  menu3         String?
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  menu1     String?
+  menu2     String?
+  menu3     String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "menuHeaders")
 }
 
 model Option {
-  id            Int       @default(autoincrement()) @id
-  title         String?   @unique
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  title     String?  @unique
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "options")
 }
 
 model About {
-  id            Int       @default(autoincrement()) @id
-  content         String?   @unique
-  isActive      Boolean   @default(false) 
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        Int      @id @default(autoincrement())
+  content   String?  @unique
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   @@map(name: "abouts")
 }

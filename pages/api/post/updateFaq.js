@@ -13,7 +13,7 @@ export const config = {
     }
 };
 
-export default async (req, res) => {
+export default async(req, res) => {
     // parse form with a Promise wrapper
     const data = await new Promise((resolve, reject) => {
         const form = new IncomingForm()
@@ -27,16 +27,17 @@ export default async (req, res) => {
     console.log("request data: ", data)
     const result = await prisma.faq.upsert({
         update: {
-            content: data.fields.content
+            content: data.fields.content,
+            title: data.fields.title
         },
         create: {
-            content: data.fields.content
+            content: data.fields.content,
+            title: data.fields.title
         },
         where: {
             id: 1
         },
 
-    }).catch(error => {
-    });
+    }).catch(error => {});
     res.json(result);
 }
