@@ -233,7 +233,7 @@ export default function Home({ props }) {
     background-size: contain; */}
 
       <section className="features-area ptb-110 bg-f1f3f6 section-custom-1" style={{
-        backgroundImage: "url(../img/background.jpg)",
+        backgroundImage: `url(${props?.banner?.image})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
