@@ -29,8 +29,11 @@ export default function Index({ props }) {
     const [contact, setContact] = useState<any>(null)
     const [menu, setMenu] = useState<any>(null)
     const [option, setOption] = useState<any>(null)
+    const [titleHeader, setTitleHeader] = useState<any>(null)
     const [currentOption, setCurrentOption] = useState<any>(null)
     const [currentRequire, setCurrentRequire] = useState<any>(null)
+    const [currentBanner, setCurrentBanner] = useState<any>(null)
+
     const [error, setError] = useState([])
     const [isLoadingRequire, setIsLoadingRequire] = useState(false)
     const [isLoadingbenefit, setIsLoadingbenefit] = useState(false)
@@ -39,6 +42,8 @@ export default function Index({ props }) {
     const [isLoadingcontact, setIsLoadingcontact] = useState(false)
     const [isLoadinMenu, setIsLoadingMenu] = useState(false)
     const [isLoadinOption, setIsLoadingOption] = useState(false)
+    const [isLoadinBanner, setIsLoadingBanner] = useState(false)
+    const [isLoadinTitleHeader, setIsLoadingTitleHeader] = useState(false)
     let dataCkeditor = currentRequire?.content ?? "";
     const handleData = (dataTemplate) => {
         dataCkeditor = dataTemplate;
@@ -281,14 +286,20 @@ export default function Index({ props }) {
         try {
             var err = []
             setError(err)
+            console.log("start")
+
             err.push(utils.checkEmptyString(event.target.name.value))
             for (let index = 0; index < err.length; index++) {
                 const element = err[index];
                 if (element != "") {
                     setError(err.filter(checkAdult))
+                    console.log("loi")
+
                     return
                 }
             }
+            console.log("start 2")
+
             var formdata = new FormData();
             formdata.append(
                 "image",
@@ -300,8 +311,12 @@ export default function Index({ props }) {
 
             var linkImage = currentRequire?.image ?? ""
             setIsLoadingRequire(true)
-            console.log("file name: ",event.target.img.files[0].name )
-            if (event.target.img.files[0].name) {
+            console.log("1")
+
+            if (event.target.img.files[0]?.name) {
+
+                console.log("post image")
+
                 await fetch("https://api.imgur.com/3/image", {
                     method: "post",
                     headers: {
@@ -312,8 +327,11 @@ export default function Index({ props }) {
                     console.log(data.data.link)
                     linkImage = data.data.link
                 })
+            } else {
+
             }
 
+            console.log("2")
             var dataForm = new FormData();
             dataForm.append("id", currentRequire?.id ?? 0);
             dataForm.append("name", event.target.name.value);
@@ -326,11 +344,11 @@ export default function Index({ props }) {
                 method: "POST",
                 body: dataForm
             }).then(res => {
-                alert("Đăng ký thông tin thành công");
+                // alert("Đăng ký thông tin thành công");
                 fetch("/api/post/getRequire").then(response => response.json()).then(result => {
                     setRequire(result)
                     setIsLoadingRequire(false)
-
+                    router.reload()
                 }).catch(error => {
                     setIsLoadingRequire(false)
                 });
@@ -341,6 +359,98 @@ export default function Index({ props }) {
             setError(error)
         }
     };
+
+    const postFormDataBanner = async (event) => {
+        event.preventDefault();
+        try {
+            var err = []
+            setError(err)
+            var formdata = new FormData();
+            formdata.append(
+                "image",
+                event.target.img.files[0]
+            );
+
+            var linkImage = currentBanner?.image ?? ""
+            setIsLoadingBanner(true)
+            console.log("1")
+
+            if (event.target.img.files[0]?.name) {
+
+                console.log("post image")
+
+                await fetch("https://api.imgur.com/3/image", {
+                    method: "post",
+                    headers: {
+                        Authorization: "Client-ID cb0adfde641e643"
+                    },
+                    body: formdata
+                }).then(data => data.json()).then(data => {
+                    console.log(data.data.link)
+                    linkImage = data.data.link
+                })
+            }
+
+            console.log("2")
+            var dataForm = new FormData();
+            dataForm.append(
+                "image", linkImage);
+
+            fetch("/api/post/updateBanner", {
+                method: "POST",
+                body: dataForm
+            }).then(res => {
+                // alert("Đăng ký thông tin thành công");
+                fetch("/api/post/getBanner").then(response => response.json()).then(result => {
+                    setCurrentBanner(result)
+                    event.reset()
+                    setIsLoadingBanner(false)
+                }).catch(error => {
+                    setIsLoadingBanner(false)
+                });
+            })
+
+        } catch (error) {
+            setIsLoadingBanner(false)
+            setError(error)
+        }
+    };
+
+    const postFormDataTitleHeader = async (event) => {
+        event.preventDefault();
+        console.log("event.target.subTitleVoucher.value");
+
+        console.log(event.target.subTitleVoucher.value);
+
+        try {
+            var err = []
+            setError(err)
+            const data = {
+                "title": event.target.title.value,
+                "description": event.target.description.value,
+                "voucher": event.target.voucher.value,
+                "subTitleVoucher": event.target.subTitleVoucher.value
+            }
+            setIsLoadingTitleHeader(true)
+            fetch("/api/post/updateTitleHeader", {
+                method: "POST",
+                body: JSON.stringify(data)
+            }).then(res => {
+                // alert("Đăng ký thông tin thành công");
+                fetch("/api/post/getTitleHeader").then(response => response.json()).then(result => {
+                    setTitleHeader(result)
+                    setIsLoadingTitleHeader(false)
+                }).catch(error => {
+                    setIsLoadingTitleHeader(false)
+                });
+            })
+
+        } catch (error) {
+            setIsLoadingTitleHeader(false)
+            setError(error)
+        }
+    };
+
     useEffect(() => {
         const isAdmin = authService.checkAuthAdmin();
         if (!isAdmin) {
@@ -372,6 +482,13 @@ export default function Index({ props }) {
                 setContact(result)
             }).catch(error => console.log('error', error));
 
+            fetch("/api/post/getBanner").then(response => response.json()).then(result => {
+                setCurrentBanner(result)
+            }).catch(error => console.log('error', error));
+
+            fetch("/api/post/getTitleHeader").then(response => response.json()).then(result => {
+                setTitleHeader(result)
+            })
             fetch("/api/post/getMenu").then(response => response.json()).then(result => {
                 setMenu(result)
                 console.log("setContact", result)
@@ -924,7 +1041,7 @@ export default function Index({ props }) {
                                                     <div className="row">
                                                         <div className="col-12">
                                                             <div className="form-group">
-                                                                <label htmlFor="title">Nội dung</label>
+                                                                <label htmlFor="title3">Nội dung</label>
                                                                 <div className="position-relative has-icon-left">
                                                                     <input type="text" id="title" className="form-control" name="title"
                                                                         value={currentOption?.title}
@@ -1054,7 +1171,7 @@ export default function Index({ props }) {
         return (
             <div className="card">
                 <div className="card-header">
-                    <h4 className="card-title">Chỉnh sửa nội dung Option</h4>
+                    <h4 className="card-title">5. Chỉnh sửa nội dung Option</h4>
                 </div>
                 <div className="card-body">
                     <table>
@@ -1065,6 +1182,193 @@ export default function Index({ props }) {
         )
     }
 
+    const renderContentBanner = () => {
+        return (
+            <div className="content-body">
+                <section id="multiple-column-form">
+                    <div className="row match-height">
+                        <div className="col-md-12 col-12">
+                            <div className="card">
+                                <div className="card-content">
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <h4 className="card-title">8. Chỉnh sửa Banner</h4>
+                                        </div>
+                                        <div className="card-body">
+                                            <form className="form form-vertical" onSubmit={postFormDataBanner}>
+                                                <div className="form-body">
+                                                    <div className="row">
+                                                        <div className="form-label-group col-md-12 col-12">
+                                                            <label className="form-label" htmlFor="img">
+                                                                Chọn hình ảnh từ máy tính
+                                                            </label>
+
+                                                            <div className="input-group">
+                                                                <input
+                                                                    type="file"
+                                                                    className="img"
+                                                                    id="img"
+                                                                    accept="image/*"
+                                                                />
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="col-12">
+                                                            {isLoadinBanner ? Loading() : <></>}
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
+                                                            <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
+                                                        </div>
+
+                                                        <div className="col-md-12 col-12">
+                                                            <div className="profile-header mb-2">
+                                                                <div className="relative">
+                                                                    <div className="cover-container">
+                                                                        {currentBanner?.image ?
+                                                                            <img className="img-fluid bg-cover rounded-0 w-100" src={`${currentBanner?.image}`} alt="User Profile Image" />
+                                                                            : <></>}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        )
+    }
+
+
+    const renderRowHeader = (titleHeader) => {
+        return (
+            <>
+                <tr>
+                    <td className="font-weight-bold">Tiêu đề lớn:</td>
+                    <td>{titleHeader?.title}</td>
+                </tr>
+                <tr>
+                    <td className="font-weight-bold">Tiêu Đề Phụ:</td>
+                    <td>{titleHeader?.description}</td>
+                </tr>
+                <tr>
+                    <td className="font-weight-bold">Ưu đãi:</td>
+                    <td>{titleHeader?.voucher}</td>
+                </tr>
+                <tr>
+                    <td className="font-weight-bold">Tiêu đề phụ Ưu Đãi:</td>
+                    <td>{titleHeader?.subTitleVoucher}</td>
+                </tr>
+
+            </>
+
+        )
+    }
+    const renderCardInfoHeader = (titleHeader) => {
+        return (
+            <div className="card">
+                <div className="card-header">
+                    <h4 className="card-title">8. Chỉnh sửa Title Header</h4>
+                </div>
+                <div className="card-body">
+                    <table>
+                        {renderRowHeader(titleHeader)}
+                    </table>
+                </div>
+            </div>
+        )
+    }
+
+    const renderContentTitleHeader = () => {
+        return (
+            <div className="content-body">
+                <section id="multiple-column-form">
+                    <div className="row match-height">
+                        <div className="col-md-6 col-12">
+                            <div className="card">
+                                <div className="card-content">
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <h4 className="card-title">8. Chỉnh sửa Title Header</h4>
+                                        </div>
+                                        <div className="card-body">
+                                            <form className="form form-vertical" onSubmit={postFormDataTitleHeader}>
+                                                <div className="form-body">
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="title2">Tiêu đề lớn</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="text" id="title" className="form-control" defaultValue={titleHeader?.title} name="title" placeholder="Địa chỉ" required />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-user"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="description">Tiêu Đề Phụ</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="description" id="description" className="form-control" defaultValue={titleHeader?.description} name="description" placeholder="Tiêu đề phụ" required />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-mail"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="voucher">Ưu đãi</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="voucher" id="voucher" className="form-control" defaultValue={titleHeader?.voucher} name="voucher" placeholder="Ưu đãi" required />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-mail"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="subTitleVoucher">Tiêu đề phụ Ưu Đãi</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="subTitleVoucher" id="subTitleVoucher" className="form-control" defaultValue={titleHeader?.subTitleVoucher} name="subTitleVoucher" placeholder="Tiêu đề phụ Ưu đãi" required />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-mail"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            {isLoadinTitleHeader ? Loading() : <></>}
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
+                                                            <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6 col-12 ">
+                            {titleHeader != null ? renderCardInfoHeader(titleHeader) : <></>}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        )
+    }
     return (
         <>
             {HeaderAdmin()}
@@ -1113,6 +1417,12 @@ export default function Index({ props }) {
                         </section>
                         <section className="page-users-view">
                             {renderContentMenu()}
+                        </section>
+                        <section className="page-users-view">
+                            {renderContentTitleHeader()}
+                        </section>
+                        <section className="page-users-view">
+                            {renderContentBanner()}
                         </section>
                     </div>
                 </div>

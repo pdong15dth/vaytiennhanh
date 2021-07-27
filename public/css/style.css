@@ -26,12 +26,8 @@ body {
     margin: 0;
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
-    background-image: url(../img/background.jpg);
+   
     /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: contain;
 }
 
 a {
@@ -5999,6 +5995,9 @@ a.btn-header {
     font-size: 54px;
     font-weight: bold;
     color: rgb(0 66 214);
+    background-color: #ffffffba;
+    display: inline;
+    padding: 0 20px;
 }
 
 .p-vay-tinh-chap {
@@ -6008,6 +6007,9 @@ a.btn-header {
     text-align: center;
     letter-spacing: 0px;
     line-height: 1.4;
+    background-color: #ffffffba;
+    display: inline;
+    padding: 0 20px;
 }
 
 .section-custom-1 {

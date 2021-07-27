@@ -178,7 +178,7 @@ console.log(props?.gioithieu?.content)
                                 id="navbarSupportedContent">
                                 <div className="row text-center">
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
-                                        <a href="/" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
+                                        <a href="/gioi-thieu" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
                                     </div>
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
                                         <a href="#" className="btn btn-primary btn-header">{props.menu?.menu2}</a>

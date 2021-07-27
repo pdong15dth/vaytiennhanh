@@ -23,8 +23,18 @@ Home.getInitialProps = async (ctx) => {
       id: 1
     }
   })
+  const banner = await prisma.banner.findFirst({
+    where: {
+      id: 1
+    }
+  })
+  const titleHeader = await prisma.titleHeader.findFirst({
+    where: {
+        id: 1
+    }
+})
   const option = await prisma.option.findMany()
-  return { props: { require, faq, benefit, ques, contact, metaSEO, menu, option } };
+  return { props: { require, faq, benefit, ques, contact, metaSEO, menu, option, banner, titleHeader } };
 }
 
 export default function Home({ props }) {
@@ -181,14 +191,6 @@ export default function Home({ props }) {
         {SEOTag(props?.metaSEO)}
       </Head>
 
-      <div className="preloader">
-        <div className="sk-folding-cube">
-          <div className="sk-cube1 sk-cube"></div>
-          <div className="sk-cube2 sk-cube"></div>
-          <div className="sk-cube4 sk-cube"></div>
-          <div className="sk-cube3 sk-cube"></div>
-        </div>
-      </div>
       <header className="header-area">
         <div className="navbar-area">
           <div className="container-fluid">
@@ -225,18 +227,30 @@ export default function Home({ props }) {
 
       </header>
 
-      <section className="features-area ptb-110 bg-f1f3f6 section-custom-1">
+      {/* background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: contain; */}
+
+      <section className="features-area ptb-110 bg-f1f3f6 section-custom-1" style={{
+        backgroundImage: "url(../img/background.jpg)",
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'contain'
+      }}>
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-6 col-md-12 text-center">
-              <h1 className="title-vay-tinh-chap">VAY TÍN CHẤP TIÊU DÙNG</h1>
-              <p className="p-vay-tinh-chap">HẠN MỨC LÊN ĐẾN 900 TRIỆU THỜI GIAN TỪ 12 ĐẾN 60 THÁNG.</p>
+              <h1 className="title-vay-tinh-chap">{props?.titleHeader?.title}</h1>
+              <br />
+              <p className="p-vay-tinh-chap">{props?.titleHeader?.description}</p>
             </div>
             <div className="col-lg-6 col-md-12 align-items-center">
               <div className="row">
                 <div className="question-form text-center form-vay-1">
-                  <h3 className="text-black">ƯU ĐÃI 2%</h3>
-                  <p className="text-black">Đăng ký ngay nhận ưu đãi bất ngờ</p>
+                  <h3 className="text-black">{props?.titleHeader?.voucher}</h3>
+                  <p className="text-black">{props?.titleHeader?.subTitleVoucher}</p>
                   {renderFormThongTin()}
                 </div>
               </div>

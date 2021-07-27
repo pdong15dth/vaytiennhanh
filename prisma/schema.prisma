@@ -165,3 +165,26 @@ model About {
 
   @@map(name: "abouts")
 }
+
+model TitleHeader {
+  id        Int      @id @default(autoincrement())
+  title     String?  
+  description     String?    
+  voucher   String?
+  subTitleVoucher  String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "titleHeaders")
+}
+
+model Banner {
+  id        Int      @id @default(autoincrement())
+  image     String   @unique 
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "banners")
+}
