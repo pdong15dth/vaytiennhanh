@@ -260,7 +260,7 @@ export default function Home({ props }) {
       </section>
       <section className="blog-details-area ptb-30 background-white">
         <div className="container">
-          <h1 className="font-bold">LỢI ÍCH KHOẢN VAY</h1>
+          <h1 className="font-bold">{props.benefit?.title}</h1>
           <div className="row">
             <div className="col-lg-8 col-md-12">
               <div className="blog-details">
@@ -299,7 +299,7 @@ export default function Home({ props }) {
       <section className="blog-details-area ptb-30 background-white">
         <div className="container">
           <div className="section-title">
-            <h1 className="font-bold">NHỮNG LƯU Ý CẦN PHẢI BIẾT</h1>
+            <h1 className="font-bold">{props.faq?.title}</h1>
           </div>
           <div className="row">
             <div className="col-md-12">
@@ -322,9 +322,7 @@ export default function Home({ props }) {
       <section className="blog-details-area ptb-30 background-white">
         <div className="container">
           <div className="section-title">
-            <h1 className="font-bold">GIẢI ĐÁP THẮC MẮC CỦA</h1>
-            <h1 className="font-bold">KHÁCH HÀNG</h1>
-
+            <h1 className="font-bold">{props.ques?.title}</h1>
           </div>
           <div className="row">
             <div className="col-md-12">
