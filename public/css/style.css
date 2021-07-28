@@ -26,7 +26,6 @@ body {
     margin: 0;
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
-   
     /* Center and scale the image nicely */
 }
 
@@ -482,7 +481,7 @@ Header Area CSS
     z-index: 999;
     width: 100%;
     height: auto;
-    background-color: rgb(0 66 214) ;
+    background-color: rgb(0 66 214);
 }
 
 .top-header {
@@ -6117,17 +6116,26 @@ div#navbarSupportedContent {
 }
 
 .loader {
-    border: 6px solid #f3f3f3; /* Light grey */
-    border-top: 6px solid #3498db; /* Blue */
+    border: 6px solid #f3f3f3;
+    /* Light grey */
+    border-top: 6px solid #3498db;
+    /* Blue */
     border-radius: 50%;
     width: 50px;
     height: 50px;
     animation: spin 2s linear infinite;
     margin: auto;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.padding-40 {
+    padding: 0 40px;
+}

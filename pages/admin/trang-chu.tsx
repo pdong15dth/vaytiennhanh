@@ -109,6 +109,7 @@ export default function Index({ props }) {
     }
     const postFormDataOption = (event) => {
         event.preventDefault();
+        
         try {
 
             if (currentOption?.id) {
@@ -126,12 +127,10 @@ export default function Index({ props }) {
                         return
                     }
                 }
-
+                setIsLoadingOption(true)
                 var data = JSON.stringify({
                     "title": event.target.title.value,
                 })
-
-                setIsLoadingOption(true)
                 fetch("/api/post/postOption", {
                     method: 'POST',
                     body: data,
@@ -1086,8 +1085,7 @@ export default function Index({ props }) {
     }
 
     const editOption = (option) => {
-        console.log("editOption", option);
-
+        
         confirmAlert({
             title: "Xác nhận đã cập nhật",
             message: `Bạn có chắc muốn cập nhật option: ${option?.title}`,
@@ -1099,14 +1097,22 @@ export default function Index({ props }) {
                             "id": option?.id,
                             "title": option?.title,
                         })
+                        setIsLoadingOption(true)
                         fetch("/api/post/postOption", {
                             method: "POST",
                             body: data
                         }).then(() => {
                             fetch("/api/post/getOption").then(response => response.json()).then(result => {
                                 setOption(result)
-                            }).catch(error => console.log('error', error));
-                        })
+                                setIsLoadingOption(false)
+                            }).catch(error => {
+                                setIsLoadingOption(false)
+                                console.log('error', error)
+                            });
+                        }).catch(error => {
+                            setIsLoadingOption(false)
+                            console.log('error', error)
+                        });
                     },
                 },
                 {

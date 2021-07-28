@@ -11,7 +11,7 @@ export default async function handle(req, res) {
     console.log("handle", title)
     const option = await prisma.option?.findUnique({
         where: {
-            id: id
+            id: id ?? 0
         }
     })
     
