@@ -205,7 +205,7 @@ export default function Home({ props }) {
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
 
-                    <a href="#" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
+                    <a href="/" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">

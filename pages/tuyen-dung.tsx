@@ -156,14 +156,6 @@ export default function Index({ props }) {
                 {SEOTag(props?.metaSEO)}
             </Head>
             {HeaderClient()}
-            <div className="preloader">
-                <div className="sk-folding-cube">
-                    <div className="sk-cube1 sk-cube"></div>
-                    <div className="sk-cube2 sk-cube"></div>
-                    <div className="sk-cube4 sk-cube"></div>
-                    <div className="sk-cube3 sk-cube"></div>
-                </div>
-            </div>
             <header className="header-area">
                 <div className="navbar-area">
                     <div className="container-fluid">
@@ -175,7 +167,7 @@ export default function Index({ props }) {
                                         <a href="/gioi-thieu" className="btn btn-primary btn-header">{props.menu?.menu1}</a>
                                     </div>
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
-                                        <a href="#" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
+                                        <a href="/" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
                                     </div>
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
                                         <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.contact?.phone}</a>
