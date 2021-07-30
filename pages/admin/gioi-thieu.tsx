@@ -77,7 +77,11 @@ export default function Index({ props }) {
                     console.log(error)
                     setIsLoading(false)
                 });
-            })
+            }).catch(error => {
+                console.log("error updateAbout")
+                console.log(error)
+                setIsLoading(false)
+            });
 
         } catch (error) {
             setError(error)
