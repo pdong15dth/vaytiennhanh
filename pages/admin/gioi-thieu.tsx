@@ -57,11 +57,9 @@ export default function Index({ props }) {
             var err = []
             setError(err)
             console.log("Dongne:", dataCkeditor);
-            var data = JSON.stringify({
-                "content": dataCkeditor,
-            })
-
-            console.log("data client", data);
+            var data = new FormData();
+            data.append("content", dataCkeditor)
+            console.log(dataCkeditor)
             
             setIsLoading(true)
             await fetch("/api/post/updateAbout", {
