@@ -1,35 +1,35 @@
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
-import prisma from "../../lib/prisma";
 import FooterAdmin from "../../src/Script/FooterAdmin";
 import LeftMenu from "../../src/MenuAdmin/LeftMenu";
 import TopMenu from "../../src/MenuAdmin/TopMenu";
 import HeaderAdmin from "../../src/Script/HeaderAdmin";
+import dynamic from "next/dynamic";
+import ReactHtmlParser from "react-html-parser";
+import authService from "../../src/services/authService/auth.service";
+import { useRouter } from "next/router";
+import Loading from "../../src/Loading";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-import { useRouter } from "next/router";
-import authService from "../../src/services/authService/auth.service";
-import ReactHtmlParser from "react-html-parser";
-import dynamic from "next/dynamic";
-import Loading from "../../src/Loading";
+
+// Common editors usually work on client-side, so we use Next.js's dynamic import with mode ssr=false to load them on client-side
 const Editor = dynamic(() => import("../../src/ckeditor"), {
     ssr: false,
 });
-Index.getInitialProps = async (ctx) => {
-    const about = await prisma.about.findFirst({
-        where: {
-            id: 1
-        }
-    });
-    return { props: { about } };
-}
 
 export default function Index({ props }) {
 
     const [error, setError] = useState<any>(null)
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingAbout, setIsLoadingAbout] = useState(false)
     const [gioithieu, setGioiThieu] = useState<any>(null)
+
+    let dataCkeditor = gioithieu?.content ?? "";
+    const handleDataAbout = (dataTemplate) => {
+        dataCkeditor = dataTemplate;
+        console.log(dataTemplate)
+    };
+
     useEffect(() => {
         const isAdmin = authService.checkAuthAdmin();
         if (!isAdmin) {
@@ -45,13 +45,7 @@ export default function Index({ props }) {
         fetchMyAPI()
     }, [])
 
-    let dataCkeditor = gioithieu?.content ?? "";
-    const handleData = (dataTemplate) => {
-        dataCkeditor = dataTemplate;
-        console.log(dataTemplate)
-    };
-
-    const postFormData = async (event) => {
+    const postFormDataAbout = async (event) => {
         event.preventDefault();
         try {
             var err = []
@@ -61,7 +55,7 @@ export default function Index({ props }) {
             data.append("content", dataCkeditor)
             console.log(dataCkeditor)
             
-            setIsLoading(true)
+            setIsLoadingAbout(true)
             await fetch("/api/post/updateAbout", {
                 method: "POST",
                 body: data
@@ -69,27 +63,27 @@ export default function Index({ props }) {
                 alert("Đăng ký thông tin thành công");
                 fetch("/api/post/getAbout").then(response => response.json()).then(result => {
                     setGioiThieu(result)
-                    setIsLoading(false)
+                    setIsLoadingAbout(false)
                 }).catch(error => {
                     console.log("error")
                     console.log(error)
-                    setIsLoading(false)
+                    setIsLoadingAbout(false)
                 });
             }).catch(error => {
                 console.log("error updateAbout")
                 console.log(error)
-                setIsLoading(false)
+                setIsLoadingAbout(false)
             });
 
         } catch (error) {
             setError(error)
             console.log("error ngoai")
             console.log(error)
-            setIsLoading(false)
+            setIsLoadingAbout(false)
         }
     }
 
-    const renderContentRequire = () => {
+    const renderContentAbout = () => {
         return (
             <div className="content-body">
                 <section id="multiple-column-form">
@@ -101,16 +95,16 @@ export default function Index({ props }) {
                                 </div>
                                 <div className="card-content">
                                     <div className="card-body">
-                                        <form className="form" onSubmit={postFormData}>
+                                        <form className="form" onSubmit={postFormDataAbout}>
                                             <div className="form-body">
                                                 <div className="row">
                                                     <div className="col-md-12 col-12">
                                                         <div className="form-label-group">
-                                                            <Editor data={dataCkeditor} onchangeData={handleData} />
+                                                            <Editor data={dataCkeditor} onchangeData={handleDataAbout} />
                                                             <label htmlFor="city-column">Nội Dung</label>
                                                         </div>
                                                     </div>
-                                                    {isLoading ? Loading() : <></>}
+                                                    {isLoadingAbout ? Loading() : <></>}
                                                     <div className="col-12">
                                                         <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
                                                         <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
@@ -150,7 +144,7 @@ export default function Index({ props }) {
                     <div className="content-overlay"></div>
                     <div className="header-navbar-shadow"></div>
                     <div className="content-wrapper">
-                        {renderContentRequire()}
+                        {renderContentAbout()}
                     </div>
                 </div>
 

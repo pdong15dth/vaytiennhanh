@@ -44,6 +44,15 @@ export default function Index({ props }) {
     const [isLoadinOption, setIsLoadingOption] = useState(false)
     const [isLoadinBanner, setIsLoadingBanner] = useState(false)
     const [isLoadinTitleHeader, setIsLoadingTitleHeader] = useState(false)
+    const [isLoadingAbout, setIsLoadingAbout] = useState(false)
+    const [gioithieu, setGioiThieu] = useState<any>(null)
+
+    let dataCkeditorAbout = gioithieu?.content ?? "";
+    const handleDataAbout = (dataTemplate) => {
+        dataCkeditorAbout = dataTemplate;
+        console.log(dataTemplate)
+    };
+
     let dataCkeditor = currentRequire?.content ?? "";
     const handleData = (dataTemplate) => {
         dataCkeditor = dataTemplate;
@@ -109,7 +118,7 @@ export default function Index({ props }) {
     }
     const postFormDataOption = (event) => {
         event.preventDefault();
-        
+
         try {
 
             if (currentOption?.id) {
@@ -813,6 +822,7 @@ export default function Index({ props }) {
         )
     }
 
+
     const renderCardInfoContact = (contact) => {
         return (
             <div className="card">
@@ -1085,7 +1095,7 @@ export default function Index({ props }) {
     }
 
     const editOption = (option) => {
-        
+
         confirmAlert({
             title: "Xác nhận đã cập nhật",
             message: `Bạn có chắc muốn cập nhật option: ${option?.title}`,
@@ -1375,6 +1385,95 @@ export default function Index({ props }) {
             </div>
         )
     }
+
+    const postFormDataAbout = async (event) => {
+        event.preventDefault();
+        try {
+            var err = []
+            setError(err)
+            console.log("Dongne:", dataCkeditorAbout);
+            var data = new FormData();
+            data.append("content", dataCkeditorAbout)
+            console.log(dataCkeditorAbout)
+            
+            setIsLoadingAbout(true)
+            await fetch("/api/post/updateAbout", {
+                method: "POST",
+                body: data
+            }).then(res => {
+                alert("Đăng ký thông tin thành công");
+                fetch("/api/post/getAbout").then(response => response.json()).then(result => {
+                    setGioiThieu(result)
+                    setIsLoadingAbout(false)
+                }).catch(error => {
+                    console.log("error")
+                    console.log(error)
+                    setIsLoadingAbout(false)
+                });
+            }).catch(error => {
+                console.log("error updateAbout")
+                console.log(error)
+                setIsLoadingAbout(false)
+            });
+
+        } catch (error) {
+            setError(error)
+            console.log("error ngoai")
+            console.log(error)
+            setIsLoadingAbout(false)
+        }
+    }
+
+    const renderContentAbout = () => {
+        return (
+            <div className="content-body">
+                <section id="multiple-column-form">
+                    <div className="row match-height">
+                        <div className="col-12">
+                            <div className="card">
+                                <div className="card-header">
+                                    <h4 className="card-title">Điều kiện / Yêu cầu</h4>
+                                </div>
+                                <div className="card-content">
+                                    <div className="card-body">
+                                        <form className="form" onSubmit={postFormDataAbout}>
+                                            <div className="form-body">
+                                                <div className="row">
+                                                    <div className="col-md-12 col-12">
+                                                        <div className="form-label-group">
+                                                            <Editor data={gioithieu?.content} onchangeData={handleDataAbout} />
+                                                            <label htmlFor="city-column">Nội Dung</label>
+                                                        </div>
+                                                    </div>
+                                                    {isLoadingAbout ? Loading() : <></>}
+                                                    <div className="col-12">
+                                                        <button type="submit" className="btn btn-primary mr-1 mb-1">Submit</button>
+                                                        <button type="reset" className="btn btn-outline-warning mr-1 mb-1">Reset</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div className="card-body">
+                                        <h1 >Preview</h1>
+                                        <div className="row">
+                                            <div className="col-lg-8 col-md-12">
+                                                <div className="blog-details">
+                                                    {gioithieu != null ? ReactHtmlParser(gioithieu?.content) : <></>}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        )
+    }
+
     return (
         <>
             {HeaderAdmin()}
@@ -1415,6 +1514,7 @@ export default function Index({ props }) {
                         {renderContentBenefits()}
                         {renderContentFaq()}
                         {renderContentQues()}
+                        {renderContentAbout()}
                         <section className="page-users-view">
                             {renderContentOption()}
                         </section>
