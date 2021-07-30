@@ -11,7 +11,7 @@ import ReactHtmlParser from "react-html-parser";
 Index.getInitialProps = async (ctx) => {
     const contact = await prisma.contact.findFirst()
     const metaSEO = await prisma.seoWeb.findFirst()
-    const gioithieu = await prisma.about.findFirst({
+    const gioithieu = await prisma.gioiThieu.findFirst({
         where: {
             id: 1
         }
