@@ -48,6 +48,17 @@ model Benefit {
   @@map(name: "benefits")
 }
 
+model GioiThieu {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "gioithieus")
+}
+
 model Faq {
   id        Int      @id @default(autoincrement())
   title     String?

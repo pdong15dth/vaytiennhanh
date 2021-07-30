@@ -37,7 +37,7 @@ export default function Index({ props }) {
         }
 
         async function fetchMyAPI() {
-            fetch("/api/post/getAbout").then(response => response.json()).then(result => {
+            fetch("/api/post/getGioithieu").then(response => response.json()).then(result => {
                 setGioiThieu(result)
             }).catch(error => console.log('error', error));
         }
@@ -45,45 +45,37 @@ export default function Index({ props }) {
         fetchMyAPI()
     }, [])
 
-    const postFormDataAbout = async (event) => {
+    const postFormDataGioithieu = (event) => {
         event.preventDefault();
         try {
             var err = []
             setError(err)
-            console.log("Dongne:", dataCkeditor);
             var data = new FormData();
             data.append("content", dataCkeditor)
             console.log(dataCkeditor)
-            
+            data.append("title", `event.target.title.value`)
             setIsLoadingAbout(true)
-            await fetch("/api/post/updateAbout", {
+            fetch("/api/post/updateGioithieu", {
                 method: "POST",
                 body: data
             }).then(res => {
                 alert("Đăng ký thông tin thành công");
-                fetch("/api/post/getAbout").then(response => response.json()).then(result => {
+                fetch("/api/post/getGioithieu").then(response => response.json()).then(result => {
                     setGioiThieu(result)
+                    console.log("setGioithieu", result)
                     setIsLoadingAbout(false)
+
                 }).catch(error => {
-                    console.log("error")
-                    console.log(error)
                     setIsLoadingAbout(false)
                 });
-            }).catch(error => {
-                console.log("error updateAbout")
-                console.log(error)
-                setIsLoadingAbout(false)
-            });
+            })
 
         } catch (error) {
             setError(error)
-            console.log("error ngoai")
-            console.log(error)
-            setIsLoadingAbout(false)
         }
-    }
+    };
 
-    const renderContentAbout = () => {
+    const renderContentGioithieu = () => {
         return (
             <div className="content-body">
                 <section id="multiple-column-form">
@@ -95,7 +87,7 @@ export default function Index({ props }) {
                                 </div>
                                 <div className="card-content">
                                     <div className="card-body">
-                                        <form className="form" onSubmit={postFormDataAbout}>
+                                        <form className="form" onSubmit={postFormDataGioithieu}>
                                             <div className="form-body">
                                                 <div className="row">
                                                     <div className="col-md-12 col-12">
@@ -144,7 +136,7 @@ export default function Index({ props }) {
                     <div className="content-overlay"></div>
                     <div className="header-navbar-shadow"></div>
                     <div className="content-wrapper">
-                        {renderContentAbout()}
+                        {renderContentGioithieu()}
                     </div>
                 </div>
 
