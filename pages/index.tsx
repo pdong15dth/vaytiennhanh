@@ -34,12 +34,13 @@ Home.getInitialProps = async ({ req, res }: any) => {
     }
   })
   const option = await prisma.option.findMany()
-  const ip = req.connection.remoteAddress
-  return { props: {ip, require, faq, benefit, ques, contact, metaSEO, menu, option, banner, titleHeader } };
+  const forwarded = req.headers['x-forwarded-for']
+  const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
+  console.log(req.connection)
+  return { props: {forwarded, ip, require, faq, benefit, ques, contact, metaSEO, menu, option, banner, titleHeader } };
 }
 
 export default function Home({ props }) {
-  console.log(props.ip)
   const router = useRouter()
   const [error, setError] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -126,6 +127,8 @@ export default function Home({ props }) {
 
 
   const renderCardRequire = (require) => {
+  console.log(props.ip, props.forwarded)
+
     return require?.map((item, index) => {
       return (
         <div className="col-lg-4 col-md-12" key={index}>
