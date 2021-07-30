@@ -45,7 +45,7 @@ export default function Index({ props }) {
         fetchMyAPI()
     }, [])
 
-    let dataCkeditor = `<figure class="image"><img src="https://i.imgur.com/hUjzp23.png"></figure><figure class="image"><img src="https://i.imgur.com/2Jultgb.png"></figure>`;
+    let dataCkeditor = gioithieu?.content ?? "";
     const handleData = (dataTemplate) => {
         dataCkeditor = dataTemplate;
         console.log(dataTemplate)
@@ -100,7 +100,7 @@ export default function Index({ props }) {
                                                 <div className="row">
                                                     <div className="col-md-12 col-12">
                                                         <div className="form-label-group">
-                                                            <Editor data={gioithieu?.content} onchangeData={handleData} />
+                                                            <Editor data={dataCkeditor} onchangeData={handleData} />
                                                             <label htmlFor="city-column">Nội Dung</label>
                                                         </div>
                                                     </div>
