@@ -220,7 +220,9 @@ export default function Home({ props }) {
                     <a href="tuyen-dung" className="btn btn-primary btn-header">{props.menu?.menu3}</a>
 
                   </div>
-
+                  <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
+                    <a href="tuyen-dung" className="btn btn-primary btn-header">{props.ip}</a>
+                  </div>
                 </div>
               </div>
             </nav>
