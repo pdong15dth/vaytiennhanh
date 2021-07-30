@@ -51,17 +51,20 @@ export default function Index({ props }) {
         console.log(dataTemplate)
     };
 
-    const postFormData = (event) => {
+    const postFormData = async (event) => {
         event.preventDefault();
         try {
             var err = []
             setError(err)
             console.log("Dongne:", dataCkeditor);
-            var data = new FormData();
-            data.append("content", dataCkeditor)
+            var data = JSON.stringify({
+                "content": dataCkeditor,
+            })
 
+            console.log("data client", data);
+            
             setIsLoading(true)
-            fetch("/api/post/updateAbout", {
+            await fetch("/api/post/updateAbout", {
                 method: "POST",
                 body: data
             }).then(res => {
