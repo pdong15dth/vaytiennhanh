@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Script from 'next/script'
 import prisma from "../lib/prisma";
 import HeaderClient from "../src/Script/HeaderClient";
@@ -7,8 +7,10 @@ import SEOTag from "../src/Script/seoTag";
 import utils from "../src/utils/constant";
 import Loading from "../src/Loading";
 import ReactHtmlParser from "react-html-parser";
+import localStorageService from "../src/services/localStorage.service/localStorage.service";
+import { CountRequest } from "../src/models/CountRequestData";
 
-Index.getInitialProps = async (ctx) => {
+Index.getInitialProps = async ({ req, res }: any) => {
     const contact = await prisma.contact.findFirst()
     const metaSEO = await prisma.seoWeb.findFirst()
     const gioithieu = await prisma.gioiThieu.findFirst({
@@ -21,19 +23,42 @@ Index.getInitialProps = async (ctx) => {
             id: 1
         }
     })
+    const count = await prisma.countRequest.findFirst({
+        where: {
+            id: 1
+        }
+    })
     const option = await prisma.option.findMany()
+    const forwarded = req.headers['x-forwarded-for']
+    const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
     const mess = prisma.$transaction
-    return { props: { contact, metaSEO, mess, menu, option, gioithieu } };
+    return { props: { ip, contact, metaSEO, mess, menu, option, gioithieu, count } };
 }
 
 export default function Index({ props }) {
     const [error, setError] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-console.log(props?.gioithieu?.content)
+    console.log(props?.gioithieu?.content)
     console.log("have connected", props.mess)
+    const count = props?.count
     function checkAdult(string) {
         return string != "";
     }
+    useEffect(() => {
+        var timeSpace = Date.now() - (localStorageService.countRequest.get().time ?? Date.now())
+        if (timeSpace > 20000) {
+            fetch("/api/count", {
+                method: "POST"
+            }).then(result => result.json().then(res => {
+                console.log("cap nhat count thanh cong")
+                localStorageService.countRequest.set(new CountRequest({
+                    ipAddress: props.ip,
+                    time: `${Date.now()}`
+                }))
+
+            }))
+        }
+    }, [])
 
     const submitData = async (event) => {
         event.preventDefault();
@@ -216,6 +241,7 @@ console.log(props?.gioithieu?.content)
                                                 data-cfemail={props?.contact?.email}>{props?.contact?.email}</span></a>
                                             </li>
                                             <li><span>Số Điện Thoại:</span> <a href={`tel:${props?.contact?.phone}`}>{props?.contact?.phone}</a></li>
+                                            <li><span>Lượt Truy Cập:</span>{" "}<strong>{count?.count}</strong></li>
                                         </ul>
                                     </div>
                                     <ul className="social">

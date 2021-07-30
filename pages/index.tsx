@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import Head from 'next/head'
 import { useRouter } from 'next/router';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import prisma from '../lib/prisma';
 import utils from '../src/utils/constant';
 import ReactHtmlParser from "react-html-parser";
@@ -10,6 +10,8 @@ import SEOTag from '../src/Script/seoTag';
 import Image from 'next/image'
 import Script from 'next/script';
 import Loading from '../src/Loading'
+import localStorageService from "../src/services/localStorage.service/localStorage.service";
+import { CountRequest } from '../src/models/CountRequestData';
 
 Home.getInitialProps = async ({ req, res }: any) => {
   const require = await prisma.require.findMany();
@@ -30,14 +32,18 @@ Home.getInitialProps = async ({ req, res }: any) => {
   })
   const titleHeader = await prisma.titleHeader.findFirst({
     where: {
-        id: 1
+      id: 1
     }
   })
   const option = await prisma.option.findMany()
+  const count = await prisma.countRequest.findFirst({
+    where: {
+      id: 1
+    }
+  })
   const forwarded = req.headers['x-forwarded-for']
   const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
-  console.log(req.connection)
-  return { props: {forwarded, ip, require, faq, benefit, ques, contact, metaSEO, menu, option, banner, titleHeader } };
+  return { props: { ip, count, require, faq, benefit, ques, contact, metaSEO, menu, option, banner, titleHeader } };
 }
 
 export default function Home({ props }) {
@@ -45,6 +51,24 @@ export default function Home({ props }) {
   const [error, setError] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [amount, setAmount] = useState(0)
+  const count = props?.count
+  //localStorageService.userInfor.set(new LoginDataModel(userInfor));
+
+  useEffect(() => {
+    var timeSpace = Date.now() - (localStorageService.countRequest.get().time ?? Date.now())
+    if (timeSpace > 20000) {
+      fetch("/api/count", {
+        method: "POST"
+      }).then(result => result.json().then(res => {
+        console.log("cap nhat count thanh cong")
+        localStorageService.countRequest.set(new CountRequest({
+          ipAddress: props.ip,
+          time: `${Date.now()}`
+        }))
+
+      }))
+    }
+  }, [])
   const submitData = async (event) => {
     event.preventDefault();
     try {
@@ -127,7 +151,7 @@ export default function Home({ props }) {
 
 
   const renderCardRequire = (require) => {
-  console.log(props.ip, props.forwarded)
+    console.log(props.ip, props.forwarded)
 
     return require?.map((item, index) => {
       return (
@@ -223,9 +247,6 @@ export default function Home({ props }) {
                     <a href="tuyen-dung" className="btn btn-primary btn-header">{props.menu?.menu3}</a>
 
                   </div>
-                  <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
-                    <a href="tuyen-dung" className="btn btn-primary btn-header">{props.ip}</a>
-                  </div>
                 </div>
               </div>
             </nav>
@@ -249,12 +270,12 @@ export default function Home({ props }) {
         <div className="container-fluid padding-40">
           <div className="row align-items-center">
             <div className="col-lg-6 col-md-12 text-center">
-            {props?.titleHeader?.title ?  <h1 className="title-vay-tinh-chap">{props?.titleHeader?.title}</h1> : <></>} 
-             
+              {props?.titleHeader?.title ? <h1 className="title-vay-tinh-chap">{props?.titleHeader?.title}</h1> : <></>}
+
               <br />
-             
-            {props?.titleHeader?.description ?  <p className="p-vay-tinh-chap">{props?.titleHeader?.description}</p> : <></>} 
-              
+
+              {props?.titleHeader?.description ? <p className="p-vay-tinh-chap">{props?.titleHeader?.description}</p> : <></>}
+
             </div>
             <div className="col-lg-6 col-md-12 align-items-center">
               <div className="row">
@@ -361,6 +382,7 @@ export default function Home({ props }) {
                         data-cfemail={props.contact?.email}>{props.contact?.email}</span></a>
                       </li>
                       <li><span>Số Điện Thoại:</span> <a href={`tel:${props.contact?.phone}`}>{props.contact?.phone}</a></li>
+                      <li><span>Lượt Truy Cập:</span>{" "}<strong>{count?.count}</strong></li>
                     </ul>
                   </div>
                   <ul className="social">

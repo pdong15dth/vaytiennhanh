@@ -199,3 +199,11 @@ model Banner {
 
   @@map(name: "banners")
 }
+
+model CountRequest {
+  id        Int      @id @default(autoincrement())
+  count     Int?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+}

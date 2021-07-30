@@ -1,10 +1,12 @@
 // import localStorageConstaint from "./constants/constants";
 
 import { LoginDataModel } from "../../models/AdminDataResult";
+import { CountRequest } from "../../models/CountRequest";
 
 class LocalStorageKey {
   protected ACCESS_TOKEN = "ACCESS_TOKEN";
   protected USER_INFOR = "USER_INFOR";
+  protected COUNT_REQUEST = "COUNT_REQUEST";
 }
 
 class BaseStorage<T> {
@@ -49,6 +51,12 @@ class LocalStorageService extends LocalStorageKey {
    */
 
   userInfor: BaseStorage<LoginDataModel| LoginDataModel> = new BaseStorage(this.USER_INFOR);
+
+  /**
+   * count request
+   */
+
+  countRequest: BaseStorage<CountRequest> = new BaseStorage(this.COUNT_REQUEST);
 }
 
 const localStorageService = new LocalStorageService();
