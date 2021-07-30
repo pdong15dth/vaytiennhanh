@@ -40,8 +40,8 @@ export default function Index({ props }) {
     }
 
     useEffect(() => {
-        var timeSpace = Date.now() - (localStorageService.countRequest.get().time ?? Date.now())
-        if (timeSpace > 20000) {
+        var timeSpace = Date.now() - (localStorageService.countRequest.get()?.time as any) ?? 0
+        if (timeSpace > 20000 || isNaN(timeSpace)) {
             fetch("/api/count", {
                 method: "POST"
             }).then(result => result.json().then(res => {

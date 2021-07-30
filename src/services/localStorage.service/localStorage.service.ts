@@ -1,7 +1,7 @@
 // import localStorageConstaint from "./constants/constants";
 
 import { LoginDataModel } from "../../models/AdminDataResult";
-import { CountRequest } from "../../models/CountRequest";
+import { CountRequest } from "../../models/CountRequestData";
 
 class LocalStorageKey {
   protected ACCESS_TOKEN = "ACCESS_TOKEN";
