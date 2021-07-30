@@ -11,7 +11,8 @@ export default async function handle(req, res) {
             id: 1
         }
     })
-    const count = countResult?.count
+    const count = countResult?.count ?? 0
+    console.log(count)
     const result = await prisma.countRequest.upsert({
         where: {
             id: 1
