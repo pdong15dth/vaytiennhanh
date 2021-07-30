@@ -73,12 +73,16 @@ export default function Index({ props }) {
                     setGioiThieu(result)
                     setIsLoading(false)
                 }).catch(error => {
+                    console.log("error")
+                    console.log(error)
                     setIsLoading(false)
                 });
             })
 
         } catch (error) {
             setError(error)
+            console.log("error ngoai")
+            console.log(error)
             setIsLoading(false)
         }
     }
