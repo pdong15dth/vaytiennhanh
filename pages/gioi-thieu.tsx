@@ -269,7 +269,7 @@ export default function Index({ props }) {
                     <div className="container">
                         <div className="row align-items-center">
                             <div className="col-lg-6 col-md-6 col-sm-6">
-                                <p>Copyright 2020. All Rights Reserved.</p>
+                                <p>Copyright 2021. All Rights Reserved.</p>
                             </div>
                             <div className="col-lg-6 col-md-6 col-sm-6">
                                 <ul>
