@@ -11,7 +11,7 @@ import Image from 'next/image'
 import Script from 'next/script';
 import Loading from '../src/Loading'
 
-Home.getInitialProps = async (ctx) => {
+Home.getInitialProps = async ({ req, res }: any) => {
   const require = await prisma.require.findMany();
   const faq = await prisma.faq.findFirst()
   const benefit = await prisma.benefit.findFirst()
@@ -32,12 +32,14 @@ Home.getInitialProps = async (ctx) => {
     where: {
         id: 1
     }
-})
+  })
   const option = await prisma.option.findMany()
-  return { props: { require, faq, benefit, ques, contact, metaSEO, menu, option, banner, titleHeader } };
+  const ip = req.connection.remoteAddress
+  return { props: {ip, require, faq, benefit, ques, contact, metaSEO, menu, option, banner, titleHeader } };
 }
 
 export default function Home({ props }) {
+  console.log(props.ip)
   const router = useRouter()
   const [error, setError] = useState([])
   const [isLoading, setIsLoading] = useState(false)
