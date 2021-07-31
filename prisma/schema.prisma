@@ -114,6 +114,7 @@ model SeoWeb {
   og_title            String?
   og_url              String?
   og_image            String?
+  icon_website        String?
   og_description      String?
   og_site_name        String?
   og_see_also         String?

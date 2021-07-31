@@ -35,10 +35,29 @@ export default function Index({ props }) {
         );
 
         var linkImage = seo?.og_image ?? ""
+        var linkImageIcon = seo?.icon_website ?? ""
         setIsLoading(true)
-        console.log("1")
 
         if (event.target.img.files[0]?.name) {
+            setIsLoadingLogo(true)
+            console.log("post image")
+            await fetch("https://api.imgur.com/3/image", {
+                method: "post",
+                headers: {
+                    Authorization: "Client-ID cb0adfde641e643"
+                },
+                body: formdata
+            }).then(data => data.json()).then(data => {
+                setIsLoadingLogo(false)
+                console.log(data.data.link)
+                linkImage = data.data.link
+            })
+            setIsLoadingLogo(false)
+        } else {
+            linkImage = seo?.og_image
+        }
+
+        if (event.target.icon_website.files[0]?.name) {
             setIsLoadingLogo(true)
             console.log("post image")
 
@@ -51,12 +70,11 @@ export default function Index({ props }) {
             }).then(data => data.json()).then(data => {
                 setIsLoadingLogo(false)
                 console.log(data.data.link)
-                linkImage = data.data.link
-                setCurrentLogo(linkImage)
+                linkImageIcon = data.data.link
             })
             setIsLoadingLogo(false)
         } else {
-            linkImage = seo?.og_image
+            linkImageIcon = seo?.og_image
         }
 
         var data = JSON.stringify({
@@ -66,6 +84,7 @@ export default function Index({ props }) {
             og_title: event.target.og_title.value,
             og_url: event.target.og_url.value,
             og_image: linkImage,
+            icon_website: linkImageIcon,
             og_description: event.target.og_description.value,
             og_site_name: event.target.og_site_name.value,
             og_see_also: event.target.og_see_also.value,
@@ -292,7 +311,7 @@ export default function Index({ props }) {
                                                         <div className="form-group col-12">
                                                             <label htmlFor="og_image">og_image</label>
                                                             <div className="position-relative has-icon-left">
-                                                                <input type="text" id="og_image" className="form-control" defaultValue={seo?.og_image} name="og_image" placeholder="og_image" />
+                                                                <input type="text" id="og_image" className="form-control" defaultValue={seo?.og_image} name="og_image" disabled placeholder="og_image" />
                                                                 <div className="form-control-position">
                                                                     <i className="feather icon-smartphone"></i>
                                                                 </div>
@@ -311,7 +330,28 @@ export default function Index({ props }) {
                                                                     accept="image/*"
                                                                 />
                                                             </div>
-
+                                                        </div>
+                                                        <div className="form-group col-12">
+                                                            <label htmlFor="icon_website">Icon Website</label>
+                                                            <div className="position-relative has-icon-left">
+                                                                <input type="text" id="icon_website" className="form-control" defaultValue={seo?.icon_website} name="icon_website" disabled placeholder="Icon Website" />
+                                                                <div className="form-control-position">
+                                                                    <i className="feather icon-smartphone"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="form-label-group col-md-12 col-12">
+                                                            <label className="form-label" htmlFor="icon_website">
+                                                                Chọn hình ảnh từ máy tính
+                                                            </label>
+                                                            <div className="input-group">
+                                                                <input
+                                                                    type="file"
+                                                                    className="img"
+                                                                    id="icon_website"
+                                                                    accept="image/*"
+                                                                />
+                                                            </div>
                                                         </div>
                                                         <div className="col-12">
                                                             {isLoadingLogo ? Loading() : <></>}
