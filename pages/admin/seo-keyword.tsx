@@ -81,7 +81,7 @@ export default function Index({ props }) {
             })
             setIsLoadingLogo(false)
         } else {
-            linkImageIcon = seo?.og_image
+            linkImageIcon = seo?.icon_website
         }
 
         var data = JSON.stringify({
