@@ -8,6 +8,7 @@ import prisma from '../../../lib/prisma';
 export default async function handle(req, res) {
 
     const body = JSON.parse(req.body)
+    console.log("body", body)
     const {
         description,
         keywords,
@@ -63,6 +64,7 @@ export default async function handle(req, res) {
             og_title: og_title,
             og_url: og_url,
             og_image: og_image,
+            icon_website: icon_website,
             og_description: og_description,
             og_site_name: og_site_name,
             og_see_also: og_see_also,

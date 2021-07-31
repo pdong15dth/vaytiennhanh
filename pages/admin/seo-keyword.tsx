@@ -56,6 +56,13 @@ export default function Index({ props }) {
         } else {
             linkImage = seo?.og_image
         }
+        console.log("icon", event.target.icon_website.files)
+
+        var formdata2 = new FormData();
+        formdata2.append(
+            "image",
+            event.target.icon_website.files[0]
+        );
 
         if (event.target.icon_website.files[0]?.name) {
             setIsLoadingLogo(true)
@@ -66,7 +73,7 @@ export default function Index({ props }) {
                 headers: {
                     Authorization: "Client-ID cb0adfde641e643"
                 },
-                body: formdata
+                body: formdata2
             }).then(data => data.json()).then(data => {
                 setIsLoadingLogo(false)
                 console.log(data.data.link)
@@ -163,6 +170,14 @@ export default function Index({ props }) {
                             <td>{seo?.og_image}
                                 {seo?.og_image ?
                                     <img className="img-fluid bg-cover rounded-0 w-100" src={`${seo?.og_image}`} alt="User Profile Image" />
+                                    : <></>}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="font-weight-bold">Icon Website</td>
+                            <td>{seo?.icon_website}
+                                {seo?.icon_website ?
+                                    <img className="img-fluid bg-cover rounded-0 w-100" src={`${seo?.icon_website}`} alt="User Profile Image" />
                                     : <></>}
                             </td>
                         </tr>
@@ -332,9 +347,9 @@ export default function Index({ props }) {
                                                             </div>
                                                         </div>
                                                         <div className="form-group col-12">
-                                                            <label htmlFor="icon_website">Icon Website</label>
+                                                            <label htmlFor="icon">Icon Website</label>
                                                             <div className="position-relative has-icon-left">
-                                                                <input type="text" id="icon_website" className="form-control" defaultValue={seo?.icon_website} name="icon_website" disabled placeholder="Icon Website" />
+                                                                <input type="text" id="icon" className="form-control" defaultValue={seo?.icon_website} name="icon" disabled placeholder="Icon Website" />
                                                                 <div className="form-control-position">
                                                                     <i className="feather icon-smartphone"></i>
                                                                 </div>
