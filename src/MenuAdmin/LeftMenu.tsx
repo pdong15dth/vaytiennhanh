@@ -28,9 +28,9 @@ export default function LeftMenu() {
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a href="/admin/gioi-thieu">
+                        <a href="/admin/vay-tin-chap">
                             <i className="feather icon-home"></i>
-                            <span className="menu-title" data-i18n="tt">Giới thiệu (Vay tín dụng)</span>
+                            <span className="menu-title" data-i18n="tt">Vay tín Chấp</span>
                         </a>
                     </li>
                     <li className="nav-item">

@@ -7,10 +7,14 @@ import utils from "../../src/utils/constant";
 import { toast, ToastContainer } from "react-nextjs-toast";
 import authService from "../../src/services/authService/auth.service";
 import { useRouter } from "next/router";
+import Loading from "../../src/Loading";
 
 export default function Index({ props }) {
     const [seo, setSeo] = useState<any>(null)
     const router = useRouter();
+    const [currentLogo, setCurrentLogo] = useState<any>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingLogo, setIsLoadingLogo] = useState(false)
 
     useEffect(() => {
         const isAdmin = authService.checkAuthAdmin();
@@ -22,15 +26,46 @@ export default function Index({ props }) {
             setSeo(result)
         }).catch(error => console.log('error', error));
     }, [])
-    const postForm = (event) => {
+    const postForm = async (event) => {
         event.preventDefault();
+        var formdata = new FormData();
+        formdata.append(
+            "image",
+            event.target.img.files[0]
+        );
+
+        var linkImage = seo?.og_image ?? ""
+        setIsLoading(true)
+        console.log("1")
+
+        if (event.target.img.files[0]?.name) {
+            setIsLoadingLogo(true)
+            console.log("post image")
+
+            await fetch("https://api.imgur.com/3/image", {
+                method: "post",
+                headers: {
+                    Authorization: "Client-ID cb0adfde641e643"
+                },
+                body: formdata
+            }).then(data => data.json()).then(data => {
+                setIsLoadingLogo(false)
+                console.log(data.data.link)
+                linkImage = data.data.link
+                setCurrentLogo(linkImage)
+            })
+            setIsLoadingLogo(false)
+        } else {
+            linkImage = seo?.og_image
+        }
+
         var data = JSON.stringify({
             description: event.target.description.value,
             keywords: event.target.keywords.value,
             fb_app_id: event.target.fb_app_id.value,
             og_title: event.target.og_title.value,
             og_url: event.target.og_url.value,
-            og_image: event.target.og_image.value,
+            og_image: linkImage,
             og_description: event.target.og_description.value,
             og_site_name: event.target.og_site_name.value,
             og_see_also: event.target.og_see_also.value,
@@ -52,21 +87,23 @@ export default function Index({ props }) {
         }).then((res) => {
             fetch("/api/post/getKeywordSEO").then(response => response.json()).then(result => {
                 setSeo(result)
+                setIsLoading(false)
             }).catch(error => console.log('error', error));
+            setIsLoading(false)
             toast.notify(`Chỉnh sửa thành công`, {
                 title: "Thành công",
                 duration: 3,
                 type: "success",
             });
-        })
-            .catch((error) => {
-                console.log(error);
-                toast.notify(`${error.message}`, {
-                    title: "Lỗi",
-                    duration: 5,
-                    type: "error",
-                });
+        }).catch((error) => {
+            setIsLoading(false)
+            console.log(error);
+            toast.notify(`${error.message}`, {
+                title: "Lỗi",
+                duration: 5,
+                type: "error",
             });
+        });
     };
 
     const renderCardInfoseo = (seo) => {
@@ -105,6 +142,9 @@ export default function Index({ props }) {
                         <tr>
                             <td className="font-weight-bold">og_image</td>
                             <td>{seo?.og_image}
+                                {seo?.og_image ?
+                                    <img className="img-fluid bg-cover rounded-0 w-100" src={`${seo?.og_image}`} alt="User Profile Image" />
+                                    : <></>}
                             </td>
                         </tr>
                         <tr>
@@ -249,17 +289,34 @@ export default function Index({ props }) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-12">
-                                                            <div className="form-group">
-                                                                <label htmlFor="og_image">og_image</label>
-                                                                <div className="position-relative has-icon-left">
-                                                                    <input type="text" id="og_image" className="form-control" defaultValue={seo?.og_image} name="og_image" placeholder="og_image" />
-                                                                    <div className="form-control-position">
-                                                                        <i className="feather icon-smartphone"></i>
-                                                                    </div>
+                                                        <div className="form-group col-12">
+                                                            <label htmlFor="og_image">og_image</label>
+                                                            <div className="position-relative has-icon-left">
+                                                                <input type="text" id="og_image" className="form-control" defaultValue={seo?.og_image} name="og_image" placeholder="og_image" />
+                                                                <div className="form-control-position">
+                                                                    <i className="feather icon-smartphone"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div className="form-label-group col-md-12 col-12">
+                                                            <label className="form-label" htmlFor="img">
+                                                                Chọn hình ảnh từ máy tính
+                                                            </label>
+
+                                                            <div className="input-group">
+                                                                <input
+                                                                    type="file"
+                                                                    className="img"
+                                                                    id="img"
+                                                                    accept="image/*"
+                                                                />
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="col-12">
+                                                            {isLoadingLogo ? Loading() : <></>}
+                                                        </div>
+
                                                         <div className="col-12">
                                                             <div className="form-group">
                                                                 <label htmlFor="og_description">og_description</label>
@@ -410,6 +467,10 @@ export default function Index({ props }) {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div className="col-12">
+                                                    {isLoading ? Loading() : <></>}
+                                                </div>
+
                                             </form>
                                         </div>
                                     </div>
@@ -424,7 +485,7 @@ export default function Index({ props }) {
 
                     </div>
                 </section>
-            </div>
+            </div >
         )
     }
     return (
