@@ -15,7 +15,6 @@ export default function HeaderClient() {
             <link rel="stylesheet" href="/css/progresscircle.min.css" />
             <link rel="stylesheet" href="/css/responsive.css" />
             <link rel="stylesheet" href="/css/style.css" />
-            <title>Vay Tiền Tin Cậy</title>
         </Head>
 
     )

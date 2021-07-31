@@ -108,6 +108,7 @@ model Career {
 
 model SeoWeb {
   id                  Int      @id @default(autoincrement())
+  title               String?  @default("")
   description         String?
   keywords            String?
   fb_app_id           String?

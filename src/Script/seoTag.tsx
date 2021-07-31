@@ -1,6 +1,8 @@
 export default function SEOTag(data) {
   return (
     <>
+      <title>{data?.title}</title>
+
       <link rel="icon" type="image/png" href={`${data?.icon_website}`} />
       <meta
         name="description"
