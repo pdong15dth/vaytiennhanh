@@ -28,11 +28,17 @@ Index.getInitialProps = async ({ req, res }: any) => {
             id: 1
         }
     })
+    const titleHeader = await prisma.titleHeader.findFirst({
+        where: {
+            id: 1
+        }
+    })
+
     const option = await prisma.option.findMany()
     const forwarded = req.headers['x-forwarded-for']
     const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
     const mess = prisma.$transaction
-    return { props: { ip, contact, metaSEO, mess, menu, option, gioithieu, count } };
+    return { props: { ip, contact, metaSEO, mess, menu, option, gioithieu, count, titleHeader } };
 }
 
 export default function Index({ props }) {
@@ -150,35 +156,40 @@ export default function Index({ props }) {
     }
     const renderFormThongTin = () => {
         return (
-            <form onSubmit={submitData}>
-                <div className="form-group">
-                    <input type="text" name="name" id="name" className="form-control"
-                        placeholder="Họ và tên" required />
-                </div>
-                <div className="form-group">
-                    <input type="text" name="phone" id="phone" className="form-control"
-                        placeholder="Nhập số điện thoại" required />
-                </div>
-                <div className="form-group">
-                    <input type="text" name="address" id="address" className="form-control"
-                        placeholder="Địa chỉ" required />
-                </div>
-                <div className="form-group">
-                    <input type="number" name="amount" id="amount" onChange={(event) => onChangeAmout(event)} className="form-control"
-                        placeholder="Khoản vay mong muốn" />
-                </div>
-                <div className="payment-box padding-bottom-20">
-                    <div className="payment-method text-float-left background-white padding-select-register">
-                        {renderOption(props?.option)}
-                    </div>
-                </div>
-                {isLoading ? Loading() : <Fragment></Fragment>}
-                <button type="submit"
-                    className="btn btn-light text-black col-lg-6 btn-register-center">Đăng ký
-                    ngay</button>
-                {error.length == 0 ? <></> : showErrorForm(error)}
-            </form>
+            <>
+                <h3 className="text-white">{props?.titleHeader?.voucher}</h3>
+                <p className="text-white">{props?.titleHeader?.subTitleVoucher}</p>
 
+
+                <form onSubmit={submitData}>
+                    <div className="form-group">
+                        <input type="text" name="name" id="name" className="form-control"
+                            placeholder="Họ và tên" required />
+                    </div>
+                    <div className="form-group">
+                        <input type="text" name="phone" id="phone" className="form-control"
+                            placeholder="Nhập số điện thoại" required />
+                    </div>
+                    <div className="form-group">
+                        <input type="text" name="address" id="address" className="form-control"
+                            placeholder="Địa chỉ" required />
+                    </div>
+                    <div className="form-group">
+                        <input type="number" name="amount" id="amount" onChange={(event) => onChangeAmout(event)} className="form-control"
+                            placeholder="Khoản vay mong muốn" />
+                    </div>
+                    <div className="payment-box padding-bottom-20">
+                        <div className="payment-method text-float-left background-white padding-select-register">
+                            {renderOption(props?.option)}
+                        </div>
+                    </div>
+                    {isLoading ? Loading() : <Fragment></Fragment>}
+                    <button type="submit"
+                        className="btn btn-light text-black col-lg-6 btn-register-center">Đăng ký
+                        ngay</button>
+                    {error.length == 0 ? <></> : showErrorForm(error)}
+                </form>
+            </>
         )
     }
     return (
@@ -257,8 +268,6 @@ export default function Index({ props }) {
                         <div className="col-lg-6 col-md-6 col-sm-6">
                             <div className="single-footer-widget">
                                 <div className="question-form text-center form-vay-1">
-                                    <h3 className="text-black">ƯU ĐÃI 2%</h3>
-                                    <p className="text-black">Đăng ký ngay nhận ưu đãi bất ngờ</p>
                                     {renderFormThongTin()}
                                 </div>
                             </div>

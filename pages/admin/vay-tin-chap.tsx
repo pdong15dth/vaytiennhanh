@@ -1340,7 +1340,7 @@ export default function Index({ props }) {
                                                             <div className="form-group">
                                                                 <label htmlFor="title2">Tiêu đề lớn</label>
                                                                 <div className="position-relative has-icon-left">
-                                                                    <input type="text" id="title" className="form-control" defaultValue={titleHeader?.title} name="title" placeholder="Địa chỉ" required />
+                                                                    <input type="text" id="title" className="form-control" defaultValue={titleHeader?.title} name="title" placeholder="Địa chỉ" />
                                                                     <div className="form-control-position">
                                                                         <i className="feather icon-user"></i>
                                                                     </div>
@@ -1351,7 +1351,7 @@ export default function Index({ props }) {
                                                             <div className="form-group">
                                                                 <label htmlFor="description">Tiêu Đề Phụ</label>
                                                                 <div className="position-relative has-icon-left">
-                                                                    <input type="description" id="description" className="form-control" defaultValue={titleHeader?.description} name="description" placeholder="Tiêu đề phụ" required />
+                                                                    <input type="description" id="description" className="form-control" defaultValue={titleHeader?.description} name="description" placeholder="Tiêu đề phụ" />
                                                                     <div className="form-control-position">
                                                                         <i className="feather icon-mail"></i>
                                                                     </div>
@@ -1362,7 +1362,7 @@ export default function Index({ props }) {
                                                             <div className="form-group">
                                                                 <label htmlFor="voucher">Ưu đãi</label>
                                                                 <div className="position-relative has-icon-left">
-                                                                    <input type="voucher" id="voucher" className="form-control" defaultValue={titleHeader?.voucher} name="voucher" placeholder="Ưu đãi" required />
+                                                                    <input type="voucher" id="voucher" className="form-control" defaultValue={titleHeader?.voucher} name="voucher" placeholder="Ưu đãi" />
                                                                     <div className="form-control-position">
                                                                         <i className="feather icon-mail"></i>
                                                                     </div>
@@ -1373,7 +1373,7 @@ export default function Index({ props }) {
                                                             <div className="form-group">
                                                                 <label htmlFor="subTitleVoucher">Tiêu đề phụ Ưu Đãi</label>
                                                                 <div className="position-relative has-icon-left">
-                                                                    <input type="subTitleVoucher" id="subTitleVoucher" className="form-control" defaultValue={titleHeader?.subTitleVoucher} name="subTitleVoucher" placeholder="Tiêu đề phụ Ưu đãi" required />
+                                                                    <input type="subTitleVoucher" id="subTitleVoucher" className="form-control" defaultValue={titleHeader?.subTitleVoucher} name="subTitleVoucher" placeholder="Tiêu đề phụ Ưu đãi" />
                                                                     <div className="form-control-position">
                                                                         <i className="feather icon-mail"></i>
                                                                     </div>
