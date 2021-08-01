@@ -169,6 +169,7 @@ export default function Index({ props }) {
             err.push(utils.checkEmptyString(event.target.menu1.value))
             err.push(utils.checkEmptyString(event.target.menu2.value))
             err.push(utils.checkEmptyString(event.target.menu3.value))
+            err.push(utils.checkEmptyString(event.target.menu4.value))
             for (let index = 0; index < err.length; index++) {
                 const element = err[index];
                 if (element != "") {
@@ -180,7 +181,8 @@ export default function Index({ props }) {
             var data = JSON.stringify({
                 "menu1": event.target.menu1.value,
                 "menu2": event.target.menu2.value,
-                "menu3": event.target.menu3.value
+                "menu3": event.target.menu3.value,
+                "menu4": event.target.menu4.value
             })
 
             setIsLoadingMenu(true)
@@ -977,6 +979,17 @@ export default function Index({ props }) {
                                                             </div>
                                                         </div>
                                                         <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="menu4">Menu 4</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="text" id="menu4" className="form-control" defaultValue={menu?.menu4} name="menu4" placeholder="Menu 4" required />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-smartphone"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12">
                                                             {isLoadinMenu ? Loading() : <></>}
                                                         </div>
                                                         <div className="col-12">
@@ -1023,6 +1036,11 @@ export default function Index({ props }) {
                         <tr>
                             <td className="font-weight-bold">Menu 3</td>
                             <td>{menu.menu3}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="font-weight-bold">Menu 4</td>
+                            <td>{menu.menu4}
                             </td>
                         </tr>
                     </table>

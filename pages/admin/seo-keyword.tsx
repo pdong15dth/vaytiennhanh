@@ -85,6 +85,7 @@ export default function Index({ props }) {
         }
 
         var data = JSON.stringify({
+            title: event.target.title.value,
             description: event.target.description.value,
             keywords: event.target.keywords.value,
             fb_app_id: event.target.fb_app_id.value,
@@ -141,6 +142,11 @@ export default function Index({ props }) {
                 </div>
                 <div className="card-body">
                     <table>
+                        <tr>
+                            <td className="font-weight-bold">Tiêu đề Website</td>
+                            <td>{seo?.title}
+                            </td>
+                        </tr>
                         <tr>
                             <td className="font-weight-bold">Mô tả</td>
                             <td>{seo?.description}
@@ -268,6 +274,17 @@ export default function Index({ props }) {
                                             <form className="form form-vertical" onSubmit={postForm}>
                                                 <div className="form-body">
                                                     <div className="row">
+                                                        <div className="col-12">
+                                                            <div className="form-group">
+                                                                <label htmlFor="title">Tiêu đề Website</label>
+                                                                <div className="position-relative has-icon-left">
+                                                                    <input type="text" id="title" className="form-control" defaultValue={seo?.title} name="title" placeholder="Tiêu đề Website" />
+                                                                    <div className="form-control-position">
+                                                                        <i className="feather icon-user"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div className="col-12">
                                                             <div className="form-group">
                                                                 <label htmlFor="description">Mô tả website</label>

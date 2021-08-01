@@ -10,6 +10,7 @@ export default async function handle(req, res) {
     const body = JSON.parse(req.body)
     console.log("body", body)
     const {
+        title,
         description,
         keywords,
         fb_app_id,
@@ -36,6 +37,7 @@ export default async function handle(req, res) {
             id: 1
         },
         create: {
+            title: title,
             description: description,
             keywords: keywords,
             fb_app_id: fb_app_id,
@@ -58,6 +60,7 @@ export default async function handle(req, res) {
             copyright: copyright
         },
         update: {
+            title: title,
             description: description,
             keywords: keywords,
             fb_app_id: fb_app_id,

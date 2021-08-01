@@ -108,6 +108,7 @@ model Career {
 
 model SeoWeb {
   id                  Int      @id @default(autoincrement())
+  title               String?  @default("")
   description         String?
   keywords            String?
   fb_app_id           String?
@@ -151,6 +152,7 @@ model MenuHeader {
   menu1     String?
   menu2     String?
   menu3     String?
+  menu4     String?  @default(" ")
   isActive  Boolean  @default(false)
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
