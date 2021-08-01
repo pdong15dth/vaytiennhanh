@@ -50,7 +50,7 @@ export default function Home({ props }) {
   const router = useRouter()
   const [error, setError] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [amount, setAmount] = useState(0)
+  const [amount, setAmount] = useState(null)
   const count = props?.count
   //localStorageService.userInfor.set(new LoginDataModel(userInfor));
 
@@ -87,7 +87,7 @@ export default function Home({ props }) {
       if (utils.checkAmountInput(event.target.amount.value) != "") {
         err.push(utils.checkAmountInput(event.target.amount.value))
       }
-      if (utils.checkEmptyString(event.target.type_amount.value) != "") {
+      if (utils.checkEmptyString(event.target.type_amount?.value) != "") {
         err.push(utils.checkEmptyString(event.target.type_amount.value))
       }
 
@@ -98,6 +98,7 @@ export default function Home({ props }) {
           newErr.push(err[index])
         }
       }
+      console.log(newErr)
       if (newErr.length > 0) {
         setError(newErr)
         return
@@ -121,12 +122,15 @@ export default function Home({ props }) {
           }
           setIsLoading(false)
 
+        }).catch(error => {
+          setIsLoading(false)
+          console.log(error)
         })
       }
       // await router.push('/');
     } catch (error) {
-      console.log("dong error")
-      setError(error)
+      // console.log("dong error")
+      // setError(error)
     }
   };
 
@@ -260,9 +264,8 @@ export default function Home({ props }) {
     background-attachment: fixed;
     background-size: contain; */}
 
-      <section className="features-area ptb-110 bg-f1f3f6 section-custom-1" style={{
+      <section className="features-area ptb-110 bg-f1f3f6 section-custom-1 backgroundHeader" style={{
         backgroundImage: `url(${props?.banner?.image})`,
-        backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
         backgroundSize: 'contain'

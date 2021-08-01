@@ -1226,7 +1226,7 @@ export default function Index({ props }) {
                                 <div className="card-content">
                                     <div className="card">
                                         <div className="card-header">
-                                            <h4 className="card-title">8. Chỉnh sửa Banner</h4>
+                                            <h4 className="card-title">9. Chỉnh sửa Banner</h4>
                                         </div>
                                         <div className="card-body">
                                             <form className="form form-vertical" onSubmit={postFormDataBanner}>
