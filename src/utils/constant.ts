@@ -27,9 +27,9 @@ class Utils {
 
   formatDate(input) {
     var datePart = input.match(/\d+/g),
-      day = datePart[0], // get only two digits
+      year = datePart[0], // get only two digits
       month = datePart[1],
-      year = datePart[2];
+      day = datePart[2];
     return day + "/" + month + "/" + year;
   }
 

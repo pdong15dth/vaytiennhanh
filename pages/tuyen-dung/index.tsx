@@ -1,13 +1,13 @@
 import Head from "next/head";
 import { Fragment, useState, useEffect } from "react";
 import Script from 'next/script'
-import prisma from "../lib/prisma";
-import HeaderClient from "../src/Script/HeaderClient";
-import SEOTag from "../src/Script/seoTag";
-import utils from "../src/utils/constant";
-import Loading from "../src/Loading";
-import localStorageService from "../src/services/localStorage.service/localStorage.service";
-import { CountRequest } from "../src/models/CountRequestData";
+import prisma from "../../lib/prisma";
+import HeaderClient from "../../src/Script/HeaderClient";
+import SEOTag from "../../src/Script/seoTag";
+import utils from "../../src/utils/constant";
+import Loading from "../../src/Loading";
+import localStorageService from "../../src/services/localStorage.service/localStorage.service";
+import { CountRequest } from "../../src/models/CountRequestData";
 
 Index.getInitialProps = async ({ req, res }: any) => {
     const contact = await prisma.contact.findFirst()

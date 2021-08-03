@@ -115,7 +115,7 @@ model SeoWeb {
   og_title            String?
   og_url              String?
   og_image            String?
-  icon_website        String?   @default("")
+  icon_website        String?  @default("")
   og_description      String?
   og_site_name        String?
   og_see_also         String?
@@ -172,7 +172,7 @@ model Option {
 
 model About {
   id        Int      @id @default(autoincrement())
-  content   String?  
+  content   String?
   isActive  Boolean  @default(false)
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
@@ -181,21 +181,21 @@ model About {
 }
 
 model TitleHeader {
-  id        Int      @id @default(autoincrement())
-  title     String?  
-  description     String?    
-  voucher   String?
-  subTitleVoucher  String?
-  isActive  Boolean  @default(false)
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  id              Int      @id @default(autoincrement())
+  title           String?
+  description     String?
+  voucher         String?
+  subTitleVoucher String?
+  isActive        Boolean  @default(false)
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @updatedAt @map(name: "updated_at")
 
   @@map(name: "titleHeaders")
 }
 
 model Banner {
   id        Int      @id @default(autoincrement())
-  image     String   @unique 
+  image     String   @unique
   isActive  Boolean  @default(false)
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
@@ -208,5 +208,45 @@ model CountRequest {
   count     Int?
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
 
+model Recruitment {
+  id             Int      @id @default(autoincrement())
+  //tiêu đề tuyển dụng
+  titleJob       String?
+  //Liên hệ với chúng tôi
+  titleForm      String?
+  //Nơi làm việc
+  address        String?
+  //Cấp Bâtj
+  rank           String?
+  //Hình thức
+  form           String?
+  //Bằng Cấp
+  certificate    String?
+  //Kinh nghiệm
+  experience     String?
+  //Mức lương
+  rangeSalary    Int?
+  // Ngành nghề
+  career         String?
+  //Hạn chót
+  deadline       String?
+  //Phúc lợi
+  welfare        String[]
+  //Mô tả job
+  descriptionJob String?
+  createdAt      DateTime @default(now()) @map(name: "created_at")
+  updatedAt      DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "recruitments")
+}
+
+model Welfare {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "welfares")
 }
