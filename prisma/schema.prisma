@@ -233,7 +233,7 @@ model Recruitment {
   //Hạn chót
   deadline       String?
   //Phúc lợi
-  welfare        Int[]
+  welfare        String[]
   //Mô tả job
   descriptionJob String?
   //Yêu cầu công việc

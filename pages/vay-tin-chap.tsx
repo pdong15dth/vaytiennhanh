@@ -278,13 +278,11 @@ export default function Home({ props }) {
           <div className="row align-items-center">
             <div className="col-lg-6 col-md-12 text-center">
               {props?.titleHeader?.title ? <h1 className="title-vay-tinh-chap">{props?.titleHeader?.title}</h1> : <></>}
-
               <br />
-
               {props?.titleHeader?.description ? <p className="p-vay-tinh-chap">{props?.titleHeader?.description}</p> : <></>}
-
             </div>
             <div className="col-lg-6 col-md-12 align-items-center">
+              
               <div className="row">
                 <div className="question-form text-center form-vay-1">
                   {renderFormThongTin()}

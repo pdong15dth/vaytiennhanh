@@ -146,10 +146,10 @@ export default function Index({ props }) {
     const addItem = (item, status) => {
         var items = [...welfareSelected]
         if (status.checked) {
-            items.push(item.id)
+            items.push(item.title)
             setWelfareSelected(items)
         } else {
-            items = items.filter(function (e) { return e !== item.id })
+            items = items.filter(function (e) { return e !== item.title })
             setWelfareSelected(items)
         }
         console.log(items);
@@ -158,7 +158,7 @@ export default function Index({ props }) {
 
     const renderItemWelfare = (items, item2) => {
         return items?.map((item, index) => {
-            const checked = item2.find(element => element == item.id) ? true : false
+            const checked = item2.find(element => element == item.title) ? true : false
             return (
                 <li className="d-inline-block mr-2" key={index}>
                     <fieldset>

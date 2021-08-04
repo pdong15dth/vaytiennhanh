@@ -8,6 +8,7 @@ import utils from "../../src/utils/constant";
 import Loading from "../../src/Loading";
 import localStorageService from "../../src/services/localStorage.service/localStorage.service";
 import { CountRequest } from "../../src/models/CountRequestData";
+import ReactHtmlParser from "react-html-parser";
 
 Index.getInitialProps = async ({ req, res }: any) => {
     const contact = await prisma.contact.findFirst()
@@ -226,12 +227,90 @@ export default function Index({ props }) {
                 </div>
             </header>
             <section className="contact-area ptb-110" style={{ backgroundColor: "#fff" }}>
-                <div className="container">
-                    <div className="section-title">
+                <div className="container shadow p-3 mb-5 bg-white rounded">
+
+                    <div className="row">
+                        <div className="col-lg-2 float-left">
+                        </div>
+                        <div className="col-lg-5 float-left ">
+                            <h2 style={{ padding: '0.5rem' }}>{currentData?.titleJob}</h2>
+                            <table className="table table-borderless">
+                                <tr>
+                                    <td className="font-weight-bold">Nơi Làm Việc:</td>
+                                    <td>{currentData?.address}</td>
+                                </tr>
+                                <tr>
+                                    <td className="font-weight-bold">Cấp Bật:</td>
+                                    <td>{currentData?.rank}</td>
+                                </tr>
+                                <tr>
+                                    <td className="font-weight-bold">Hình Thức:</td>
+                                    <td>{currentData?.form}</td>
+                                </tr>
+                                <tr>
+                                    <td className="font-weight-bold">Bằng Cấp:</td>
+                                    <td>{currentData?.certificate}</td>
+                                </tr>
+                                <tr>
+                                    <td className="font-weight-bold">Kinh Nghiệm:</td>
+                                    <td>{currentData?.experience}</td>
+                                </tr>
+                                <tr>
+                                    <td className="font-weight-bold">Mức Lương:</td>
+                                    <td>{currentData?.rangeSalary}</td>
+                                </tr>
+                                <tr>
+                                    <td className="font-weight-bold">Ngành Nghề:</td>
+                                    <td>{currentData?.career}</td>
+                                </tr>
+                                <tr>
+                                    <td className="font-weight-bold">Hạn Chót Nhận Hồ Sơ:</td>
+                                    <td>{currentData?.deadline}</td>
+                                </tr>
+
+                            </table>
+                            <div className="btn-box">
+                                <a href="#formhead" className="main-color btn btn-primary ">Nộp Đơn</a>
+                                <p style={{ display: "inline-block", paddingLeft: 20, color: 'red' }}>Bạn đã sẵn sàng ứng tuyển?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr className="my-4" />
+                    <div className="row">
+                        <div className="col-lg-10 float-left ">
+                            <h2 className="font-weight-bold" style={{ padding: '0.5rem' }}>Phúc lợi</h2>
+                            <div className="form-row">
+                                {currentData?.welfare?.map((item, index) => {
+                                    return (
+                                        <div className="col-6" key={index}>
+                                            <label className="col-sm-6 col-form-label font-weight-bold"><span><i className="bx bx-check-double"></i></span>{item}</label>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                    <hr className="my-4" />
+                    <div className="row">
+                        <div className="col-lg-10 float-left ">
+                            <h2 className="font-weight-bold" style={{ padding: '0.5rem' }}>Mô Tả Công Việc</h2>
+                            <div className="col-12">
+                                {ReactHtmlParser(currentData?.descriptionJob)}
+                            </div>
+                        </div>
+                    </div>
+                    <hr className="my-4" />
+                    <div className="row" id="formhead">
+                        <div className="col-lg-10 float-left ">
+                            <h2 className="font-weight-bold" style={{ padding: '0.5rem' }}>Yêu Cầu Công Việc</h2>
+                            <div className="col-12">
+                                {ReactHtmlParser(currentData?.requirementJob)}
+                            </div>
+                        </div>
+                    </div>
+                    <hr className="my-4" />
+                    <div className="section-title" >
                         <span>{currentData?.titleForm}</span>
-                        <h2>{currentData?.titleJob}</h2>
-                        {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                            et dolore magna aliqua.</p> */}
                     </div>
                     <div className="contact-form">
                         <form id="contactForm">
