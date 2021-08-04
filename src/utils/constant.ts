@@ -33,6 +33,16 @@ class Utils {
     return day + "/" + month + "/" + year;
   }
 
+  formatDateRevert(input) {
+    if (input == null || input == "") { return }
+    var datePart = input.match(/\d+/g),
+      year = datePart[0], // get only two digits
+      month = datePart[1],
+      day = datePart[2];
+    return day + "-" + month + "-" + year;
+  }
+
+
   checkEmailValid(email) {
     var vnf_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email !== "") {

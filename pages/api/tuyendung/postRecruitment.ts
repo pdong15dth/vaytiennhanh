@@ -33,9 +33,10 @@ export default async function handle(req, res) {
             //Hạn chót
             deadline: body.deadline,
             //Phúc lợi
-            welfare: ["1", "2", "3"],
+            welfare: body.welfare,
             //Mô tả job
             descriptionJob: body.descriptionJob,
+            requirementJob: body.requirementJob
         },
         update: {
             //tiêu đề tuyển dụng
@@ -59,9 +60,11 @@ export default async function handle(req, res) {
             //Hạn chót
             deadline: body.deadline,
             //Phúc lợi
-            welfare: ["1", "2", "3"],
+            welfare: body.welfare,
             //Mô tả job
             descriptionJob: body.descriptionJob,
+            //Yêu cầu job
+            requirementJob: body.requirementJob
         }
     })
     res.json(result);

@@ -12,12 +12,31 @@ import authService from "../../../src/services/authService/auth.service";
 import utils from "../../../src/utils/constant";
 import Loading from "../../../src/Loading";
 import { toast, ToastContainer } from "react-nextjs-toast";
+import dynamic from "next/dynamic";
+const Editor = dynamic(() => import("../../../src/ckeditor"), {
+    ssr: false,
+});
 
+Index.getInitialProps = async ({ req, res }: any) => {
+    var welfare = await prisma.welfare.findMany()
+    var currentData = await prisma.recruitment.findFirst({
+        where: {
+            id: 1
+        }
+    })
+
+    return { props: { welfare, currentData } };
+}
 export default function Index({ props }) {
 
+
     const router = useRouter();
-    const [welfare, setWelfare] = useState([])
-    const [welfareSelected, setWelfareSelected] = useState([])
+    const welfare = props.welfare
+    console.log(props)
+    //props.currentData.welfare
+    const [welfareSelected, setWelfareSelected] = useState(props.currentData?.welfare)
+    setWelfareSelected[props.currentData?.welfare]
+    const currentData = props.currentData
     const [isLoading1, setIsLoading1] = useState(false)
     const [isLoading2, setIsLoading2] = useState(false)
     useEffect(() => {
@@ -25,15 +44,22 @@ export default function Index({ props }) {
         if (!isAdmin) {
             router.push("/admin/login");
         }
-        fetch("/api/tuyendung/getWelfare").then(result => result.json().then(res => {
-            setWelfare(res)
-        }))
+
     }, [])
+
+    let dataCkeditor = currentData?.descriptionJob ?? "";
+    const handleData = (dataTemplate) => {
+        dataCkeditor = dataTemplate;
+    };
+
+    let dataCkeditorRequire = currentData?.requirementJob ?? "";
+    const handleDataRequire = (dataTemplate) => {
+        dataCkeditorRequire = dataTemplate;
+    };
 
     const postData = (event) => {
         event.preventDefault();
         //tiêu đề tuyển dụng
-
         const data = {
             //tiêu đề tuyển dụng
             titleJob: event.target.titleJob.value,
@@ -54,11 +80,12 @@ export default function Index({ props }) {
             // Ngành nghề
             career: event.target.career.value,
             //Hạn chót
-            deadline: event.target.deadline.value,
+            deadline: utils.formatDate(event.target.deadline.value),
             //Phúc lợi
             welfare: welfareSelected,
             //Mô tả job
-            descriptionJob: event.target.descriptionJob.value,
+            descriptionJob: dataCkeditor,
+            requirementJob: dataCkeditorRequire,
         }
         setIsLoading2(true)
         fetch("/api/tuyendung/postRecruitment", {
@@ -70,27 +97,25 @@ export default function Index({ props }) {
                 duration: 3,
                 type: "success",
             });
-            setIsLoading2(true)
+            setIsLoading2(false)
         }).catch(() => {
-            setIsLoading2(true)
+            setIsLoading2(false)
         })
     }
 
     const addWelfare = (event) => {
         event.preventDefault();
 
-        console.log(event.target.title.value)
         const data = {
             title: event.target.title.value,
         }
         setIsLoading1(true)
-        console.log(data)
         fetch("/api/tuyendung/postWelfare", {
             method: "POST",
             body: JSON.stringify(data)
         }).then(() => {
             fetch("/api/tuyendung/getWelfare").then(result => result.json().then(res => {
-                setWelfare(res)
+                // setWelfare(res)
                 setIsLoading1(false)
             })).catch(() => {
                 setIsLoading1(false)
@@ -109,7 +134,7 @@ export default function Index({ props }) {
                             <input type="text" className="form-control" id="title" name="title" placeholder="Tên phúc lợi" aria-describedby="button-addon2" required />
                             <input type="text" className="form-control" id="id" name="id" hidden />
                             <div className="input-group-append" id="button-addon2">
-                                <button className="btn btn-primary" type="submit">Thêm</button>
+                                <button className="btn btn-primary" disabled={isLoading1} type="submit">Thêm</button>
                             </div>
                         </div>
                     </fieldset>
@@ -118,25 +143,27 @@ export default function Index({ props }) {
             </>
         )
     }
-    const renderItemWelfare = (items) => {
-
-        const addItem = (item, status) => {
-            var items = [...welfareSelected]
-            if (status.checked) {
-                items.push(item.id)
-                setWelfareSelected(items)
-            } else {
-                items = items.filter(function(e) { return e !== item.id })
-                setWelfareSelected(items)
-            }
+    const addItem = (item, status) => {
+        var items = [...welfareSelected]
+        if (status.checked) {
+            items.push(item.id)
+            setWelfareSelected(items)
+        } else {
+            items = items.filter(function (e) { return e !== item.id })
+            setWelfareSelected(items)
         }
+        console.log(items);
 
-        return items.map((item, index) => {
+    }
+
+    const renderItemWelfare = (items, item2) => {
+        return items?.map((item, index) => {
+            const checked = item2.find(element => element == item.id) ? true : false
             return (
                 <li className="d-inline-block mr-2" key={index}>
                     <fieldset>
                         <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" onClick={(event) => addItem(item, event.target)} name={`customCheck${item.id}`} id={`customCheck${item.id}`} />
+                            <input type="checkbox" className="custom-control-input" defaultChecked={checked} onClick={(event) => addItem(item, event.target)} name={`customCheck${item.id}`} id={`customCheck${item.id}`} />
                             <label className="custom-control-label" htmlFor={`customCheck${item.id}`}>{item.title}</label>
                         </div>
                     </fieldset>
@@ -210,13 +237,13 @@ export default function Index({ props }) {
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Tiểu Đề Form</label>
-                                                                        <input type="text" id="titleForm" name="titleForm" className="form-control" placeholder="Tiểu Đề Form" />
+                                                                        <input type="text" defaultValue={currentData?.titleForm} id="titleForm" name="titleForm" className="form-control" placeholder="Tiểu Đề Form" />
                                                                     </div>
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Tiểu Đề Tuyển Dụng</label>
-                                                                        <input type="text" id="titleJob" name="titleJob" className="form-control" placeholder="Tiểu Đề Tuyển Dụng" />
+                                                                        <input type="text" defaultValue={currentData?.titleJob} id="titleJob" name="titleJob" className="form-control" placeholder="Tiểu Đề Tuyển Dụng" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -224,25 +251,25 @@ export default function Index({ props }) {
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Nơi Làm Việc</label>
-                                                                        <input type="text" id="address" name="address" className="form-control" placeholder="Nơi Làm Việc" />
+                                                                        <input type="text" defaultValue={currentData?.address} id="address" name="address" className="form-control" placeholder="Nơi Làm Việc" />
                                                                     </div>
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Bằng Cấp</label>
-                                                                        <input type="text" id="certificate" name="certificate" className="form-control" placeholder="Bằng Cấp" />
+                                                                        <input type="text" defaultValue={currentData?.certificate} id="certificate" name="certificate" className="form-control" placeholder="Bằng Cấp" />
                                                                     </div>
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Hình Thức</label>
-                                                                        <input type="text" id="form" name="form" className="form-control" placeholder="Hình Thức" />
+                                                                        <input type="text" defaultValue={currentData?.form} id="form" name="form" className="form-control" placeholder="Hình Thức" />
                                                                     </div>
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Ngày Hết Hạn</label>
-                                                                        <input type="date" data-date-format="DD-MM-YYYY" id="deadline" name="deadline" className="form-control pickadate" placeholder="Ngày Hết Hạn" />
+                                                                        <input type="date" data-date-format="DD-MM-YYYY" defaultValue={utils.formatDateRevert(currentData?.deadline)} id="deadline" name="deadline" className="form-control pickadate" placeholder="Ngày Hết Hạn" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -250,25 +277,25 @@ export default function Index({ props }) {
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Cấp Bật</label>
-                                                                        <input type="text" id="rank" name="rank" className="form-control" placeholder="Cấp Bật" />
+                                                                        <input type="text" defaultValue={currentData?.rank} id="rank" name="rank" className="form-control" placeholder="Cấp Bật" />
                                                                     </div>
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Kinh Nghiệm</label>
-                                                                        <input type="text" id="experience" name="experience" className="form-control" placeholder="Kinh Nghiệm" />
+                                                                        <input type="text" defaultValue={currentData?.experience} id="experience" name="experience" className="form-control" placeholder="Kinh Nghiệm" />
                                                                     </div>
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Mức lương</label>
-                                                                        <input type="number" id="rangeSalary" name="rangeSalary" className="form-control" placeholder="Mức Lương" />
+                                                                        <input type="number" defaultValue={currentData?.rangeSalary} id="rangeSalary" name="rangeSalary" className="form-control" placeholder="Mức Lương" />
                                                                     </div>
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Ngành Nghề</label>
-                                                                        <input type="text" id="career" name="career" className="form-control" placeholder="Ngành Nghề" />
+                                                                        <input type="text" defaultValue={currentData?.career} id="career" name="career" className="form-control" placeholder="Ngành Nghề" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -279,8 +306,7 @@ export default function Index({ props }) {
                                                                     <div className="form-group col-6">
                                                                         <label></label>
                                                                         <ul className="list-unstyled mb-0">
-                                                                            {welfare != null ? renderItemWelfare(welfare) : <></>}
-
+                                                                            {renderItemWelfare(welfare, welfareSelected)}
                                                                         </ul>
                                                                     </div>
                                                                 </div>
@@ -290,18 +316,32 @@ export default function Index({ props }) {
                                                                     <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>Mô Tả Công Việc</h6>
                                                                     <div className="form-group">
                                                                         <fieldset className="form-label-group">
-                                                                            <textarea className="form-control" id="descriptionJob" name="descriptionJob" rows={3} placeholder="Mô Tả Công Việc"></textarea>
                                                                             <label htmlFor="descriptionJob">Mô Tả Công Việc</label>
+                                                                            <Editor data={currentData?.descriptionJob} onchangeData={handleData} />
                                                                         </fieldset>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div className="col-12">
+                                                                <div className="table-responsive border rounded px-1 ">
+                                                                    <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>Yêu Cầu Công Việc</h6>
+                                                                    <div className="form-group">
+                                                                        <fieldset className="form-label-group">
+                                                                            <label htmlFor="requirementJob">Yêu Cầu Công Việc</label>
+                                                                            <Editor data={currentData?.requirementJob} onchangeData={handleDataRequire} />
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                             <div className="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-                                                                <button type="submit" className="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Lưu Thay đổi</button>
+                                                                <button type="submit" disabled={isLoading2} className="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Lưu Thay đổi</button>
                                                                 <button type="reset" className="btn btn-outline-warning">Hủy Bỏ</button>
                                                             </div>
                                                         </div>
                                                     </form>
+                                                    {isLoading2 ? Loading() : <></>}
+
                                                 </div>
                                             </div>
                                         </div>
@@ -311,6 +351,7 @@ export default function Index({ props }) {
                         </div>
                     </div>
                 </div>
+                <ToastContainer align={"right"} />
                 <div className="sidenav-overlay"></div>
                 <div className="drag-target"></div>
                 {FooterAdmin()}

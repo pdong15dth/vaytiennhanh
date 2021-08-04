@@ -29,10 +29,16 @@ Index.getInitialProps = async ({ req, res }: any) => {
         }
     })
 
+    var currentData = await prisma.recruitment.findFirst({
+        where: {
+            id: 1
+        }
+    })
+
     const mess = prisma.$transaction
     const forwarded = req.headers['x-forwarded-for']
     const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
-    return { props: { ip, count, contact, metaSEO, mess, menu, option, titleHeader } };
+    return { props: { ip, count, contact, metaSEO, mess, menu, option, titleHeader, currentData } };
 }
 
 export default function Index({ props }) {
@@ -40,6 +46,7 @@ export default function Index({ props }) {
     const [isLoading, setIsLoading] = useState(false)
     const count = props?.count
 
+    const currentData = props?.currentData
     console.log("have connected", props.mess)
     function checkAdult(string) {
         return string != "";
@@ -221,8 +228,8 @@ export default function Index({ props }) {
             <section className="contact-area ptb-110" style={{ backgroundColor: "#fff" }}>
                 <div className="container">
                     <div className="section-title">
-                        <span>Liên hệ với chúng tôi</span>
-                        <h2>Tuyển dụng nhân viên kinh doanh</h2>
+                        <span>{currentData?.titleForm}</span>
+                        <h2>{currentData?.titleJob}</h2>
                         {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                             et dolore magna aliqua.</p> */}
                     </div>

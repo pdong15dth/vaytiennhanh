@@ -233,9 +233,11 @@ model Recruitment {
   //Hạn chót
   deadline       String?
   //Phúc lợi
-  welfare        String[]
+  welfare        Int[]
   //Mô tả job
   descriptionJob String?
+  //Yêu cầu công việc
+  requirementJob String?
   createdAt      DateTime @default(now()) @map(name: "created_at")
   updatedAt      DateTime @updatedAt @map(name: "updated_at")
 
