@@ -158,7 +158,7 @@ export default function Index({ props }) {
 
     const renderItemWelfare = (items, item2) => {
         return items?.map((item, index) => {
-            const checked = item2.find(element => element == item.title) ? true : false
+            const checked = item2?.find(element => element == item.title) ? true : false
             return (
                 <li className="d-inline-block mr-2" key={index}>
                     <fieldset>
