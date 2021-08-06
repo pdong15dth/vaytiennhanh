@@ -1275,10 +1275,10 @@ Featured Services Area CSS
     position: relative;
     display: inline-block;
     z-index: 1;
-    width: 80px;
-    height: 80px;
+    /* width: 80px; */
+    /* height: 80px; */
     line-height: 80px;
-    background-color: #d0dcff;
+    /* background-color: #d0dcff; */
     border-radius: 50%;
     color: #074ece;
     -webkit-transition: 0.5s;
@@ -1290,7 +1290,7 @@ Featured Services Area CSS
 }
 
 .single-services-box .icon.bg-cefffe {
-    background-color: #cefffe;
+    /* background-color: #cefffe; */
     color: #09c4c1;
 }
 

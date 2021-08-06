@@ -17,9 +17,11 @@
     background-color: #cefffe;
     color: #09c4c1;
 }
+
 .single-services-box .icon.bg-cefffe img {
     width: 100%;
 }
+
 .single-services-box {
     text-align: center;
     margin-bottom: 30px;
@@ -36,9 +38,11 @@
     margin-top: 13px;
     margin-bottom: 0;
 }
+
 .text-float-left {
     text-align: left;
 }
+
 .single-services-box h3 {
     margin-bottom: 0;
     font-size: 23px;
@@ -46,19 +50,43 @@
 }
 
 .loader {
-    border: 6px solid #f3f3f3; /* Light grey */
-    border-top: 6px solid #3498db; /* Blue */
+    border: 6px solid #f3f3f3;
+    /* Light grey */
+    border-top: 6px solid #3498db;
+    /* Blue */
     border-radius: 50%;
     width: 50px;
     height: 50px;
     animation: spin 2s linear infinite;
     margin: auto;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  .blog-details .image img {
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.blog-details .image img {
     width: 100%;
+}
+
+.custom-form-control {
+    width: auto;
+    display: inline;
+    height: calc(1.25em + 1.4rem + 1px);
+    padding: 0.7rem 0.7rem;
+    font-size: 0.96rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #4E5154;
+    background-color: #FFFFFF;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    -webkit-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }

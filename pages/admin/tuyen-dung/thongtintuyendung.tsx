@@ -18,26 +18,26 @@ const Editor = dynamic(() => import("../../../src/ckeditor"), {
 });
 
 Index.getInitialProps = async ({ req, res }: any) => {
-    var welfare = await prisma.welfare.findMany()
-    var currentData = await prisma.recruitment.findFirst({
+    // var welfare = await prisma.welfare.findMany()
+    var currentData = await prisma.tuyenDung.findFirst({
         where: {
             id: 1
         }
     })
 
-    return { props: { welfare, currentData } };
+    return { props: { currentData } };
 }
 export default function Index({ props }) {
 
 
     const router = useRouter();
-    const welfare = props.welfare
+    // const welfare = props.welfare
     console.log(props)
     //props.currentData.welfare
-    const [welfareSelected, setWelfareSelected] = useState(props.currentData?.welfare)
-    setWelfareSelected[props.currentData?.welfare]
+    // const [welfareSelected, setWelfareSelected] = useState(props.currentData?.welfare)
+    // setWelfareSelected[props.currentData?.welfare]
     const currentData = props.currentData
-    const [isLoading1, setIsLoading1] = useState(false)
+    // const [isLoading1, setIsLoading1] = useState(false)
     const [isLoading2, setIsLoading2] = useState(false)
     useEffect(() => {
         const isAdmin = authService.checkAuthAdmin();
@@ -47,12 +47,12 @@ export default function Index({ props }) {
 
     }, [])
 
-    let dataCkeditor = currentData?.descriptionJob ?? "";
-    const handleData = (dataTemplate) => {
-        dataCkeditor = dataTemplate;
-    };
+    // let dataCkeditor = currentData?.descriptionJob ?? "";
+    // const handleData = (dataTemplate) => {
+    //     dataCkeditor = dataTemplate;
+    // };
 
-    let dataCkeditorRequire = currentData?.requirementJob ?? "";
+    let dataCkeditorRequire = currentData?.content ?? "";
     const handleDataRequire = (dataTemplate) => {
         dataCkeditorRequire = dataTemplate;
     };
@@ -62,33 +62,10 @@ export default function Index({ props }) {
         //tiêu đề tuyển dụng
         const data = {
             //tiêu đề tuyển dụng
-            titleJob: event.target.titleJob.value,
-            //Liên hệ với chúng tôi
-            titleForm: event.target.titleForm.value,
-            //Nơi làm việc
-            address: event.target.address.value,
-            //Cấp Bâtj
-            rank: event.target.rank.value,
-            //Hình thức
-            form: event.target.form.value,
-            //Bằng Cấp
-            certificate: event.target.certificate.value,
-            //Kinh nghiệm
-            experience: event.target.experience.value,
-            //Mức lương Int?
-            rangeSalary: parseInt(event.target.rangeSalary.value),
-            // Ngành nghề
-            career: event.target.career.value,
-            //Hạn chót
-            deadline: utils.formatDate(event.target.deadline.value),
-            //Phúc lợi
-            welfare: welfareSelected,
-            //Mô tả job
-            descriptionJob: dataCkeditor,
-            requirementJob: dataCkeditorRequire,
+            content: dataCkeditorRequire,
         }
         setIsLoading2(true)
-        fetch("/api/tuyendung/postRecruitment", {
+        fetch("/api/tuyendung/postTuyendung", {
             method: "POST",
             body: JSON.stringify(data)
         }).then((res) => {
@@ -102,75 +79,120 @@ export default function Index({ props }) {
             setIsLoading2(false)
         })
     }
+    // const postData = (event) => {
+    //     event.preventDefault();
+    //     //tiêu đề tuyển dụng
+    //     const data = {
+    //         //tiêu đề tuyển dụng
+    //         titleJob: event.target.titleJob.value,
+    //         //Liên hệ với chúng tôi
+    //         titleForm: event.target.titleForm.value,
+    //         //Nơi làm việc
+    //         address: event.target.address.value,
+    //         //Cấp Bâtj
+    //         rank: event.target.rank.value,
+    //         //Hình thức
+    //         form: event.target.form.value,
+    //         //Bằng Cấp
+    //         certificate: event.target.certificate.value,
+    //         //Kinh nghiệm
+    //         experience: event.target.experience.value,
+    //         //Mức lương Int?
+    //         rangeSalary: parseInt(event.target.rangeSalary.value),
+    //         // Ngành nghề
+    //         career: event.target.career.value,
+    //         //Hạn chót
+    //         deadline: utils.formatDate(event.target.deadline.value),
+    //         //Phúc lợi
+    //         welfare: welfareSelected,
+    //         //Mô tả job
+    //         descriptionJob: dataCkeditor,
+    //         requirementJob: dataCkeditorRequire,
+    //     }
+    //     setIsLoading2(true)
+    //     fetch("/api/tuyendung/postRecruitment", {
+    //         method: "POST",
+    //         body: JSON.stringify(data)
+    //     }).then((res) => {
+    //         toast.notify(`Chỉnh sửa thành công`, {
+    //             title: "Thành công",
+    //             duration: 3,
+    //             type: "success",
+    //         });
+    //         setIsLoading2(false)
+    //     }).catch(() => {
+    //         setIsLoading2(false)
+    //     })
+    // }
 
-    const addWelfare = (event) => {
-        event.preventDefault();
+    // const addWelfare = (event) => {
+    //     event.preventDefault();
 
-        const data = {
-            title: event.target.title.value,
-        }
-        setIsLoading1(true)
-        fetch("/api/tuyendung/postWelfare", {
-            method: "POST",
-            body: JSON.stringify(data)
-        }).then(() => {
-            fetch("/api/tuyendung/getWelfare").then(result => result.json().then(res => {
-                // setWelfare(res)
-                setIsLoading1(false)
-            })).catch(() => {
-                setIsLoading1(false)
-            })
-        }).catch(() => {
-            setIsLoading1(false)
-        })
+    //     const data = {
+    //         title: event.target.title.value,
+    //     }
+    //     setIsLoading1(true)
+    //     fetch("/api/tuyendung/postWelfare", {
+    //         method: "POST",
+    //         body: JSON.stringify(data)
+    //     }).then(() => {
+    //         fetch("/api/tuyendung/getWelfare").then(result => result.json().then(res => {
+    //             // setWelfare(res)
+    //             setIsLoading1(false)
+    //         })).catch(() => {
+    //             setIsLoading1(false)
+    //         })
+    //     }).catch(() => {
+    //         setIsLoading1(false)
+    //     })
 
-    }
-    const ModelWelfare = (id = null) => {
-        return (
-            <>
-                <form onSubmit={addWelfare}>
-                    <fieldset>
-                        <div className="input-group">
-                            <input type="text" className="form-control" id="title" name="title" placeholder="Tên phúc lợi" aria-describedby="button-addon2" required />
-                            <input type="text" className="form-control" id="id" name="id" hidden />
-                            <div className="input-group-append" id="button-addon2">
-                                <button className="btn btn-primary" disabled={isLoading1} type="submit">Thêm</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-                {isLoading1 ? Loading() : <></>}
-            </>
-        )
-    }
-    const addItem = (item, status) => {
-        var items = [...welfareSelected]
-        if (status.checked) {
-            items.push(item.title)
-            setWelfareSelected(items)
-        } else {
-            items = items.filter(function (e) { return e !== item.title })
-            setWelfareSelected(items)
-        }
-        console.log(items);
+    // }
+    // const ModelWelfare = (id = null) => {
+    //     return (
+    //         <>
+    //             <form onSubmit={addWelfare}>
+    //                 <fieldset>
+    //                     <div className="input-group">
+    //                         <input type="text" className="form-control" id="title" name="title" placeholder="Tên phúc lợi" aria-describedby="button-addon2" required />
+    //                         <input type="text" className="form-control" id="id" name="id" hidden />
+    //                         <div className="input-group-append" id="button-addon2">
+    //                             <button className="btn btn-primary" disabled={isLoading1} type="submit">Thêm</button>
+    //                         </div>
+    //                     </div>
+    //                 </fieldset>
+    //             </form>
+    //             {isLoading1 ? Loading() : <></>}
+    //         </>
+    //     )
+    // }
+    // const addItem = (item, status) => {
+    //     var items = [...welfareSelected]
+    //     if (status.checked) {
+    //         items.push(item.title)
+    //         setWelfareSelected(items)
+    //     } else {
+    //         items = items.filter(function (e) { return e !== item.title })
+    //         setWelfareSelected(items)
+    //     }
+    //     console.log(items);
 
-    }
+    // }
 
-    const renderItemWelfare = (items, item2) => {
-        return items?.map((item, index) => {
-            const checked = item2?.find(element => element == item.title) ? true : false
-            return (
-                <li className="d-inline-block mr-2" key={index}>
-                    <fieldset>
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" defaultChecked={checked} onClick={(event) => addItem(item, event.target)} name={`customCheck${item.id}`} id={`customCheck${item.id}`} />
-                            <label className="custom-control-label" htmlFor={`customCheck${item.id}`}>{item.title}</label>
-                        </div>
-                    </fieldset>
-                </li>
-            )
-        })
-    }
+    // const renderItemWelfare = (items, item2) => {
+    //     return items?.map((item, index) => {
+    //         const checked = item2?.find(element => element == item.title) ? true : false
+    //         return (
+    //             <li className="d-inline-block mr-2" key={index}>
+    //                 <fieldset>
+    //                     <div className="custom-control custom-checkbox">
+    //                         <input type="checkbox" className="custom-control-input" defaultChecked={checked} onClick={(event) => addItem(item, event.target)} name={`customCheck${item.id}`} id={`customCheck${item.id}`} />
+    //                         <label className="custom-control-label" htmlFor={`customCheck${item.id}`}>{item.title}</label>
+    //                     </div>
+    //                 </fieldset>
+    //             </li>
+    //         )
+    //     })
+    // }
     return (
         <>
             {HeaderAdmin()}
@@ -222,18 +244,21 @@ export default function Index({ props }) {
                                                 <h4 className="card-title">Chỉnh sửa thông tin tuyển dụng</h4>
                                             </div>
                                             <div className="card-content">
-                                                <div className="table-responsive border rounded px-1">
-                                                    <h6 className=" py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>Phúc Lợi</h6>
+                                                {/* <div className="table-responsive border rounded px-1">
+                                                    <h6 className=" py-1 mx-1 mb-0 font-medium-2">
+                                                        <i className="feather icon-lock mr-50 "></i>
+                                                        Phúc Lợi
+                                                    </h6>
                                                     <div className="col-6 mb-1">
                                                         <ModelWelfare />
 
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="card-body card-dashboard">
 
                                                     <form onSubmit={postData}>
                                                         <div className="row mt-1">
-                                                            <div className="col-12">
+                                                            {/* <div className="col-12">
                                                                 <div className="form-group">
                                                                     <div className="controls">
                                                                         <label>Tiểu Đề Form</label>
@@ -302,7 +327,10 @@ export default function Index({ props }) {
 
                                                             <div className="col-12">
                                                                 <div className="table-responsive border rounded px-1">
-                                                                    <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>Phúc Lợi</h6>
+                                                                    <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2">
+                                                                        <i className="feather icon-lock mr-50 "></i>
+                                                                        <input type="text" defaultValue="Phúc Lợi" id="titlePhucLoi" name="titlePhucLoi" className="custom-form-control" placeholder="Ngành Nghề" />
+                                                                    </h6>
                                                                     <div className="form-group col-6">
                                                                         <label></label>
                                                                         <ul className="list-unstyled mb-0">
@@ -313,7 +341,9 @@ export default function Index({ props }) {
                                                             </div>
                                                             <div className="col-12">
                                                                 <div className="table-responsive border rounded px-1 ">
-                                                                    <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>Mô Tả Công Việc</h6>
+                                                                    <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>
+                                                                        <input type="text" defaultValue="Mô Tả Công Việc" id="titleMotaCV" name="titleMotaCV" className="custom-form-control" placeholder="Ngành Nghề" />
+                                                                    </h6>
                                                                     <div className="form-group">
                                                                         <fieldset className="form-label-group">
                                                                             <label htmlFor="descriptionJob">Mô Tả Công Việc</label>
@@ -322,12 +352,26 @@ export default function Index({ props }) {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-12">
+                                                             <div className="col-12">
                                                                 <div className="table-responsive border rounded px-1 ">
-                                                                    <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>Yêu Cầu Công Việc</h6>
+                                                                    <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>
+                                                                        <input type="text" defaultValue="Yêu Cầu Công Việc" id="titleYeucauCV" name="titleYeucauCV" className="custom-form-control" placeholder="Ngành Nghề" />
+                                                                    </h6>
                                                                     <div className="form-group">
                                                                         <fieldset className="form-label-group">
                                                                             <label htmlFor="requirementJob">Yêu Cầu Công Việc</label>
+                                                                            <Editor data={currentData?.requirementJob} onchangeData={handleDataRequire} />
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+                                                            </div> */}
+                                                            <div className="col-12">
+                                                                <div className="table-responsive border rounded px-1 ">
+                                                                    <h6 className="border-bottom py-1 mx-1 mb-0 font-medium-2"><i className="feather icon-lock mr-50 "></i>
+                                                                        Thông Tin Tuyển Dụng   </h6>
+                                                                    <div className="form-group">
+                                                                        <fieldset className="form-label-group">
+                                                                            <label htmlFor="requirementJob">Thông Tin Tuyển Dụng</label>
                                                                             <Editor data={currentData?.requirementJob} onchangeData={handleDataRequire} />
                                                                         </fieldset>
                                                                     </div>

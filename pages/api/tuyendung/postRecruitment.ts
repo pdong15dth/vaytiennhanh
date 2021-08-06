@@ -36,7 +36,20 @@ export default async function handle(req, res) {
             welfare: body.welfare,
             //Mô tả job
             descriptionJob: body.descriptionJob,
-            requirementJob: body.requirementJob
+            requirementJob: body.requirementJob,
+            titleTieudeForm: body.titleTieudeForm,
+            titleTieuDeTD: body.titleTieuDeTD,
+            titleNoiLamViec: body.titleNoiLamViec,
+            titleCapBac: body.titleCapBac,
+            titleBangCap: body.titleBangCap,
+            titleKinhNghiem: body.titleKinhNghiem,
+            titleHinhThuc: body.titleHinhThuc,
+            titleMucLuong: body.titleMucLuong,
+            titleNgayHetHan: body.titleNgayHetHan,
+            titleNganhNghe: body.titleNganhNghe,
+            titlePhucLoi: body.titlePhucLoi,
+            titleMotaCV: body.titleMotaCV,
+            titleYeucauCV: body.titleYeucauCV,
         },
         update: {
             //tiêu đề tuyển dụng
@@ -64,7 +77,20 @@ export default async function handle(req, res) {
             //Mô tả job
             descriptionJob: body.descriptionJob,
             //Yêu cầu job
-            requirementJob: body.requirementJob
+            requirementJob: body.requirementJob,
+            titleTieudeForm: body.titleTieudeForm,
+            titleTieuDeTD: body.titleTieuDeTD,
+            titleNoiLamViec: body.titleNoiLamViec,
+            titleCapBac: body.titleCapBac,
+            titleBangCap: body.titleBangCap,
+            titleKinhNghiem: body.titleKinhNghiem,
+            titleHinhThuc: body.titleHinhThuc,
+            titleMucLuong: body.titleMucLuong,
+            titleNgayHetHan: body.titleNgayHetHan,
+            titleNganhNghe: body.titleNganhNghe,
+            titlePhucLoi: body.titlePhucLoi,
+            titleMotaCV: body.titleMotaCV,
+            titleYeucauCV: body.titleYeucauCV,
         }
     })
     res.json(result);

@@ -210,36 +210,60 @@ model CountRequest {
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 }
 
+model TuyenDung {
+  id        Int      @id @default(autoincrement())
+  content   String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "tuyendungs")
+}
+
 model Recruitment {
-  id             Int      @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   //tiêu đề tuyển dụng
-  titleJob       String?
+  titleJob        String?
   //Liên hệ với chúng tôi
-  titleForm      String?
+  titleForm       String?
   //Nơi làm việc
-  address        String?
+  address         String?
   //Cấp Bâtj
-  rank           String?
+  rank            String?
   //Hình thức
-  form           String?
+  form            String?
   //Bằng Cấp
-  certificate    String?
+  certificate     String?
   //Kinh nghiệm
-  experience     String?
+  experience      String?
   //Mức lương
-  rangeSalary    Int?
+  rangeSalary     String?
   // Ngành nghề
-  career         String?
+  career          String?
   //Hạn chót
-  deadline       String?
+  deadline        String?
   //Phúc lợi
-  welfare        String[]
+  welfare         String[]
   //Mô tả job
-  descriptionJob String?
+  descriptionJob  String?
   //Yêu cầu công việc
-  requirementJob String?
-  createdAt      DateTime @default(now()) @map(name: "created_at")
-  updatedAt      DateTime @updatedAt @map(name: "updated_at")
+  requirementJob  String?
+  ////=======///
+  titleTieudeForm String?
+  titleTieuDeTD   String?
+  titleNoiLamViec String?
+  titleCapBac     String?
+  titleBangCap    String?
+  titleKinhNghiem String?
+  titleHinhThuc   String?
+  titleMucLuong   String?
+  titleNgayHetHan String?
+  titleNganhNghe  String?
+  titlePhucLoi    String?
+  titleMotaCV     String?
+  titleYeucauCV   String?
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @updatedAt @map(name: "updated_at")
 
   @@map(name: "recruitments")
 }

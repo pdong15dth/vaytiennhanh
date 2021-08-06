@@ -282,7 +282,7 @@ export default function Home({ props }) {
               {props?.titleHeader?.description ? <p className="p-vay-tinh-chap">{props?.titleHeader?.description}</p> : <></>}
             </div>
             <div className="col-lg-6 col-md-12 align-items-center">
-              
+
               <div className="row">
                 <div className="question-form text-center form-vay-1">
                   {renderFormThongTin()}
@@ -371,10 +371,11 @@ export default function Home({ props }) {
           </div>
         </div>
       </section>
+
       <footer className="footer-area">
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-6 col-md-6 col-sm-6">
+            <div className="col-lg-6 col-md-6 col-sm-6" style={{ padding: '0 80px' }}>
               <div className="single-footer-widget">
                 <h3>Liên hệ</h3>
                 <div className="single-footer-widget">
