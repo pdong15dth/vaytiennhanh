@@ -30,7 +30,7 @@ Index.getInitialProps = async ({ req, res }: any) => {
         }
     })
 
-    var currentData = await prisma.recruitment.findFirst({
+    var currentData = await prisma.tuyenDung.findFirst({
         where: {
             id: 1
         }
@@ -229,7 +229,7 @@ export default function Index({ props }) {
             <section className="contact-area ptb-110" style={{ backgroundColor: "#fff" }}>
                 <div className="container shadow p-3 mb-5 bg-white rounded">
 
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-lg-2 float-left">
                         </div>
                         <div className="col-lg-5 float-left ">
@@ -307,10 +307,15 @@ export default function Index({ props }) {
                                 {ReactHtmlParser(currentData?.requirementJob)}
                             </div>
                         </div>
+                    </div>*/}
+                    <div className="row align-items-center">
+                        <div className="col-md-12 main-content">
+                            {ReactHtmlParser(currentData?.content)}
+                        </div>
                     </div>
-                    <hr className="my-4" />
+                    <hr className="my-4" /> 
                     <div className="section-title" >
-                        <span>{currentData?.titleForm}</span>
+                        <span>Form Thông Tin Tuyển Dụng</span>
                     </div>
                     <div className="contact-form">
                         <form id="contactForm">

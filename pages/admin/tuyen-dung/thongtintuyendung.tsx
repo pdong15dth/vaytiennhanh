@@ -51,8 +51,10 @@ export default function Index({ props }) {
     // const handleData = (dataTemplate) => {
     //     dataCkeditor = dataTemplate;
     // };
-
+    console.log("tao ne", currentData?.content)
     let dataCkeditorRequire = currentData?.content ?? "";
+    console.log("tao ne", dataCkeditorRequire)
+
     const handleDataRequire = (dataTemplate) => {
         dataCkeditorRequire = dataTemplate;
     };
@@ -64,11 +66,13 @@ export default function Index({ props }) {
             //tiêu đề tuyển dụng
             content: dataCkeditorRequire,
         }
+        console.log(data)
         setIsLoading2(true)
         fetch("/api/tuyendung/postTuyendung", {
             method: "POST",
             body: JSON.stringify(data)
         }).then((res) => {
+            console.log(res)
             toast.notify(`Chỉnh sửa thành công`, {
                 title: "Thành công",
                 duration: 3,
@@ -372,7 +376,7 @@ export default function Index({ props }) {
                                                                     <div className="form-group">
                                                                         <fieldset className="form-label-group">
                                                                             <label htmlFor="requirementJob">Thông Tin Tuyển Dụng</label>
-                                                                            <Editor data={currentData?.requirementJob} onchangeData={handleDataRequire} />
+                                                                            <Editor data={currentData?.content} onchangeData={handleDataRequire} />
                                                                         </fieldset>
                                                                     </div>
                                                                 </div>
