@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ClassicEditor from "@ckeditor/ckeditor5-custom-build";
 import UploadAdapter from "./UploadAdapter";
 
 // Server URL
@@ -33,6 +33,8 @@ class App extends Component {
       language: "en", // fa - for persian language ( rtl )
       extraPlugins: [CustomUploadAdapterPlugin],
     };
+    console.log("ClassicEditor")
+    console.log(ClassicEditor.defaultConfig)
     return (
       <>
         <CKEditor

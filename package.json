@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "file:public/ckeditor5-build-classic-custom",
+    "@ckeditor/ckeditor5-custom-build": "file:public/ckeditor5",
     "@ckeditor/ckeditor5-dev-utils": "^24.2.0",
     "@ckeditor/ckeditor5-dev-webpack-plugin": "^24.2.0",
     "@ckeditor/ckeditor5-easy-image": "^25.0.0",
