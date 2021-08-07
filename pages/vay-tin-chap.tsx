@@ -491,7 +491,7 @@ export default function Home({ props }) {
       <Script src="/js/contact-form-script.js"></Script>
       <Script src="/js/main.js"></Script>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></Script>
-      <Script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></Script>
+      <Script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></Script>
 
     </>
   )
