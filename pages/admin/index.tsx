@@ -8,6 +8,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import authService from "../../src/services/authService/auth.service";
 import { useRouter } from "next/router";
+import utils from "../../src/utils/constant";
 
 export default function Index({ props }) {
 
@@ -68,6 +69,7 @@ export default function Index({ props }) {
                     <td>{item.address}</td>
                     <td>{item.amount}</td>
                     <td>{item.type_amount}</td>
+                    <td>{utils.formatDate(item.createdAt)}</td>
                     {item.isActive ?
                         <td><button type="button" className="btn btn-outline-success square mr-1 mb-1 waves-effect waves-light">Đã liên lạc</button></td>
                         :
@@ -87,9 +89,10 @@ export default function Index({ props }) {
                                 <th>ID</th>
                                 <th>Họ & Tên</th>
                                 <th>Số Điện Thoại</th>
-                                <th>Địa Chỉ</th>
+                                <th>CMND/CCCD</th>
                                 <th>Khoản Vay</th>
                                 <th>Nhận Lương</th>
+                                <th>Ngày</th>
                                 <th>Trạng thái</th>
                             </tr>
                         </thead>
@@ -101,9 +104,10 @@ export default function Index({ props }) {
                                 <th>ID</th>
                                 <th>Họ & Tên</th>
                                 <th>Số Điện Thoại</th>
-                                <th>Địa Chỉ</th>
+                                <th>CMND/CCCD</th>
                                 <th>Khoản Vay</th>
                                 <th>Nhận Lương</th>
+                                <th>Ngày</th>
                                 <th>Trạng thái</th>
                             </tr>
                         </tfoot>

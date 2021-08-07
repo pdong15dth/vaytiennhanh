@@ -14,7 +14,7 @@ export default async function handle(req, res) {
             name: name,
             phone: phone,
             address: address,
-            amount: parseInt(amount),
+            amount: amount,
             type_amount: type_amount
         },
     });

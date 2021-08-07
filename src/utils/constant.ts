@@ -118,6 +118,12 @@ class Utils {
     }
     return ""
   }
+  checkEmptyStringForm(string) {
+    if (string == "") {
+      return "Vui lòng chọn Khoản Vay Mong Muốn! \n Vui lòng chọn Hình Thức Vay"
+    }
+    return ""
+  }
   checkIsValidCourse(name) {
     return utils.listCourse.indexOf(name)
   }

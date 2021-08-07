@@ -16,7 +16,7 @@ model User {
   name        String?
   phone       String?
   address     String?
-  amount      Int?
+  amount      String?
   type_amount String?
   isActive    Boolean  @default(false)
   createdAt   DateTime @default(now()) @map(name: "created_at")

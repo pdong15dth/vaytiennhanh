@@ -69,6 +69,25 @@ export default function Home({ props }) {
       }))
     }
   }, [])
+  const renderCardRequire = (require) => {
+    console.log(props.ip, props.forwarded)
+
+    return require?.map((item, index) => {
+      return (
+        <div className="col-lg-4 col-md-12" key={index}>
+          <div className="single-services-box">
+            <div className="icon bg-cefffe">
+              <img src={`${item.image}`} alt={`img`} />
+            </div>
+            <h3> <a href="#">{item.name}</a> </h3>
+            <p className="text-float-left">
+              {ReactHtmlParser(item.content)}
+            </p>
+          </div>
+        </div>
+      )
+    })
+  }
   const submitData = async (event) => {
     event.preventDefault();
     try {
@@ -84,21 +103,21 @@ export default function Home({ props }) {
         err.push(utils.checkEmptyString(event.target.address.value))
       }
 
-      if (utils.checkAmountInput(event.target.amount.value) != "") {
-        err.push(utils.checkAmountInput(event.target.amount.value))
+      if (utils.checkEmptyString(event.target.amount.value) != "") {
+        err.push(utils.checkEmptyStringForm(event.target.amount.value))
       }
-      if (utils.checkEmptyString(event.target.type_amount?.value) != "") {
-        err.push(utils.checkEmptyString(event.target.type_amount.value))
+      if (utils.checkEmptyString(event.target.type_amount.value) != "") {
+        err.push(utils.checkEmptyStringForm(event.target.type_amount.value))
       }
 
 
       const newErr = []
       for (let index = 0; index < err.length; index++) {
         if (err[index]) {
+          console.log(err)
           newErr.push(err[index])
         }
       }
-      console.log(newErr)
       if (newErr.length > 0) {
         setError(newErr)
         return
@@ -121,16 +140,12 @@ export default function Home({ props }) {
             alert("Đăng ký thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất");
           }
           setIsLoading(false)
-
-        }).catch(error => {
-          setIsLoading(false)
-          console.log(error)
         })
       }
       // await router.push('/');
     } catch (error) {
-      // console.log("dong error")
-      // setError(error)
+      setError(error)
+      setIsLoading(false)
     }
   };
 
@@ -149,46 +164,76 @@ export default function Home({ props }) {
   }
 
   const onChangeAmout = (event) => {
-    console.log(Math.abs(parseInt(event.target.value)))
-    setAmount(Math.abs(parseInt(event.target.value)))
+    console.log(event)
   }
-
-
-  const renderCardRequire = (require) => {
-    console.log(props.ip, props.forwarded)
-
-    return require?.map((item, index) => {
-      return (
-        <div className="col-lg-4 col-md-12" key={index}>
-          <div className="single-services-box">
-            <div className="icon bg-cefffe">
-              <img src={`${item.image}`} alt={`img`} />
-            </div>
-            <h3> <a href="#">{item.name}</a> </h3>
-            <p className="text-float-left">
-              {ReactHtmlParser(item.content)}
-            </p>
-          </div>
-        </div>
-      )
-    })
-  }
-
   const renderOption = (options) => {
     return options?.map((item, index) => {
       return (
-        <p className="text-black" key={index}>
-          <input type="radio" id={item?.id} name="type_amount" value={item?.title} />{"     "}
-          <label htmlFor={item?.id}>{item?.title}</label>
-        </p>
+        <option key={index} defaultValue={item.title}>{item.title}</option>
       )
     })
+  }
+  const renderOptionAmout = () => {
+    const amoutList = [
+      {
+        id: 1,
+        stringAmount: "10,000,000"
+      },
+      {
+        id: 2,
+        stringAmount: "20,000,000"
+      },
+      {
+        id: 3,
+        stringAmount: "30,000,000"
+      },
+      {
+        id: 4,
+        stringAmount: "40,000,000"
+      },
+      {
+        id: 5,
+        stringAmount: "50,000,000"
+      },
+      {
+        id: 6,
+        stringAmount: "60,000,000"
+      },
+      {
+        id: 7,
+        stringAmount: "70,000,000"
+      },
+      {
+        id: 8,
+        stringAmount: "80,000,000"
+      },
+      {
+        id: 9,
+        stringAmount: "90,000,000"
+      },
+      {
+        id: 10,
+        stringAmount: "100,000,000"
+      },
+      {
+        id: 11,
+        stringAmount: "Khác"
+      }
+    ]
+    return (
+      amoutList.map((item, index) => {
+        return (
+          <option key={index} defaultValue={item.stringAmount}>{item.stringAmount}</option>
+        )
+      })
+    )
   }
   const renderFormThongTin = () => {
     return (
       <>
         <h3 className="text-white">{props?.titleHeader?.voucher}</h3>
         <p className="text-white">{props?.titleHeader?.subTitleVoucher}</p>
+
 
         <form onSubmit={submitData}>
           <div className="form-group">
@@ -201,16 +246,22 @@ export default function Home({ props }) {
           </div>
           <div className="form-group">
             <input type="text" name="address" id="address" className="form-control"
-              placeholder="Địa chỉ" required />
+              placeholder="CMND / CCCD" required />
           </div>
           <div className="form-group">
-            <input type="number" name="amount" id="amount" value={amount} onChange={(event) => onChangeAmout(event)} className="form-control"
-              placeholder="Khoản vay mong muốn" />
+
+            <select className="form-control" name="amount" id="amount">
+              <option value="">Khoản Vay Mong Muốn</option>
+              {renderOptionAmout()}
+            </select>
+            {/* <input type="number" name="amount" id="amount" onChange={(event) => onChangeAmout(event)} className="form-control"
+                        placeholder="Khoản vay mong muốn" /> */}
           </div>
           <div className="payment-box padding-bottom-20">
-            <div className="payment-method text-float-left background-white padding-select-register">
+            <select className="form-control" name="type_amount" id="type_amount">
+              <option value="">Chọn Hình thức vay</option>
               {renderOption(props?.option)}
-            </div>
+            </select>
           </div>
           {isLoading ? Loading() : <Fragment></Fragment>}
           <button type="submit"
@@ -397,17 +448,14 @@ export default function Home({ props }) {
                   </ul>
                 </div>
               </div>
-
             </div>
             <div className="col-lg-6 col-md-6 col-sm-6">
-              <div className="single-footer-widget">
+              {/* <div className="single-footer-widget">
                 <div className="question-form text-center form-vay-1">
                   {renderFormThongTin()}
                 </div>
-              </div>
+              </div> */}
             </div>
-
-
           </div>
         </div>
         <div className="copyright-area">

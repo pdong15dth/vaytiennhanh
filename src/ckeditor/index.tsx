@@ -33,8 +33,6 @@ class App extends Component {
       language: "en", // fa - for persian language ( rtl )
       extraPlugins: [CustomUploadAdapterPlugin],
     };
-    console.log("ClassicEditor")
-    console.log(ClassicEditor.defaultConfig)
     return (
       <>
         <CKEditor

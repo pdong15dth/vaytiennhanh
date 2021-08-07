@@ -163,7 +163,7 @@ img {
     height: 100%;
     border-radius: 30px;
     background: -webkit-gradient(linear, left top, right top, from(#49c628), color-stop(#53d23c), color-stop(#5ddd4e), color-stop(#66e95f), to(#70f570));
-    background: linear-gradient(to right, #49c628, #53d23c, #5ddd4e, #66e95f, #70f570);
+    /* background: linear-gradient(to right, #49c628, #53d23c, #5ddd4e, #66e95f, #70f570); */
     -webkit-transition: 0.5s;
     transition: 0.5s;
     z-index: -1;
@@ -5978,12 +5978,12 @@ Go Top CSS
 }
 
 .btn-header::before {
-    background: linear-gradient(180deg, #fdfbfb, rgba(255, 216, 0, 1));
+    /* background: linear-gradient(180deg, #fdfbfb, rgba(255, 216, 0, 1)); */
 }
 
 a.btn-header {
     font-weight: bold;
-    color: black;
+    color: white;
     font-size: 21px;
 }
 
