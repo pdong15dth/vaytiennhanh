@@ -1,5 +1,4 @@
 (function($){
-	"use strict";
 	jQuery(document).on('ready', function () {
 
         // Mean Menu

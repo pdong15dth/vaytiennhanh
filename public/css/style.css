@@ -6158,3 +6158,7 @@ div#navbarSupportedContent {
         background-repeat: initial;
     }
 }
+
+.background-button-ut {
+    background: linear-gradient(to right, #49c628, #53d23c, #5ddd4e, #66e95f, #70f570)!important;
+}

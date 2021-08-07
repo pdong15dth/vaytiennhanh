@@ -353,7 +353,7 @@ export default function Index({ props }) {
             <Script src="/js/jquery.min.js"></Script>
             <Script src="/js/popper.min.js"></Script>
             <Script src="/js/bootstrap.min.js"></Script>
-            <Script src="/js/owl.carousel.min.js"></Script>
+            {/* <Script src="/js/owl.carousel.min.js"></Script> */}
             <Script src="/js/parallax.min.js"></Script>
             <Script src="/js/jquery.magnific-popup.min.js"></Script>
             <Script src="/js/jquery.nice-select.min.js"></Script>
@@ -363,6 +363,8 @@ export default function Index({ props }) {
             <Script src="/js/form-validator.min.js"></Script>
             <Script src="/js/contact-form-script.js"></Script>
             <Script src="/js/main.js"></Script>
+            <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></Script>
+            <Script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></Script>
 
         </>
     )
