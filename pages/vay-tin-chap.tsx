@@ -274,7 +274,8 @@ export default function Home({ props }) {
         backgroundImage: `url(${props?.banner?.image})`,
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
-        backgroundSize: 'contain'
+        backgroundSize: 'contain',
+        backgroundPositionX: 'left'
       }}>
         <div className="container-fluid padding-40">
           <div className="row align-items-center">
