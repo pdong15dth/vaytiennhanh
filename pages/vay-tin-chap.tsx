@@ -256,7 +256,7 @@ export default function Home({ props }) {
             {/* <input type="number" name="amount" id="amount" onChange={(event) => onChangeAmout(event)} className="form-control"
                         placeholder="Khoản vay mong muốn" /> */}
           </div>
-          <div className="payment-box padding-bottom-20">
+          <div className="form-group">
             <select className="form-control" name="type_amount" id="type_amount">
               <option value="">Chọn Hình thức vay</option>
               {renderOption(props?.option)}

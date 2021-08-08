@@ -2497,6 +2497,7 @@ Partner Area CSS
     border: none;
     height: 40px;
     color: #333333;
+    margin-bottom: 15px;
 }
 
 .question-form form .form-control::-webkit-input-placeholder {
@@ -6161,4 +6162,16 @@ div#navbarSupportedContent {
 
 .background-button-ut {
     background: linear-gradient(to right, #49c628, #53d23c, #5ddd4e, #66e95f, #70f570)!important;
+}
+
+.display-form {
+    display: inline!important;
+}
+
+.nice-select.form-control {
+    width: 100%;
+}
+
+.nice-select.form-control ul {
+    width: 100%;
 }
