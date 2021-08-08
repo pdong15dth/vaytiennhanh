@@ -20,6 +20,7 @@
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@prisma/client": "^2.27.0",
     "@zeit/next-css": "^1.0.1",
+    "acorn": "^8.4.1",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "crypto-js": "^4.1.1",
