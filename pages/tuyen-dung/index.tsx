@@ -371,7 +371,7 @@ export default function Index({ props }) {
                     </div>
                     <div className="contact-info">
                         <div className="contact-info-content">
-                            <h3>Liên hệ với chúng tôi qua Số Điện Thoại hoặc Email</h3>
+                            <h3 className="__cf_email__">Liên hệ với chúng tôi qua Số Điện Thoại</h3>
                             <h2>
                                 <a href={`tel:${props?.contact?.phone}`}>{props?.contact?.phone}</a>
                                 <span>HOẶC</span>

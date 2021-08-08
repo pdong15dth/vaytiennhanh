@@ -166,7 +166,7 @@ export default function Index({ props }) {
                 <form onSubmit={submitData}>
                     <div className="form-group">
                         <input type="text" name="name" id="name" className="form-control"
-                            placeholder="Họ và tên" required />
+                            placeholder="Họ và Tên" required />
                     </div>
                     <div className="form-group">
                         <input type="text" name="address" id="address" className="form-control"

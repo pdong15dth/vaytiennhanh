@@ -5577,6 +5577,7 @@ Contact Area CSS
 .contact-info .contact-info-content h3 {
     margin-bottom: 15px;
     font-size: 23px;
+    color: #074ece;
     font-weight: 700;
 }
 
@@ -5597,6 +5598,7 @@ Contact Area CSS
 
 .contact-info .contact-info-content h2 a:not(:first-child) {
     color: #4ac728;
+    font-weight: bold;
 }
 
 .contact-info .contact-info-content h2 a:not(:first-child):hover {
@@ -5605,11 +5607,11 @@ Contact Area CSS
 
 .contact-info .contact-info-content h2 span {
     display: block;
-    color: #57647c;
+    color: #074ece;
     margin-top: 8px;
     margin-bottom: 0;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .contact-info .contact-info-content .social {
