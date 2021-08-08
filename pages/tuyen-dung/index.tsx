@@ -420,11 +420,11 @@ export default function Index({ props }) {
 
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-6">
-                            <div className="single-footer-widget">
+                            {/* <div className="single-footer-widget">
                                 <div className="question-form text-center form-vay-1">
                                     {renderFormThongTin()}
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

@@ -233,7 +233,7 @@ export default function Index({ props }) {
             <section className="about-area ptb-110" style={{ backgroundColor: "#fff" }}>
                 <div className="container">
                     <div className="section-title">
-                        <h2>Giới Thiệu</h2>
+                        {/* <h2>Giới Thiệu</h2> */}
                         {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                             et dolore magna aliqua.</p> */}
                     </div>

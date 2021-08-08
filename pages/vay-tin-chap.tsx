@@ -276,7 +276,7 @@ export default function Home({ props }) {
         backgroundAttachment: 'fixed',
         backgroundSize: 'contain',
         backgroundPositionX: 'left',
-        backgroundRepeat: 'round',
+        backgroundRepeat: 'no-repeat',
         height: '950px'
       }}>
         {/* <img src={props?.banner?.className} class="img-fluid" alt="Responsive image" /> */}
