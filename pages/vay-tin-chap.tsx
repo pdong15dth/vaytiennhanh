@@ -198,7 +198,7 @@ export default function Home({ props }) {
           </div>
           <div className="form-group">
             <input type="text" name="phone" id="phone" className="form-control"
-              placeholder="Số điện thoại" required />
+              placeholder="Số Điện Thoại" required />
           </div>
           <div className="form-group">
             <select className="form-control" name="amount" id="amount">
@@ -210,7 +210,7 @@ export default function Home({ props }) {
           </div>
           <div className="form-group">
             <select className="form-control" name="type_amount" id="type_amount">
-              <option value="">Chọn Hình thức vay</option>
+              <option value="">Chọn Hình Thức Vay</option>
               {renderOption(props?.option)}
             </select>
           </div>
