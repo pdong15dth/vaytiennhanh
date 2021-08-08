@@ -6151,12 +6151,15 @@ div#navbarSupportedContent {
 }
 
 .backgroundHeader {
-    background-repeat: no-repeat;
+    background-repeat: 'round';
 }
 
 @media only screen and (max-width: 600px) {
     .backgroundHeader {
         background-repeat: initial;
+    }
+    section.features-area.ptb-110.bg-f1f3f6.section-custom-1 {
+        height: 700px!important;
     }
 }
 

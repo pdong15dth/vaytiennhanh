@@ -270,13 +270,17 @@ export default function Home({ props }) {
     background-attachment: fixed;
     background-size: contain; */}
 
-      <section className="features-area ptb-110 bg-f1f3f6 section-custom-1 backgroundHeader" style={{
+      <section className="backgroundHeader features-area ptb-110 bg-f1f3f6 section-custom-1 " style={{
         backgroundImage: `url(${props?.banner?.image})`,
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
         backgroundSize: 'contain',
-        backgroundPositionX: 'left'
+        backgroundPositionX: 'left',
+        backgroundRepeat: 'round',
+        height: '950px'
       }}>
+        {/* <img src={props?.banner?.className} class="img-fluid" alt="Responsive image" /> */}
+
         <div className="container-fluid padding-40">
           <div className="row align-items-center">
             <div className="col-lg-6 col-md-12 text-center">
