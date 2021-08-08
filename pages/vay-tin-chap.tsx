@@ -174,54 +174,8 @@ export default function Home({ props }) {
     })
   }
   const renderOptionAmout = () => {
-    const amoutList = [
-      {
-        id: 1,
-        stringAmount: "10,000,000"
-      },
-      {
-        id: 2,
-        stringAmount: "20,000,000"
-      },
-      {
-        id: 3,
-        stringAmount: "30,000,000"
-      },
-      {
-        id: 4,
-        stringAmount: "40,000,000"
-      },
-      {
-        id: 5,
-        stringAmount: "50,000,000"
-      },
-      {
-        id: 6,
-        stringAmount: "60,000,000"
-      },
-      {
-        id: 7,
-        stringAmount: "70,000,000"
-      },
-      {
-        id: 8,
-        stringAmount: "80,000,000"
-      },
-      {
-        id: 9,
-        stringAmount: "90,000,000"
-      },
-      {
-        id: 10,
-        stringAmount: "100,000,000"
-      },
-      {
-        id: 11,
-        stringAmount: "Khác"
-      }
-    ]
     return (
-      amoutList.map((item, index) => {
+      utils.amoutList.map((item, index) => {
         return (
           <option key={index} defaultValue={item.stringAmount}>{item.stringAmount}</option>
         )
@@ -233,20 +187,18 @@ export default function Home({ props }) {
       <>
         <h3 className="text-white">{props?.titleHeader?.voucher}</h3>
         <p className="text-white">{props?.titleHeader?.subTitleVoucher}</p>
-
-
         <form onSubmit={submitData}>
           <div className="form-group">
             <input type="text" name="name" id="name" className="form-control"
               placeholder="Họ và tên" required />
           </div>
           <div className="form-group">
-            <input type="text" name="phone" id="phone" className="form-control"
-              placeholder="Nhập số điện thoại" required />
+            <input type="text" name="address" id="address" className="form-control"
+              placeholder="Số Chứng Minh Nhân Dân / CCCD" required />
           </div>
           <div className="form-group">
-            <input type="text" name="address" id="address" className="form-control"
-              placeholder="CMND / CCCD" required />
+            <input type="text" name="phone" id="phone" className="form-control"
+              placeholder="Số điện thoại" required />
           </div>
           <div className="form-group">
             <select className="form-control" name="amount" id="amount">

@@ -1,6 +1,30 @@
 class Utils {
   constructor() { }
   baseURL: string = "https://api.hellobugs.dev";
+  amoutList = [
+    {
+      id: 1,
+      stringAmount: "10,000,000"
+    },
+    {
+      id: 3,
+      stringAmount: "30,000,000"
+    },
+
+    {
+      id: 5,
+      stringAmount: "50,000,000"
+    },
+
+    {
+      id: 7,
+      stringAmount: "70,000,000"
+    },
+    {
+      id: 11,
+      stringAmount: "Khác"
+    }
+  ]
   ChangeToSlug(slug) {
     //Đổi chữ hoa thành chữ thường
     slug = slug.toLowerCase(); //Đổi ký tự có dấu thành không dấu
@@ -66,9 +90,9 @@ class Utils {
       return "Vui lòng nhập khoản vay mong muốn"
     }
     const result = /^-?\d+$/.test(value)
-    
+
     if (result) {
-      if(parseInt(value) < 1000000) {
+      if (parseInt(value) < 1000000) {
         return "Vui lòng nhập số tiền tối thiểu là 1,000,000đ"
       } else if (parseInt(value) > 1000000) {
         if ((parseInt(value) % 500000) != 0) {
