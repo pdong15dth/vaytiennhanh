@@ -448,7 +448,33 @@ export default function Index({ props }) {
 
             <div className="go-top"><i className="fas fa-arrow-up"></i><i className="fas fa-arrow-up"></i></div>
             {/* <!-- footer  --> */}
-            <Script src="/js/jquery.min.js"></Script>
+            <div id="fb-root"></div>
+
+{/* <!-- Your Plugin chat code --> */}
+<div id="fb-customer-chat" className="fb-customerchat">
+</div>
+
+<script dangerouslySetInnerHTML={{
+  __html: `
+  var chatbox = document.getElementById('fb-customer-chat');
+  chatbox.setAttribute("page_id", "1583344378657934");
+  chatbox.setAttribute("attribution", "biz_inbox");
+  
+  window.fbAsyncInit = function () {
+    FB.init({
+      xfbml: true,
+      version: 'v11.0'
+    });
+  };
+  
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+`}}></script>            <Script src="/js/jquery.min.js"></Script>
             <Script src="/js/popper.min.js"></Script>
             <Script src="/js/bootstrap.min.js"></Script>
             {/* <Script src="/js/owl.carousel.min.js"></Script> */}
