@@ -45,6 +45,12 @@ export default function LeftMenu() {
                             <span className="menu-title" data-i18n="tt">Tuyển dụng</span>
                         </a>
                     </li>
+                    <li className="nav-item">
+                        <a href="/admin/zalo">
+                            <i className="feather icon-home"></i>
+                            <span className="menu-title" data-i18n="tt">Zalo</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

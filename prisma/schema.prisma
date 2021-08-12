@@ -276,3 +276,13 @@ model Welfare {
 
   @@map(name: "welfares")
 }
+
+model Social {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  value     String?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "socials")
+}

@@ -33,12 +33,16 @@ Index.getInitialProps = async ({ req, res }: any) => {
             id: 1
         }
     })
-
+    const social = await prisma.social.findFirst({
+        where: {
+            id: 1
+        }
+    })
     const option = await prisma.option.findMany()
     const forwarded = req.headers['x-forwarded-for']
     const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
     const mess = prisma.$transaction
-    return { props: { ip, contact, metaSEO, mess, menu, option, gioithieu, count, titleHeader } };
+    return { props: { social, ip, contact, metaSEO, mess, menu, option, gioithieu, count, titleHeader } };
 }
 
 export default function Index({ props }) {
@@ -48,6 +52,7 @@ export default function Index({ props }) {
     function checkAdult(string) {
         return string != "";
     }
+    console.log(props.social)
     useEffect(() => {
         var timeSpace = Date.now() - (localStorageService.countRequest.get()?.time as any) ?? 0
         if (timeSpace > 20000 || isNaN(timeSpace)) {
@@ -230,6 +235,14 @@ export default function Index({ props }) {
                     </div>
                 </div>
             </header>
+            <div className="buttonZalo">
+                <div className="avatar mr-50">
+                    <a href={`https://chat.zalo.me/?phone=${props.social?.value}`} target="_blank" rel="noopener noreferrer">
+                        <img src="../../../img/iconZalo1839_700.png" id="zalo" alt="avtar img holder" height="60" width="60" />
+                    </a>
+                </div>
+            </div>
+
             <section className="about-area ptb-110" style={{ backgroundColor: "#fff" }}>
                 <div className="container">
                     <div className="section-title">
@@ -300,12 +313,12 @@ export default function Index({ props }) {
             </footer>
             <div id="fb-root"></div>
 
-{/* <!-- Your Plugin chat code --> */}
-<div id="fb-customer-chat" className="fb-customerchat">
-</div>
+            {/* <!-- Your Plugin chat code --> */}
+            <div id="fb-customer-chat" className="fb-customerchat">
+            </div>
 
-<script dangerouslySetInnerHTML={{
-  __html: `
+            <script dangerouslySetInnerHTML={{
+                __html: `
   var chatbox = document.getElementById('fb-customer-chat');
   chatbox.setAttribute("page_id", "1583344378657934");
   chatbox.setAttribute("attribution", "biz_inbox");
