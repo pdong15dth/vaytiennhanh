@@ -35,11 +35,16 @@ Index.getInitialProps = async ({ req, res }: any) => {
             id: 1
         }
     })
+    const social = await prisma.social.findFirst({
+        where: {
+            id: 1
+        }
+    })
 
     const mess = prisma.$transaction
     const forwarded = req.headers['x-forwarded-for']
     const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
-    return { props: { ip, count, contact, metaSEO, mess, menu, option, titleHeader, currentData } };
+    return { props: {social, ip, count, contact, metaSEO, mess, menu, option, titleHeader, currentData } };
 }
 
 export default function Index({ props }) {
@@ -238,6 +243,13 @@ export default function Index({ props }) {
                     </div>
                 </div>
             </header>
+            <div className="buttonZalo">
+                <div className="avatar mr-50">
+                    <a href={`https://chat.zalo.me/?phone=${props.social?.value}`} target="_blank" rel="noopener noreferrer">
+                        <img src="../../../img/iconZalo1839_700.png" id="zalo" alt="avtar img holder" height="60" width="60" />
+                    </a>
+                </div>
+            </div>
             <section className="contact-area ptb-110" style={{ backgroundColor: "#fff" }}>
                 <div className="container shadow p-3 mb-5 bg-white rounded">
 
