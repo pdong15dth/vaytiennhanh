@@ -6,10 +6,10 @@ import prisma from '../../../lib/prisma';
 // Required fields in body: title
 // Optional fields in body: content
 export default async function handle(req, res) {
-    const body = req.body
+    const body = JSON.parse(req.body)
     const result = await prisma.news.delete({
         where: {
-            id: body?.id
+            id: parseInt(body?.id)
         }
     }).catch (error => {
         return res.json({

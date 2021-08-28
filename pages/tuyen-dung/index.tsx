@@ -254,7 +254,7 @@ export default function Index({ props }) {
             <div className="buttonCall">
                 <div className="avatar mr-50">
                     <a href={`tel:${props.contact?.phone}`} target="_blank" rel="noopener noreferrer">
-                        <img src="../../../img/accept-call.png" id="zalo" alt="avtar img holder" height="60" width="60" />
+                        <img src="../../../img/icon-call.png" id="zalo" alt="avtar img holder" height="60" width="60" />
                     </a>
                 </div>
             </div>

@@ -6183,8 +6183,8 @@ div#navbarSupportedContent {
 
 .buttonZalo {
     position: fixed;
-    bottom: 20px;
-    left: 90px;
+    bottom: 90px;
+    left: 24px;
     max-width: 420px;
     z-index: 9000;
     cursor: pointer;
@@ -6199,8 +6199,8 @@ div#navbarSupportedContent {
 
 .buttonCall {
     position: fixed;
-    bottom: 20px;
-    left: 160px;
+    bottom: 165px;
+    left: 24px;
     max-width: 420px;
     z-index: 9000;
     cursor: pointer;
@@ -6211,8 +6211,4 @@ div#navbarSupportedContent {
     color: var(--color-ansi-bright-white);
     background-color: var(--color-ansi-red);
     box-shadow: 0px var(--size-gap-double) var(--size-gap-quad) rgba(0, 0, 0, 0.25);
-}
-
-iframe#_no-clickjacking-0 {
-    bottom: 20px!important;
 }

@@ -9,10 +9,13 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import authService from "../../../src/services/authService/auth.service";
 import { useRouter } from "next/router";
 import utils from "../../../src/utils/constant";
+import Loading from "../../../src/Loading";
+import { toast, ToastContainer } from "react-nextjs-toast";
 
 export default function Index({ props }) {
 
     const [news, setNews] = useState<any>(null)
+    const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
     useEffect(() => {
         const isAdmin = authService.checkAuthAdmin();
@@ -27,21 +30,30 @@ export default function Index({ props }) {
 
         fetchMyAPI()
     }, [])
-    const onclickContact = (id) => {
+    const onclickRemove = (item) => {
+        const id = item?.id
         confirmAlert({
             title: "Xác nhận đã liên lạc",
-            message: `Bạn có chắc muốn xác nhận user có ID: ${id}`,
+            message: `Bạn có chắc muốn xác nhận bài viết có ID: ${item?.id}`,
             buttons: [
                 {
                     label: "Đồng ý",
                     onClick: () => {
                         var body = { id }
-                        fetch("/api/post/confirmUser", {
+                        console.log(id)
+                        setIsLoading(true)
+                        fetch("/api/news/delete", {
                             method: "POST",
                             body: JSON.stringify(body)
                         }).then(() => {
-                            fetch("/api/post/listUser").then(response => response.json()).then(result => {
+                            fetch("/api/news").then(response => response.json()).then(result => {
                                 setNews(result)
+                                setIsLoading(false)
+                                toast.notify(`Xoá bài viết thành công`, {
+                                    title: "Thành công",
+                                    duration: 3,
+                                    type: "success",
+                                });
                             }).catch(error => console.log('error', error));
                         })
                     },
@@ -75,7 +87,7 @@ export default function Index({ props }) {
                     <td>
                         <button type="button"
                             className="btn btn-danger square mr-1 mb-1 waves-effect waves-light"
-                            onClick={() => onclickContact(item.id)}>
+                            onClick={() => onclickRemove(item)}>
                             Xoá
                         </button>
                         <a type="button"
@@ -121,6 +133,9 @@ export default function Index({ props }) {
                             </tr>
                         </tfoot>
                     </table> : <></>}
+                <div className="col-12">
+                    {isLoading ? Loading() : <></>}
+                </div>
             </div>
         )
     }
@@ -185,7 +200,7 @@ export default function Index({ props }) {
 
                 <div className="sidenav-overlay"></div>
                 <div className="drag-target"></div>
-
+                <ToastContainer align={"right"} />
                 {FooterAdmin()}
             </body>
         </>
