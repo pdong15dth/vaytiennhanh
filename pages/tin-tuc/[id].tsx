@@ -1,21 +1,22 @@
 import Head from "next/head";
 import { Fragment, useEffect, useState } from "react";
 import Script from 'next/script'
-import prisma from "../lib/prisma";
-import HeaderClient from "../src/Script/HeaderClient";
-import SEOTag from "../src/Script/seoTag";
-import utils from "../src/utils/constant";
-import Loading from "../src/Loading";
+import prisma from "../../lib/prisma";
+import HeaderClient from "../../src/Script/HeaderClient";
+import SEOTag from "../../src/Script/seoTag";
+import utils from "../../src/utils/constant";
+import Loading from "../../src/Loading";
 import ReactHtmlParser from "react-html-parser";
-import localStorageService from "../src/services/localStorage.service/localStorage.service";
-import { CountRequest } from "../src/models/CountRequestData";
+import localStorageService from "../../src/services/localStorage.service/localStorage.service";
+import { CountRequest } from "../../src/models/CountRequestData";
+import { DocumentContext } from "next/document";
 
-Index.getInitialProps = async ({ req, res }: any) => {
+Index.getInitialProps = async (ctx: DocumentContext) => {
     const contact = await prisma.contact.findFirst()
     const metaSEO = await prisma.seoWeb.findFirst()
-    const gioithieu = await prisma.gioiThieu.findFirst({
+    const gioithieu = await prisma.news.findFirst({
         where: {
-            id: 1
+            id: parseInt(`${ctx.query.vttc}`)
         }
     })
     const menu = await prisma.menuHeader.findFirst({
@@ -39,20 +40,14 @@ Index.getInitialProps = async ({ req, res }: any) => {
         }
     })
     const option = await prisma.option.findMany()
-    const forwarded = req.headers['x-forwarded-for']
-    const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
-    const mess = prisma.$transaction
-    return { props: { social, ip, contact, metaSEO, mess, menu, option, gioithieu, count, titleHeader } };
+    console.log(ctx.query.vttc)
+    return { props: { social, contact, metaSEO, menu, option, gioithieu, count, titleHeader, query: ctx.query } };
 }
 
 export default function Index({ props }) {
     const [error, setError] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const count = props?.count
-    function checkAdult(string) {
-        return string != "";
-    }
-    console.log(props.social)
     useEffect(() => {
         var timeSpace = Date.now() - (localStorageService.countRequest.get()?.time as any) ?? 0
         if (timeSpace > 20000 || isNaN(timeSpace)) {
@@ -61,7 +56,7 @@ export default function Index({ props }) {
             }).then(result => result.json().then(res => {
                 console.log("cap nhat count thanh cong")
                 localStorageService.countRequest.set(new CountRequest({
-                    ipAddress: props.ip,
+                    ipAddress: props?.ip,
                     time: `${Date.now()}`
                 }))
 
@@ -144,9 +139,6 @@ export default function Index({ props }) {
         })
     }
 
-    const onChangeAmout = (event) => {
-        console.log(event)
-    }
     const renderOption = (options) => {
         return options?.map((item, index) => {
             return (
@@ -258,8 +250,23 @@ export default function Index({ props }) {
                             et dolore magna aliqua.</p> */}
                     </div>
                     <div className="row align-items-center">
-                        <div className="col-md-12 main-content">
-                            {ReactHtmlParser(props?.gioithieu?.content)}
+                        <div className="col-md-8 blog-details">
+                            <div className="page-title-content">
+                                <h2 style={{ color: "black" }}>{props?.gioithieu?.title}</h2>
+                            </div>
+                            <div className="article-image">
+                                <img src={props?.gioithieu?.avatar} alt="image" />
+                            </div>
+                            <div className="article-content">
+                                <div className="entry-meta">
+                                    <ul>
+                                        <li><span>Ngày đăng:</span> <a href="#">{`${utils.formatDate(`${props?.gioithieu?.createdAt}`)}`}</a></li>
+                                        <li><span>Người viết:</span> <a href="#">{props?.gioithieu?.createdBy}</a></li>
+                                    </ul>
+                                </div>
+                                <p>{props?.gioithieu?.description}</p>
+                                {ReactHtmlParser(props?.gioithieu?.detail)}
+                            </div>
                         </div>
                     </div>
                 </div>

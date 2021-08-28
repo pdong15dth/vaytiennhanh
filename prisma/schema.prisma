@@ -286,3 +286,32 @@ model Social {
 
   @@map(name: "socials")
 }
+
+model Categories {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "categories")
+}
+
+model News {
+  id            Int      @id @default(autoincrement())
+  idCate        Int      @default(1)
+  title         String
+  slug          String
+  slugNoConvert String?
+  avatar        String?
+  description   String?
+  detail        String?
+  tag           String[]
+  like          Int?     @default(0)
+  createdBy     String?
+  disabel       Boolean  @default(false)
+  createdAt     DateTime @default(now()) @map(name: "created_at")
+  updatedAt     DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "news")
+}

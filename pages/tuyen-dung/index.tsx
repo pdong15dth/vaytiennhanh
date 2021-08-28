@@ -44,7 +44,7 @@ Index.getInitialProps = async ({ req, res }: any) => {
     const mess = prisma.$transaction
     const forwarded = req.headers['x-forwarded-for']
     const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
-    return { props: {social, ip, count, contact, metaSEO, mess, menu, option, titleHeader, currentData } };
+    return { props: { social, ip, count, contact, metaSEO, mess, menu, option, titleHeader, currentData } };
 }
 
 export default function Index({ props }) {
@@ -232,7 +232,8 @@ export default function Index({ props }) {
                                         <a href="/vay-tin-chap" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
                                     </div>
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
-                                        <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.menu?.menu4}</a>
+                                        <a href={`/tin-tuc`} className="btn btn-primary btn-header">Tin Tức</a>
+                                        {/* <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.menu?.menu4}</a> */}
                                     </div>
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
                                         <a href="tuyen-dung" className="btn btn-primary btn-header">{props.menu?.menu3}</a>
@@ -247,6 +248,13 @@ export default function Index({ props }) {
                 <div className="avatar mr-50">
                     <a href={`https://chat.zalo.me/?phone=${props.social?.value}`} target="_blank" rel="noopener noreferrer">
                         <img src="../../../img/iconZalo1839_700.png" id="zalo" alt="avtar img holder" height="60" width="60" />
+                    </a>
+                </div>
+            </div>
+            <div className="buttonCall">
+                <div className="avatar mr-50">
+                    <a href={`tel:${props.contact?.phone}`} target="_blank" rel="noopener noreferrer">
+                        <img src="../../../img/accept-call.png" id="zalo" alt="avtar img holder" height="60" width="60" />
                     </a>
                 </div>
             </div>
@@ -462,12 +470,12 @@ export default function Index({ props }) {
             {/* <!-- footer  --> */}
             <div id="fb-root"></div>
 
-{/* <!-- Your Plugin chat code --> */}
-<div id="fb-customer-chat" className="fb-customerchat">
-</div>
+            {/* <!-- Your Plugin chat code --> */}
+            <div id="fb-customer-chat" className="fb-customerchat">
+            </div>
 
-<script dangerouslySetInnerHTML={{
-  __html: `
+            <script dangerouslySetInnerHTML={{
+                __html: `
   var chatbox = document.getElementById('fb-customer-chat');
   chatbox.setAttribute("page_id", "1583344378657934");
   chatbox.setAttribute("attribution", "biz_inbox");

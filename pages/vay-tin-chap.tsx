@@ -43,9 +43,9 @@ Home.getInitialProps = async ({ req, res }: any) => {
   })
   const social = await prisma.social.findFirst({
     where: {
-        id: 1
+      id: 1
     }
-})
+  })
 
   const forwarded = req.headers['x-forwarded-for']
   const ip = forwarded ? forwarded.split(/, /) : req.connection.remoteAddress
@@ -254,8 +254,9 @@ export default function Home({ props }) {
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
+                    <a href={`/tin-tuc`} className="btn btn-primary btn-header">Tin Tức</a>
 
-                    <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.menu?.menu4}</a>
+                    {/* <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.menu?.menu4}</a> */}
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
@@ -282,10 +283,17 @@ export default function Home({ props }) {
           </a>
         </div>
       </div>
+      <div className="buttonCall">
+        <div className="avatar mr-50">
+          <a href={`tel:${props.contact?.phone}`} target="_blank" rel="noopener noreferrer">
+            <img src="../../../img/accept-call.png" id="zalo" alt="avtar img holder" height="60" width="60" />
+          </a>
+        </div>
+      </div>
       <section className="backgroundHeader features-area ptb-110 bg-f1f3f6 section-custom-1 " style={{
         backgroundImage: `url(${props?.banner?.image})`,
         backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
+        backgroundOrigin: 'content-box',
         backgroundSize: 'contain',
         backgroundPositionX: 'left',
         backgroundRepeat: 'no-repeat',

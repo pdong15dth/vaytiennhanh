@@ -50,6 +50,10 @@ class Utils {
   }
 
   formatDate(input) {
+    if (input == "" || input == null) {
+      return ""
+    }
+    console.log(input.match(/\d+/g))
     var datePart = input.match(/\d+/g),
       year = datePart[0], // get only two digits
       month = datePart[1],
