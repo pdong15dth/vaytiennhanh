@@ -10,6 +10,7 @@ import ReactHtmlParser from "react-html-parser";
 import localStorageService from "../../src/services/localStorage.service/localStorage.service";
 import { CountRequest } from "../../src/models/CountRequestData";
 import { DocumentContext } from "next/document";
+import { useRouter } from "next/router";
 
 Index.getInitialProps = async (ctx: DocumentContext) => {
     const contact = await prisma.contact.findFirst()
@@ -40,14 +41,15 @@ Index.getInitialProps = async (ctx: DocumentContext) => {
         }
     })
     const option = await prisma.option.findMany()
-    console.log(ctx.query.vttc)
-    return { props: { social, contact, metaSEO, menu, option, gioithieu, count, titleHeader, query: ctx.query } };
+    return { props: { social, contact, metaSEO, menu, option, gioithieu, count, titleHeader, query: ctx.query, headers: ctx.req.headers } };
 }
 
 export default function Index({ props }) {
     const [error, setError] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const count = props?.count
+    const router = useRouter()
+    const domain = props?.headers.host + router.asPath
     useEffect(() => {
         var timeSpace = Date.now() - (localStorageService.countRequest.get()?.time as any) ?? 0
         if (timeSpace > 20000 || isNaN(timeSpace)) {
@@ -200,6 +202,21 @@ export default function Index({ props }) {
         <>
             <Head>
                 {SEOTag(props?.metaSEO)}
+                {/* {props?.gioithieu?.createdBy} */}
+                <title>{props?.gioithieu?.title}</title>
+                <meta
+                    name="description"
+                    content={props?.gioithieu?.description}
+                />
+                <meta
+                    property="og:image"
+                    content={props?.gioithieu?.avatar}
+                />
+                <meta property="og:url" content={domain} />
+                <meta
+                    property="og:title"
+                    content={props?.gioithieu?.title}
+                />
             </Head>
             {HeaderClient()}
             <header className="header-area">
