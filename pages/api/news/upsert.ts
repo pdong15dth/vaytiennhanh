@@ -14,7 +14,7 @@ export default async function handle(req, res) {
     var slugNoConvert = b
     const result = await prisma.news.upsert({
         where: {
-            id: parseInt(body?.id) ?? 0
+            id: parseInt(body?.id ?? 0) ?? 0
         },
         create: {
             title: body.title,
