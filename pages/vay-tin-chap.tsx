@@ -254,7 +254,7 @@ export default function Home({ props }) {
 
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
-                    <a href={`/tin-tuc`} className="btn btn-primary btn-header">Tin Tức</a>
+                    <a href={`/tin-tuc`} className="btn btn-primary btn-header">{props.menu?.menu4}</a>
 
                     {/* <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.menu?.menu4}</a> */}
 

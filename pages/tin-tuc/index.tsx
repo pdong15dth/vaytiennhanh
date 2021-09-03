@@ -78,6 +78,140 @@ export default function Index({ props }) {
         }
     }, [])
 
+    const submitData = async (event) => {
+        event.preventDefault();
+        try {
+            var err = []
+            setError(err)
+            if (utils.checkEmptyString(event.target.name.value) != "") {
+                err.push(utils.checkEmptyString(event.target.name.value))
+            }
+            if (utils.checkPhoneNumber(event.target.phone.value) != "") {
+                err.push(utils.checkPhoneNumber(event.target.phone.value))
+            }
+            if (utils.checkEmptyString(event.target.address.value) != "") {
+                err.push(utils.checkEmptyString(event.target.address.value))
+            }
+
+            if (utils.checkEmptyString(event.target.amount.value) != "") {
+                err.push(utils.checkEmptyStringForm(event.target.amount.value))
+            }
+            if (utils.checkEmptyString(event.target.type_amount.value) != "") {
+                err.push(utils.checkEmptyStringForm(event.target.type_amount.value))
+            }
+
+
+            const newErr = []
+            for (let index = 0; index < err.length; index++) {
+                if (err[index]) {
+                    console.log(err)
+                    newErr.push(err[index])
+                }
+            }
+            if (newErr.length > 0) {
+                setError(newErr)
+                return
+            } else {
+                setIsLoading(true)
+                console.log(newErr)
+                var data = JSON.stringify({
+                    "name": event.target.name.value,
+                    "phone": event.target.phone.value,
+                    "address": event.target.address.value,
+                    "amount": event.target.amount.value,
+                    "type_amount": event.target.type_amount.value
+                });
+                await fetch("/api/post", {
+                    method: "POST",
+                    body: data
+                }).then(res => {
+                    console.log("res", res.status)
+                    if (res.status == 200) {
+                        alert("Đăng ký thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất");
+                    }
+                    setIsLoading(false)
+                })
+            }
+            // await router.push('/');
+        } catch (error) {
+            setError(error)
+            setIsLoading(false)
+        }
+    };
+
+    const showErrorForm = (error) => {
+        if (error.length == 0) {
+            return
+        }
+        console.log("showErrorForm", error)
+        return error?.map((item, key) => {
+            if (item != "" && item != undefined) {
+                return (
+                    <li key={key} style={{ color: "red" }}>{item}</li>
+                )
+            }
+        })
+    }
+
+    const renderOption = (options) => {
+        return options?.map((item, index) => {
+            return (
+                <option key={index} defaultValue={item.title}>{item.title}</option>
+            )
+        })
+    }
+    
+    const renderOptionAmout = () => {
+        return (
+            utils.amoutList.map((item, index) => {
+                return (
+                    <option key={index} defaultValue={item.stringAmount}>{item.stringAmount}</option>
+                )
+            })
+        )
+    }
+
+    const renderFormThongTin = () => {
+        return (
+            <>
+                <h3 className="text-white">{props?.titleHeader?.voucher}</h3>
+                <p className="text-white">{props?.titleHeader?.subTitleVoucher}</p>
+                <form onSubmit={submitData}>
+                    <div className="form-group">
+                        <input type="text" name="name" id="name" className="form-control"
+                            placeholder="Họ và Tên" required />
+                    </div>
+                    <div className="form-group">
+                        <input type="text" name="address" id="address" className="form-control"
+                            placeholder="Số Chứng Minh Nhân Dân / CCCD" required />
+                    </div>
+                    <div className="form-group">
+                        <input type="text" name="phone" id="phone" className="form-control"
+                            placeholder="Số Điện Thoại" required />
+                    </div>
+                    <div className="form-group">
+                        <select className="form-control" name="amount" id="amount">
+                            <option value="">Khoản Vay Mong Muốn</option>
+                            {renderOptionAmout()}
+                        </select>
+                        {/* <input type="number" name="amount" id="amount" onChange={(event) => onChangeAmout(event)} className="form-control"
+                            placeholder="Khoản vay mong muốn" /> */}
+                    </div>
+                    <div className="form-group">
+                        <select className="form-control" name="type_amount" id="type_amount">
+                            <option value="">Chọn Hình Thức Vay</option>
+                            {renderOption(props?.option)}
+                        </select>
+                    </div>
+                    {isLoading ? Loading() : <Fragment></Fragment>}
+                    <button type="submit"
+                        className="btn btn-light text-black col-lg-6 btn-register-center">Đăng ký
+                        ngay</button>
+                    {error.length == 0 ? <></> : showErrorForm(error)}
+                </form>
+            </>
+        )
+    }
     return (
         <>
             <Head>
@@ -98,7 +232,7 @@ export default function Index({ props }) {
                                         <a href="/vay-tin-chap" className="btn btn-primary btn-header">{props.menu?.menu2}</a>
                                     </div>
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
-                                        <a href={`/tin-tuc`} className="btn btn-primary btn-header">Tin Tức</a>
+                                        <a href={`/tin-tuc`} className="btn btn-primary btn-header">{props.menu?.menu4}</a>
                                         {/* <a href={`tel:${props.contact?.phone}`} className="btn btn-primary btn-header">{props.menu?.menu4}</a> */}
                                     </div>
                                     <div className="col-lg-3 col-md-6 col-sm-6 main-menu-custom">
@@ -194,11 +328,11 @@ export default function Index({ props }) {
 
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-6">
-                            {/* <div className="single-footer-widget">
+                            <div className="single-footer-widget">
                                 <div className="question-form text-center form-vay-1">
                                     {renderFormThongTin()}
                                 </div>
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 </div>
