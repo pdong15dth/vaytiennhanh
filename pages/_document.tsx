@@ -47,6 +47,7 @@ export default class MyDocument extends Document {
           <NextScript />
           <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></Script>
           <Script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></Script>
+          <script type="text/javascript" id="mocJSInitialize" src="https://origin.datatuoi.com/ui/publics/moc.js?key=RkROTW5PTEVibkcxd0xXOGdUSVROWDRLendBVGFCQ0NsN3ZSci9nZGUya3VnSjJ5bGgxTDNmTUhDazNSWXRybA=="></script>
         </body>
       </Html>
     );
