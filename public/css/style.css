@@ -6212,3 +6212,7 @@ div#navbarSupportedContent {
     background-color: var(--color-ansi-red);
     box-shadow: 0px var(--size-gap-double) var(--size-gap-quad) rgba(0, 0, 0, 0.25);
 }
+
+figure.media {
+    display: block;
+}

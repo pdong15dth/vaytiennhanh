@@ -42503,6 +42503,9 @@
                     'mergeTableCells'
                 ]
             },
+            mediaEmbed: {
+                previewsInData: true
+            },
             licenseKey: '',
             // This value must be kept in sync with the language defined in webpack.config.
             language: 'en'

@@ -50,6 +50,7 @@ export default function Index({ props }) {
     const count = props?.count
     const router = useRouter()
     const domain = props?.headers.host + router.asPath
+    console.log(props?.gioithieu?.detail)
     useEffect(() => {
         var timeSpace = Date.now() - (localStorageService.countRequest.get()?.time as any) ?? 0
         if (timeSpace > 20000 || isNaN(timeSpace)) {
